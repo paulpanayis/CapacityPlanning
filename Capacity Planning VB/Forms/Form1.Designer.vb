@@ -42,7 +42,7 @@ Partial Class Form1
         Me.CtlYearView1.Location = New System.Drawing.Point(12, 12)
         Me.CtlYearView1.Name = "CtlYearView1"
         Me.CtlYearView1.OtherYearWeekdayColour = System.Drawing.Color.LightGray
-        Me.CtlYearView1.OtherYearWeekendColour = System.Drawing.Color.Gray
+        Me.CtlYearView1.OtherYearWeekendColour = System.Drawing.Color.Gainsboro
         Me.CtlYearView1.Size = New System.Drawing.Size(1851, 1405)
         Me.CtlYearView1.TabIndex = 0
         Me.CtlYearView1.ThisYearWeekdayColour = System.Drawing.Color.White

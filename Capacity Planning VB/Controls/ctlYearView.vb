@@ -161,19 +161,19 @@ Public Class ctlYearView
                     ' is a valid date square
                     If (lngRow Mod 7 = 1 Or lngRow Mod 7 = 0) Then
                         ' weekend
-                        clrColour = Color.LightSlateGray
+                        clrColour = ThisYearWeekendColour
                     Else
                         ' weekday
-                        clrColour = Color.AliceBlue
+                        clrColour = ThisYearWeekdayColour
                     End If
                 Else
                     ' is not a valid date square
                     If (lngRow Mod 7 = 1 Or lngRow Mod 7 = 0) Then
                         ' weekend
-                        clrColour = Color.Gray
+                        clrColour = OtherYearWeekdayColour
                     Else
                         ' weekday
-                        clrColour = Color.LightSteelBlue
+                        clrColour = OtherYearWeekendColour
                     End If
                 End If
 
@@ -183,101 +183,23 @@ Public Class ctlYearView
                 intHeight = dblYDivision
 
                 If dteDrawingDate = Now.Date Then
-                    g.FillRectangle(New SolidBrush(Color.Yellow), intLeft, intTop, intWidth, intHeight)
-                    g.FillRectangle(New SolidBrush(Color.White), intLeft + 6, intTop + 6, intWidth - 12, intHeight - 12)
-                    g.DrawRectangle(New Pen(Color.Yellow), intLeft + 1, intTop + 1, intWidth - 2, intHeight - 2)
+                    g.FillRectangle(New SolidBrush(TodayColour), intLeft, intTop, intWidth, intHeight)
+
+                    If blnValidDate Then
+                        g.DrawString(dteDrawingDate.Day.ToString, mySmallFont, New SolidBrush(TodayTextColour), intLeft, intTop)
+                    End If
                 Else
                     g.FillRectangle(New SolidBrush(clrColour), intLeft, intTop, intWidth, intHeight)
+                    If blnValidDate Then
+                        g.DrawString(dteDrawingDate.Day.ToString, mySmallFont, myForeBrush, intLeft, intTop)
+                    End If
                 End If
 
                 ' now cut out the outline so each square is separate
                 g.DrawRectangle(New Pen(Me.BackColor), intLeft, intTop, intWidth, intHeight)
-                If blnValidDate Then
-                    g.DrawString(dteDrawingDate.Day.ToString, mySmallFont, myForeBrush, intLeft, intTop)
-                End If
-
-                '        ' now draw in the dates day
-
-                '        If Format(dteCurrentDate, "MMMM yyyy") = Format(ActiveDate, "MMMM yyyy") Then
-                '            If dteCurrentDate = Now.Date Then
-                '                myFont = New Font(Me.Font.FontFamily, sngFontSize, FontStyle.Bold)
-                '            Else
-                '                myFont = New Font(Me.Font.FontFamily, sngFontSize, FontStyle.Regular)
-                '            End If
-                '            intY = lngTop + (lngRow * dblYDivision) + 1
-
-                '            myString = dteCurrentDate.Day.ToString
-                '            textSize = g.MeasureString(myString, myFont)
-
-                '            intX = lngLeft + (lngColumn * dblXDivision) + (dblXDivision - 1 - textSize.Width)
-                '        End If
-
-                '        ' main date coordinates
-
-                '        If lngColumn * lngRow = 30 Then
-                '            maryDateCoordinates(1, lngItem) = DateTime.Today
-                '        Else
-                '            maryDateCoordinates(1, lngItem) = dteCurrentDate
-                '        End If
-                '        maryDateCoordinates(2, lngItem) = intLeft
-                '        maryDateCoordinates(3, lngItem) = intLeft + intWidth
-                '        maryDateCoordinates(4, lngItem) = intTop
-                '        maryDateCoordinates(5, lngItem) = intTop + intHeight
-
-                '        ' setting user drawable area
-                '        If lngColumn * lngRow = 30 Then
-                '            maryDateUserAreaCoordinates(1, lngItem) = DateTime.Today
-                '        Else
-                '            maryDateUserAreaCoordinates(1, lngItem) = dteCurrentDate
-                '        End If
-                '        maryDateUserAreaCoordinates(2, lngItem) = intLeft + 2
-                '        maryDateUserAreaCoordinates(3, lngItem) = intLeft + intWidth - 2
-                '        maryDateUserAreaCoordinates(4, lngItem) = intTop + textSize.Height + 1
-                '        maryDateUserAreaCoordinates(5, lngItem) = intTop + intHeight - 2
-
-                '        ' clear the user area
-                '        If Format(dteCurrentDate, "MMMM yyyy") = Format(ActiveDate, "MMMM yyyy") And HaveDiaryItem(dteCurrentDate) Then
-                '            g.FillRectangle(New SolidBrush(ThisMonthColour), New Rectangle(maryDateUserAreaCoordinates(2, lngItem), maryDateUserAreaCoordinates(4, lngItem), maryDateUserAreaCoordinates(3, lngItem) - maryDateUserAreaCoordinates(2, lngItem), maryDateUserAreaCoordinates(5, lngItem) - maryDateUserAreaCoordinates(4, lngItem)))
-                '            g.DrawRectangle(New Pen(Me.BackColor), New Rectangle(maryDateUserAreaCoordinates(2, lngItem), maryDateUserAreaCoordinates(4, lngItem), maryDateUserAreaCoordinates(3, lngItem) - maryDateUserAreaCoordinates(2, lngItem), maryDateUserAreaCoordinates(5, lngItem) - maryDateUserAreaCoordinates(4, lngItem)))
-                '        End If
-
-                '        ' draw in the more detailed day
-                '        If blnExtendedView = True And HaveDiaryItem(dteCurrentDate) And blnOutsideThisMonth = False Then
-                '            For lngPointer = 1 To UBound(maryDiaryItems, 2)
-                '                If maryDiaryItems(1, lngPointer) = dteCurrentDate.ToOADate Then
-                '                    Select Case maryDiaryItems(2, lngPointer)
-                '                        Case 1
-                '                            clrColour = Colour1
-                '                        Case 2
-                '                            clrColour = Colour2
-                '                        Case 3
-                '                            clrColour = Colour3
-                '                        Case 4
-                '                            clrColour = Colour4
-                '                    End Select
-
-                '                    ' draw in the day part
-                '                    intLeft = maryDateUserAreaCoordinates(2, lngItem)
-                '                    intTop = ((maryDateUserAreaCoordinates(5, lngItem) - maryDateUserAreaCoordinates(4, lngItem)) * maryDiaryItems(3, lngPointer) / 100) + maryDateUserAreaCoordinates(4, lngItem)
-                '                    intWidth = maryDateUserAreaCoordinates(3, lngItem) - intLeft
-                '                    intHeight = (((maryDateUserAreaCoordinates(5, lngItem) - maryDateUserAreaCoordinates(4, lngItem)) * maryDiaryItems(4, lngPointer) / 100) + maryDateUserAreaCoordinates(4, lngItem)) - intTop
-                '                    If intHeight <= 1 Then
-                '                        ' ensure this item is visible
-                '                        ' by having a minimum height
-                '                        intHeight = 2
-                '                    End If
-                '                    g.FillRectangle(New SolidBrush(clrColour), New Rectangle(intLeft + 1, intTop + 1, intWidth - 1, intHeight - 1))
-
-                '                End If
-                '            Next lngPointer
-                '        End If
-
-                '        dteCurrentDate = DateAdd(DateInterval.Day, 1, dteCurrentDate)
-                '        lngItem = lngItem + 1
 
             Next lngRow
         Next lngColumn
-
     End Sub
 
 
