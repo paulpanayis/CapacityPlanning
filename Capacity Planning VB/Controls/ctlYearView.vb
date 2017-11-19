@@ -2,10 +2,16 @@
 
 Public Class ctlYearView
     Public Event DateClick(ByVal sender As Object, ByVal e As Date)
+    Public Event DateOver(ByVal sender As Object, ByVal e As Date)
 
     Private maryDiaryItems(,) As Double
     Private maryDateCoordinates(,) As Object
     Private maryDateUserAreaCoordinates(,) As Object
+    Private mintMouseX As Integer = 0
+    Private mintMouseY As Integer = 0
+    Private mdteDateClicked As Date
+    Private mblnValidDate As Boolean = False
+
 
     Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
         ' Graphics object needed to call FillRectangle
@@ -33,11 +39,16 @@ Public Class ctlYearView
         Dim intTop As Integer
         Dim intWidth As Integer
         Dim intHeight As Integer
+        Dim intClientLeft As Integer
+        Dim intClientTop As Integer
+        Dim intClientWidth As Integer
+        Dim intClientHeight As Integer
         Dim lngRow As Long
         Dim lngColumn As Long
         Dim clrColour As Color
         Dim dteDrawingDate As Date
         Dim blnValidDate As Boolean
+        Dim blnHitBox As Boolean
 
         Dim dteFirstOfMonth As Date
         Dim intDayOfMonthOffset As Integer
@@ -53,7 +64,7 @@ Public Class ctlYearView
 
         'ReDim maryDateCoordinates(0 To 5, 0 To 42)
         'ReDim maryDateUserAreaCoordinates(0 To 5, 0 To 42)
-
+        mblnValidDate = False
         g.Clear(Me.BackColor)
         myForeBrush = New SolidBrush(Me.ForeColor)
         sngFontSize = 12
@@ -62,10 +73,10 @@ Public Class ctlYearView
         mySmallFont = New Font(Me.Font.FontFamily, sngSmallSize, FontStyle.Regular)
         textSize = g.MeasureString("WWW", myFont)
 
-        lngLeft = textSize.Width + 4
+        lngLeft = textSize.Width
         lngScaleWidth = CLng(Me.ClientSize.Width) - lngLeft
 
-        lngTop = textSize.Height + 4
+        lngTop = textSize.Height
         lngScaleHeight = CLng(Me.ClientSize.Height) - lngTop
 
         dblXDivision = (lngScaleWidth - 3) / 12
@@ -80,74 +91,36 @@ Public Class ctlYearView
 
             textSize = g.MeasureString("WWW", myFont)
 
-            lngLeft = textSize.Width + 4
+            lngLeft = textSize.Width
             lngScaleWidth = CLng(Me.ClientSize.Width) - lngLeft
 
-            lngTop = textSize.Height + 4
+            lngTop = textSize.Height
             lngScaleHeight = CLng(Me.ClientSize.Height) - lngTop
 
-            dblXDivision = (lngScaleWidth - 3) / 12
-            dblYDivision = (lngScaleHeight - 2) / 37
+            dblXDivision = (lngScaleWidth) / 12
+            dblYDivision = (lngScaleHeight) / 37
         Loop
-
-        ' draw the months
-        For lngColumn = 0 To 11
-            myString = New DateTime(2017, lngColumn + 1, 1).ToString("MMM", CultureInfo.InvariantCulture)
-
-            myFont = New Font(Me.Font.FontFamily, sngFontSize, FontStyle.Regular)
-            textSize = g.MeasureString(myString, myFont)
-
-            intY = 1
-            intX = lngLeft + (lngColumn * dblXDivision) + ((dblXDivision - textSize.Width) / 2)
-
-            g.DrawString(myString, myFont, myForeBrush, intX, intY)
-        Next lngColumn
-
-        ' draw days of week
-        For lngRow = 1 To 37
-            myString = ""
-            Select Case lngRow Mod 7
-                Case 0
-                    myString = "SAT"
-                Case 1
-                    myString = "SUN"
-                Case 2
-                    myString = "MON"
-                Case 3
-                    myString = "TUE"
-                Case 4
-                    myString = "WED"
-                Case 5
-                    myString = "THU"
-                Case 6
-                    myString = "FRI"
-            End Select
-
-            myFont = New Font(Me.Font.FontFamily, sngFontSize, FontStyle.Regular)
-            textSize = g.MeasureString(myString, myFont)
-
-            intX = ((lngLeft - textSize.Width) / 2)
-            intY = lngTop + ((lngRow - 1) * dblYDivision) + ((dblYDivision - textSize.Height) / 2)
-
-            g.DrawString(myString, myFont, myForeBrush, intX, intY)
-
-        Next lngRow
 
         ' draw the grid
         dteDrawingDate = New DateTime(ActiveYear, 1, 1)
 
-        For lngColumn = 1 To 12
+        For lngColumn = 0 To 12
             For lngRow = 1 To 37
+                blnHitBox = False
 
-                dteFirstOfMonth = New DateTime(ActiveYear, lngColumn, 1)
-                intDayOfMonthOffset = Weekday(dteFirstOfMonth, DayOfWeek.Monday)
+                If (lngColumn = 0) Then
+                    intDayOfMonthOffset = 0
+                Else
+                    dteFirstOfMonth = New DateTime(ActiveYear, lngColumn, 1)
+                    intDayOfMonthOffset = Weekday(dteFirstOfMonth, DayOfWeek.Monday)
+                End If
                 intDaysInMonth = 0
                 blnValidDate = False
 
                 If (lngColumn = 12) Then
                     ' last month in year
                     intDaysInMonth = (New DateTime(ActiveYear + 1, 1, 1) - New DateTime(ActiveYear, lngColumn, 1)).TotalDays
-                Else
+                ElseIf (lngColumn <> 0) Then
                     intDaysInMonth = (New DateTime(ActiveYear, lngColumn + 1, 1) - New DateTime(ActiveYear, lngColumn, 1)).TotalDays
                 End If
 
@@ -177,10 +150,26 @@ Public Class ctlYearView
                     End If
                 End If
 
+                ' get full box sizes
                 intLeft = lngLeft + ((lngColumn - 1) * dblXDivision)
                 intTop = lngTop + ((lngRow - 1) * dblYDivision)
                 intWidth = dblXDivision
                 intHeight = dblYDivision
+
+                ' get custom marker box sizes
+                textSize = g.MeasureString("88", mySmallFont)
+                intClientLeft = lngLeft + ((lngColumn - 1) * (dblXDivision)) + textSize.Width
+                intClientTop = lngTop + ((lngRow - 1) * dblYDivision) + 4
+                intClientWidth = dblXDivision - textSize.Width - 6
+                intClientHeight = dblYDivision - 6
+
+
+                If blnValidDate And (mintMouseX >= intLeft And mintMouseX <= intLeft + intWidth) And (mintMouseY >= intTop And mintMouseY <= intTop + intHeight) Then
+                    blnHitBox = True
+                    clrColour = Color.HotPink
+                    mdteDateClicked = dteDrawingDate
+                    mblnValidDate = True
+                End If
 
                 If dteDrawingDate = Now.Date Then
                     g.FillRectangle(New SolidBrush(TodayColour), intLeft, intTop, intWidth, intHeight)
@@ -195,11 +184,59 @@ Public Class ctlYearView
                     End If
                 End If
 
+                ' now draw in the client area @ 25% opacity
+                If blnValidDate Then
+                    g.FillRectangle(New SolidBrush(Color.FromArgb(25, Color.Green)), intClientLeft, intClientTop, intClientWidth, intClientHeight)
+                End If
+
+
                 ' now cut out the outline so each square is separate
                 g.DrawRectangle(New Pen(Me.BackColor), intLeft, intTop, intWidth, intHeight)
 
             Next lngRow
         Next lngColumn
+
+        ' draw days of week
+        For lngRow = 1 To 37
+            myString = ""
+            Select Case lngRow Mod 7
+                Case 0
+                    myString = "SAT"
+                Case 1
+                    myString = "SUN"
+                Case 2
+                    myString = "MON"
+                Case 3
+                    myString = "TUE"
+                Case 4
+                    myString = "WED"
+                Case 5
+                    myString = "THU"
+                Case 6
+                    myString = "FRI"
+            End Select
+
+            'myFont = New Font(Me.Font.FontFamily, sngFontSize, FontStyle.Regular)
+            textSize = g.MeasureString(myString, mySmallFont)
+
+            intX = ((lngLeft - textSize.Width) / 2)
+            intY = lngTop + ((lngRow - 1) * dblYDivision) + ((dblYDivision - textSize.Height) / 2)
+
+            g.DrawString(myString, mySmallFont, myForeBrush, intX, intY)
+        Next lngRow
+
+        ' draw the months
+        For lngColumn = 0 To 11
+            myString = New DateTime(2017, lngColumn + 1, 1).ToString("MMM", CultureInfo.InvariantCulture)
+
+            textSize = g.MeasureString(myString, myFont)
+
+            intY = 1
+            intX = lngLeft + (lngColumn * dblXDivision) + ((dblXDivision - textSize.Width) / 2)
+
+            g.DrawString(myString, myFont, myForeBrush, intX, intY)
+        Next lngColumn
+
     End Sub
 
 
@@ -233,7 +270,7 @@ Public Class ctlYearView
         End Set
     End Property
 
-    Private OtherYearWeekendColourValue As Color = Color.Gray
+    Private OtherYearWeekendColourValue As Color = Color.LightSteelBlue
     Public Property OtherYearWeekendColour() As Color
         Get
             Return OtherYearWeekendColourValue
@@ -348,36 +385,31 @@ Public Class ctlYearView
         ActiveYear = Now.Year
     End Sub
 
-
     Private Sub MonthView_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
-        Dim lngPointer As Long
-
-        For lngPointer = 1 To 41
-            'If e.X >= maryDateCoordinates(2, lngPointer) And e.X <= maryDateCoordinates(3, lngPointer) And
-            '    e.Y >= maryDateCoordinates(4, lngPointer) And e.Y <= maryDateCoordinates(5, lngPointer) Then
-            '    ' has selected a date
-            '    If Format(maryDateCoordinates(1, lngPointer), "MMMM yyyy") = Format(ActiveDate, "MMMM yyyy") Then
-            '        ActiveDate = maryDateCoordinates(1, lngPointer)
-            '        RaiseEvent DateClick(Me, maryDateCoordinates(1, lngPointer))
-            '        Me.Refresh()
-            '    End If
-            '    Exit For
-            'End If
-        Next
-
+        If mblnValidDate = True Then
+            RaiseEvent DateClick(Me, mdteDateClicked)
+        End If
     End Sub
 
-    'Private Sub InitializeComponent()
-    '    Me.SuspendLayout()
-    '    '
-    '    'ctlYearView
-    '    '
-    '    Me.Name = "ctlYearView"
-    '    Me.ResumeLayout(False)
-
-    'End Sub
-
     Private Sub ctlYearView_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        '
+        'ctlYearView
+        '
+        Me.Name = "ctlYearView"
+    End Sub
 
+    Private Sub ctlYearView_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
+        mintMouseX = e.X
+        mintMouseY = e.Y
+        Me.Refresh()
+        If mblnValidDate = True Then
+            RaiseEvent DateOver(Me, mdteDateClicked)
+        End If
+    End Sub
+
+    Private Sub ctlYearView_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        mintMouseX = 0
+        mintMouseY = 0
+        mblnValidDate = False
     End Sub
 End Class
