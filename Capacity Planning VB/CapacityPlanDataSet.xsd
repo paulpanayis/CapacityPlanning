@@ -4,7 +4,7 @@
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
-          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="CapacityPlanConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="CapacityPlanConnectionString (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Capacity_Planning_VB.My.MySettings.GlobalReference.Default.CapacityPlanConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="CapacityPlanConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="CapacityPlanConnectionString (MySettings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Capacity_Planning.My.MySettings.GlobalReference.Default.CapacityPlanConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables />
         <Sources />
@@ -14,22 +14,7 @@
   <xs:element name="CapacityPlanDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="CapacityPlanDataSet" msprop:Generator_UserDSName="CapacityPlanDataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="tblPerson" msprop:Generator_TableClassName="tblPersonDataTable" msprop:Generator_TableVarName="tabletblPerson" msprop:Generator_TablePropName="tblPerson" msprop:Generator_RowDeletingName="tblPersonRowDeleting" msprop:Generator_RowChangingName="tblPersonRowChanging" msprop:Generator_RowEvHandlerName="tblPersonRowChangeEventHandler" msprop:Generator_RowDeletedName="tblPersonRowDeleted" msprop:Generator_UserTableName="tblPerson" msprop:Generator_RowChangedName="tblPersonRowChanged" msprop:Generator_RowEvArgName="tblPersonRowChangeEvent" msprop:Generator_RowClassName="tblPersonRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="PersonID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnPersonID" msprop:Generator_ColumnPropNameInRow="PersonID" msprop:Generator_ColumnPropNameInTable="PersonIDColumn" msprop:Generator_UserColumnName="PersonID" type="xs:int" />
-              <xs:element name="PersonName" msprop:Generator_ColumnVarNameInTable="columnPersonName" msprop:Generator_ColumnPropNameInRow="PersonName" msprop:Generator_ColumnPropNameInTable="PersonNameColumn" msprop:Generator_UserColumnName="PersonName" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="TeamID" msprop:Generator_ColumnVarNameInTable="columnTeamID" msprop:Generator_ColumnPropNameInRow="TeamID" msprop:Generator_ColumnPropNameInTable="TeamIDColumn" msprop:Generator_UserColumnName="TeamID" type="xs:int" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblTeam" msprop:Generator_TableClassName="tblTeamDataTable" msprop:Generator_TableVarName="tabletblTeam" msprop:Generator_TablePropName="tblTeam" msprop:Generator_RowDeletingName="tblTeamRowDeleting" msprop:Generator_RowChangingName="tblTeamRowChanging" msprop:Generator_RowEvHandlerName="tblTeamRowChangeEventHandler" msprop:Generator_RowDeletedName="tblTeamRowDeleted" msprop:Generator_UserTableName="tblTeam" msprop:Generator_RowChangedName="tblTeamRowChanged" msprop:Generator_RowEvArgName="tblTeamRowChangeEvent" msprop:Generator_RowClassName="tblTeamRow">
+        <xs:element name="tblTeam" msprop:Generator_TableClassName="tblTeamDataTable" msprop:Generator_TableVarName="tabletblTeam" msprop:Generator_RowChangedName="tblTeamRowChanged" msprop:Generator_TablePropName="tblTeam" msprop:Generator_RowDeletingName="tblTeamRowDeleting" msprop:Generator_RowChangingName="tblTeamRowChanging" msprop:Generator_RowEvHandlerName="tblTeamRowChangeEventHandler" msprop:Generator_RowDeletedName="tblTeamRowDeleted" msprop:Generator_RowClassName="tblTeamRow" msprop:Generator_UserTableName="tblTeam" msprop:Generator_RowEvArgName="tblTeamRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TeamID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnTeamID" msprop:Generator_ColumnPropNameInRow="TeamID" msprop:Generator_ColumnPropNameInTable="TeamIDColumn" msprop:Generator_UserColumnName="TeamID" type="xs:int" />
@@ -45,125 +30,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="tblLocation" msprop:Generator_TableClassName="tblLocationDataTable" msprop:Generator_TableVarName="tabletblLocation" msprop:Generator_TablePropName="tblLocation" msprop:Generator_RowDeletingName="tblLocationRowDeleting" msprop:Generator_RowChangingName="tblLocationRowChanging" msprop:Generator_RowEvHandlerName="tblLocationRowChangeEventHandler" msprop:Generator_RowDeletedName="tblLocationRowDeleted" msprop:Generator_UserTableName="tblLocation" msprop:Generator_RowChangedName="tblLocationRowChanged" msprop:Generator_RowEvArgName="tblLocationRowChangeEvent" msprop:Generator_RowClassName="tblLocationRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="LocationID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnLocationID" msprop:Generator_ColumnPropNameInRow="LocationID" msprop:Generator_ColumnPropNameInTable="LocationIDColumn" msprop:Generator_UserColumnName="LocationID" type="xs:int" />
-              <xs:element name="LocationName" msprop:Generator_ColumnVarNameInTable="columnLocationName" msprop:Generator_ColumnPropNameInRow="LocationName" msprop:Generator_ColumnPropNameInTable="LocationNameColumn" msprop:Generator_UserColumnName="LocationName" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblTeamAbsence" msprop:Generator_TableClassName="tblTeamAbsenceDataTable" msprop:Generator_TableVarName="tabletblTeamAbsence" msprop:Generator_TablePropName="tblTeamAbsence" msprop:Generator_RowDeletingName="tblTeamAbsenceRowDeleting" msprop:Generator_RowChangingName="tblTeamAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblTeamAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblTeamAbsenceRowDeleted" msprop:Generator_UserTableName="tblTeamAbsence" msprop:Generator_RowChangedName="tblTeamAbsenceRowChanged" msprop:Generator_RowEvArgName="tblTeamAbsenceRowChangeEvent" msprop:Generator_RowClassName="tblTeamAbsenceRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="TeamAbsenceID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnTeamAbsenceID" msprop:Generator_ColumnPropNameInRow="TeamAbsenceID" msprop:Generator_ColumnPropNameInTable="TeamAbsenceIDColumn" msprop:Generator_UserColumnName="TeamAbsenceID" type="xs:int" />
-              <xs:element name="AbsenceDate" msprop:Generator_ColumnVarNameInTable="columnAbsenceDate" msprop:Generator_ColumnPropNameInRow="AbsenceDate" msprop:Generator_ColumnPropNameInTable="AbsenceDateColumn" msprop:Generator_UserColumnName="AbsenceDate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="BankHolidayFlag" msprop:Generator_ColumnVarNameInTable="columnBankHolidayFlag" msprop:Generator_ColumnPropNameInRow="BankHolidayFlag" msprop:Generator_ColumnPropNameInTable="BankHolidayFlagColumn" msprop:Generator_UserColumnName="BankHolidayFlag" type="xs:boolean" default="false" />
-              <xs:element name="OtherReason" msprop:Generator_ColumnVarNameInTable="columnOtherReason" msprop:Generator_ColumnPropNameInRow="OtherReason" msprop:Generator_ColumnPropNameInTable="OtherReasonColumn" msprop:Generator_UserColumnName="OtherReason" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="LocationID" msprop:Generator_ColumnVarNameInTable="columnLocationID" msprop:Generator_ColumnPropNameInRow="LocationID" msprop:Generator_ColumnPropNameInTable="LocationIDColumn" msprop:Generator_UserColumnName="LocationID" type="xs:int" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblAbsence" msprop:Generator_TableClassName="tblAbsenceDataTable" msprop:Generator_TableVarName="tabletblAbsence" msprop:Generator_TablePropName="tblAbsence" msprop:Generator_RowDeletingName="tblAbsenceRowDeleting" msprop:Generator_RowChangingName="tblAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblAbsenceRowDeleted" msprop:Generator_UserTableName="tblAbsence" msprop:Generator_RowChangedName="tblAbsenceRowChanged" msprop:Generator_RowEvArgName="tblAbsenceRowChangeEvent" msprop:Generator_RowClassName="tblAbsenceRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="AbsenceID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnAbsenceID" msprop:Generator_ColumnPropNameInRow="AbsenceID" msprop:Generator_ColumnPropNameInTable="AbsenceIDColumn" msprop:Generator_UserColumnName="AbsenceID" type="xs:int" />
-              <xs:element name="PersonID" msprop:Generator_ColumnVarNameInTable="columnPersonID" msprop:Generator_ColumnPropNameInRow="PersonID" msprop:Generator_ColumnPropNameInTable="PersonIDColumn" msprop:Generator_UserColumnName="PersonID" type="xs:int" />
-              <xs:element name="AbsenceTypeID" msprop:Generator_ColumnVarNameInTable="columnAbsenceTypeID" msprop:Generator_ColumnPropNameInRow="AbsenceTypeID" msprop:Generator_ColumnPropNameInTable="AbsenceTypeIDColumn" msprop:Generator_UserColumnName="AbsenceTypeID" type="xs:int" />
-              <xs:element name="AbsenceDate" msprop:Generator_ColumnVarNameInTable="columnAbsenceDate" msprop:Generator_ColumnPropNameInRow="AbsenceDate" msprop:Generator_ColumnPropNameInTable="AbsenceDateColumn" msprop:Generator_UserColumnName="AbsenceDate" type="xs:dateTime" />
-              <xs:element name="HalfDay" msprop:Generator_ColumnVarNameInTable="columnHalfDay" msprop:Generator_ColumnPropNameInRow="HalfDay" msprop:Generator_ColumnPropNameInTable="HalfDayColumn" msprop:Generator_UserColumnName="HalfDay" type="xs:boolean" default="false" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblAbsenceType" msprop:Generator_TableClassName="tblAbsenceTypeDataTable" msprop:Generator_TableVarName="tabletblAbsenceType" msprop:Generator_TablePropName="tblAbsenceType" msprop:Generator_RowDeletingName="tblAbsenceTypeRowDeleting" msprop:Generator_RowChangingName="tblAbsenceTypeRowChanging" msprop:Generator_RowEvHandlerName="tblAbsenceTypeRowChangeEventHandler" msprop:Generator_RowDeletedName="tblAbsenceTypeRowDeleted" msprop:Generator_UserTableName="tblAbsenceType" msprop:Generator_RowChangedName="tblAbsenceTypeRowChanged" msprop:Generator_RowEvArgName="tblAbsenceTypeRowChangeEvent" msprop:Generator_RowClassName="tblAbsenceTypeRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="AbsenceTypeID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnAbsenceTypeID" msprop:Generator_ColumnPropNameInRow="AbsenceTypeID" msprop:Generator_ColumnPropNameInTable="AbsenceTypeIDColumn" msprop:Generator_UserColumnName="AbsenceTypeID" type="xs:int" />
-              <xs:element name="AbsenceName" msprop:Generator_ColumnVarNameInTable="columnAbsenceName" msprop:Generator_ColumnPropNameInRow="AbsenceName" msprop:Generator_ColumnPropNameInTable="AbsenceNameColumn" msprop:Generator_UserColumnName="AbsenceName">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="AbsenceCode" msprop:Generator_ColumnVarNameInTable="columnAbsenceCode" msprop:Generator_ColumnPropNameInRow="AbsenceCode" msprop:Generator_ColumnPropNameInTable="AbsenceCodeColumn" msprop:Generator_UserColumnName="AbsenceCode" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="2" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="AbsenceHalfDayCode" msprop:Generator_ColumnVarNameInTable="columnAbsenceHalfDayCode" msprop:Generator_ColumnPropNameInRow="AbsenceHalfDayCode" msprop:Generator_ColumnPropNameInTable="AbsenceHalfDayCodeColumn" msprop:Generator_UserColumnName="AbsenceHalfDayCode" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="3" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblSprintTemplate" msprop:Generator_TableClassName="tblSprintTemplateDataTable" msprop:Generator_TableVarName="tabletblSprintTemplate" msprop:Generator_TablePropName="tblSprintTemplate" msprop:Generator_RowDeletingName="tblSprintTemplateRowDeleting" msprop:Generator_RowChangingName="tblSprintTemplateRowChanging" msprop:Generator_RowEvHandlerName="tblSprintTemplateRowChangeEventHandler" msprop:Generator_RowDeletedName="tblSprintTemplateRowDeleted" msprop:Generator_UserTableName="tblSprintTemplate" msprop:Generator_RowChangedName="tblSprintTemplateRowChanged" msprop:Generator_RowEvArgName="tblSprintTemplateRowChangeEvent" msprop:Generator_RowClassName="tblSprintTemplateRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="SprintTemplateID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnSprintTemplateID" msprop:Generator_ColumnPropNameInRow="SprintTemplateID" msprop:Generator_ColumnPropNameInTable="SprintTemplateIDColumn" msprop:Generator_UserColumnName="SprintTemplateID" type="xs:int" />
-              <xs:element name="TemplateName" msprop:Generator_ColumnVarNameInTable="columnTemplateName" msprop:Generator_ColumnPropNameInRow="TemplateName" msprop:Generator_ColumnPropNameInTable="TemplateNameColumn" msprop:Generator_UserColumnName="TemplateName" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SprintStartDay" msprop:Generator_ColumnVarNameInTable="columnSprintStartDay" msprop:Generator_ColumnPropNameInRow="SprintStartDay" msprop:Generator_ColumnPropNameInTable="SprintStartDayColumn" msprop:Generator_UserColumnName="SprintStartDay" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="9" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblSprint" msprop:Generator_TableClassName="tblSprintDataTable" msprop:Generator_TableVarName="tabletblSprint" msprop:Generator_TablePropName="tblSprint" msprop:Generator_RowDeletingName="tblSprintRowDeleting" msprop:Generator_RowChangingName="tblSprintRowChanging" msprop:Generator_RowEvHandlerName="tblSprintRowChangeEventHandler" msprop:Generator_RowDeletedName="tblSprintRowDeleted" msprop:Generator_UserTableName="tblSprint" msprop:Generator_RowChangedName="tblSprintRowChanged" msprop:Generator_RowEvArgName="tblSprintRowChangeEvent" msprop:Generator_RowClassName="tblSprintRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="SprintID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnSprintID" msprop:Generator_ColumnPropNameInRow="SprintID" msprop:Generator_ColumnPropNameInTable="SprintIDColumn" msprop:Generator_UserColumnName="SprintID" type="xs:int" />
-              <xs:element name="SprintName" msprop:Generator_ColumnVarNameInTable="columnSprintName" msprop:Generator_ColumnPropNameInRow="SprintName" msprop:Generator_ColumnPropNameInTable="SprintNameColumn" msprop:Generator_UserColumnName="SprintName" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="StartDate" msprop:Generator_ColumnVarNameInTable="columnStartDate" msprop:Generator_ColumnPropNameInRow="StartDate" msprop:Generator_ColumnPropNameInTable="StartDateColumn" msprop:Generator_UserColumnName="StartDate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="EndDate" msprop:Generator_ColumnVarNameInTable="columnEndDate" msprop:Generator_ColumnPropNameInRow="EndDate" msprop:Generator_ColumnPropNameInTable="EndDateColumn" msprop:Generator_UserColumnName="EndDate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="SprintTemplateID" msprop:Generator_ColumnVarNameInTable="columnSprintTemplateID" msprop:Generator_ColumnPropNameInRow="SprintTemplateID" msprop:Generator_ColumnPropNameInTable="SprintTemplateIDColumn" msprop:Generator_UserColumnName="SprintTemplateID" type="xs:int" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblSprintActual" msprop:Generator_TableClassName="tblSprintActualDataTable" msprop:Generator_TableVarName="tabletblSprintActual" msprop:Generator_TablePropName="tblSprintActual" msprop:Generator_RowDeletingName="tblSprintActualRowDeleting" msprop:Generator_RowChangingName="tblSprintActualRowChanging" msprop:Generator_RowEvHandlerName="tblSprintActualRowChangeEventHandler" msprop:Generator_RowDeletedName="tblSprintActualRowDeleted" msprop:Generator_UserTableName="tblSprintActual" msprop:Generator_RowChangedName="tblSprintActualRowChanged" msprop:Generator_RowEvArgName="tblSprintActualRowChangeEvent" msprop:Generator_RowClassName="tblSprintActualRow">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="SprintActualID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnSprintActualID" msprop:Generator_ColumnPropNameInRow="SprintActualID" msprop:Generator_ColumnPropNameInTable="SprintActualIDColumn" msprop:Generator_UserColumnName="SprintActualID" type="xs:int" />
-              <xs:element name="SprintID" msprop:Generator_ColumnVarNameInTable="columnSprintID" msprop:Generator_ColumnPropNameInRow="SprintID" msprop:Generator_ColumnPropNameInTable="SprintIDColumn" msprop:Generator_UserColumnName="SprintID" type="xs:int" />
-              <xs:element name="TeamID" msprop:Generator_ColumnVarNameInTable="columnTeamID" msprop:Generator_ColumnPropNameInRow="TeamID" msprop:Generator_ColumnPropNameInTable="TeamIDColumn" msprop:Generator_UserColumnName="TeamID" type="xs:int" />
-              <xs:element name="StoryPoints" msprop:Generator_ColumnVarNameInTable="columnStoryPoints" msprop:Generator_ColumnPropNameInRow="StoryPoints" msprop:Generator_ColumnPropNameInTable="StoryPointsColumn" msprop:Generator_UserColumnName="StoryPoints" type="xs:double" minOccurs="0" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="tblCapacityPlan" msprop:Generator_TableClassName="tblCapacityPlanDataTable" msprop:Generator_TableVarName="tabletblCapacityPlan" msprop:Generator_TablePropName="tblCapacityPlan" msprop:Generator_RowDeletingName="tblCapacityPlanRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanRowDeleted" msprop:Generator_UserTableName="tblCapacityPlan" msprop:Generator_RowChangedName="tblCapacityPlanRowChanged" msprop:Generator_RowEvArgName="tblCapacityPlanRowChangeEvent" msprop:Generator_RowClassName="tblCapacityPlanRow">
+        <xs:element name="tblCapacityPlan" msprop:Generator_TableClassName="tblCapacityPlanDataTable" msprop:Generator_TableVarName="tabletblCapacityPlan" msprop:Generator_RowChangedName="tblCapacityPlanRowChanged" msprop:Generator_TablePropName="tblCapacityPlan" msprop:Generator_RowDeletingName="tblCapacityPlanRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanRowDeleted" msprop:Generator_RowClassName="tblCapacityPlanRow" msprop:Generator_UserTableName="tblCapacityPlan" msprop:Generator_RowEvArgName="tblCapacityPlanRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CapacityPlanID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnCapacityPlanID" msprop:Generator_ColumnPropNameInRow="CapacityPlanID" msprop:Generator_ColumnPropNameInTable="CapacityPlanIDColumn" msprop:Generator_UserColumnName="CapacityPlanID" type="xs:int" />
@@ -175,7 +42,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="tblCapacityPlanSprint" msprop:Generator_TableClassName="tblCapacityPlanSprintDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanSprint" msprop:Generator_TablePropName="tblCapacityPlanSprint" msprop:Generator_RowDeletingName="tblCapacityPlanSprintRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanSprintRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanSprintRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanSprintRowDeleted" msprop:Generator_UserTableName="tblCapacityPlanSprint" msprop:Generator_RowChangedName="tblCapacityPlanSprintRowChanged" msprop:Generator_RowEvArgName="tblCapacityPlanSprintRowChangeEvent" msprop:Generator_RowClassName="tblCapacityPlanSprintRow">
+        <xs:element name="tblCapacityPlanSprint" msprop:Generator_TableClassName="tblCapacityPlanSprintDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanSprint" msprop:Generator_RowChangedName="tblCapacityPlanSprintRowChanged" msprop:Generator_TablePropName="tblCapacityPlanSprint" msprop:Generator_RowDeletingName="tblCapacityPlanSprintRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanSprintRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanSprintRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanSprintRowDeleted" msprop:Generator_RowClassName="tblCapacityPlanSprintRow" msprop:Generator_UserTableName="tblCapacityPlanSprint" msprop:Generator_RowEvArgName="tblCapacityPlanSprintRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CapacityPlanSprintID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnCapacityPlanSprintID" msprop:Generator_ColumnPropNameInRow="CapacityPlanSprintID" msprop:Generator_ColumnPropNameInTable="CapacityPlanSprintIDColumn" msprop:Generator_UserColumnName="CapacityPlanSprintID" type="xs:int" />
@@ -194,7 +61,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="tblCapacityPlanAbsence" msprop:Generator_TableClassName="tblCapacityPlanAbsenceDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanAbsence" msprop:Generator_TablePropName="tblCapacityPlanAbsence" msprop:Generator_RowDeletingName="tblCapacityPlanAbsenceRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanAbsenceRowDeleted" msprop:Generator_UserTableName="tblCapacityPlanAbsence" msprop:Generator_RowChangedName="tblCapacityPlanAbsenceRowChanged" msprop:Generator_RowEvArgName="tblCapacityPlanAbsenceRowChangeEvent" msprop:Generator_RowClassName="tblCapacityPlanAbsenceRow">
+        <xs:element name="tblCapacityPlanAbsence" msprop:Generator_TableClassName="tblCapacityPlanAbsenceDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanAbsence" msprop:Generator_RowChangedName="tblCapacityPlanAbsenceRowChanged" msprop:Generator_TablePropName="tblCapacityPlanAbsence" msprop:Generator_RowDeletingName="tblCapacityPlanAbsenceRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanAbsenceRowDeleted" msprop:Generator_RowClassName="tblCapacityPlanAbsenceRow" msprop:Generator_UserTableName="tblCapacityPlanAbsence" msprop:Generator_RowEvArgName="tblCapacityPlanAbsenceRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CapacityPlanAbsenceID" msprop:Generator_ColumnVarNameInTable="columnCapacityPlanAbsenceID" msprop:Generator_ColumnPropNameInRow="CapacityPlanAbsenceID" msprop:Generator_ColumnPropNameInTable="CapacityPlanAbsenceIDColumn" msprop:Generator_UserColumnName="CapacityPlanAbsenceID" type="xs:int" />
@@ -206,7 +73,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="tblCapacityPlanTeamAbsence" msprop:Generator_TableClassName="tblCapacityPlanTeamAbsenceDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanTeamAbsence" msprop:Generator_TablePropName="tblCapacityPlanTeamAbsence" msprop:Generator_RowDeletingName="tblCapacityPlanTeamAbsenceRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanTeamAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanTeamAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanTeamAbsenceRowDeleted" msprop:Generator_UserTableName="tblCapacityPlanTeamAbsence" msprop:Generator_RowChangedName="tblCapacityPlanTeamAbsenceRowChanged" msprop:Generator_RowEvArgName="tblCapacityPlanTeamAbsenceRowChangeEvent" msprop:Generator_RowClassName="tblCapacityPlanTeamAbsenceRow">
+        <xs:element name="tblCapacityPlanTeamAbsence" msprop:Generator_TableClassName="tblCapacityPlanTeamAbsenceDataTable" msprop:Generator_TableVarName="tabletblCapacityPlanTeamAbsence" msprop:Generator_RowChangedName="tblCapacityPlanTeamAbsenceRowChanged" msprop:Generator_TablePropName="tblCapacityPlanTeamAbsence" msprop:Generator_RowDeletingName="tblCapacityPlanTeamAbsenceRowDeleting" msprop:Generator_RowChangingName="tblCapacityPlanTeamAbsenceRowChanging" msprop:Generator_RowEvHandlerName="tblCapacityPlanTeamAbsenceRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCapacityPlanTeamAbsenceRowDeleted" msprop:Generator_RowClassName="tblCapacityPlanTeamAbsenceRow" msprop:Generator_UserTableName="tblCapacityPlanTeamAbsence" msprop:Generator_RowEvArgName="tblCapacityPlanTeamAbsenceRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CapacityPlanTeamAbsenceID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnCapacityPlanTeamAbsenceID" msprop:Generator_ColumnPropNameInRow="CapacityPlanTeamAbsenceID" msprop:Generator_ColumnPropNameInTable="CapacityPlanTeamAbsenceIDColumn" msprop:Generator_UserColumnName="CapacityPlanTeamAbsenceID" type="xs:int" />
@@ -226,72 +93,8 @@
       </xs:choice>
     </xs:complexType>
     <xs:unique name="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblPerson" />
-      <xs:field xpath="mstns:PersonID" />
-    </xs:unique>
-    <xs:unique name="tblPersonKey1">
-      <xs:selector xpath=".//mstns:tblPerson" />
-      <xs:field xpath="mstns:TeamID" />
-    </xs:unique>
-    <xs:unique name="tblTeam_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:tblTeam" />
       <xs:field xpath="mstns:TeamID" />
-    </xs:unique>
-    <xs:unique name="tblLocation_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblLocation" />
-      <xs:field xpath="mstns:LocationID" />
-    </xs:unique>
-    <xs:unique name="tblTeamAbsence_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblTeamAbsence" />
-      <xs:field xpath="mstns:TeamAbsenceID" />
-    </xs:unique>
-    <xs:unique name="tblTeamAbsenceDate">
-      <xs:selector xpath=".//mstns:tblTeamAbsence" />
-      <xs:field xpath="mstns:AbsenceDate" />
-    </xs:unique>
-    <xs:unique name="tblAbsence_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblAbsence" />
-      <xs:field xpath="mstns:AbsenceID" />
-    </xs:unique>
-    <xs:unique name="tblAbsenceKey1">
-      <xs:selector xpath=".//mstns:tblAbsence" />
-      <xs:field xpath="mstns:AbsenceDate" />
-    </xs:unique>
-    <xs:unique name="tblAbsenceType_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblAbsenceType" />
-      <xs:field xpath="mstns:AbsenceTypeID" />
-    </xs:unique>
-    <xs:unique name="Constraint2">
-      <xs:selector xpath=".//mstns:tblAbsenceType" />
-      <xs:field xpath="mstns:AbsenceCode" />
-    </xs:unique>
-    <xs:unique name="tblSprintTemplate_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblSprintTemplate" />
-      <xs:field xpath="mstns:SprintTemplateID" />
-    </xs:unique>
-    <xs:unique name="tblSprint_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblSprint" />
-      <xs:field xpath="mstns:SprintID" />
-    </xs:unique>
-    <xs:unique name="tblSprintStartDate">
-      <xs:selector xpath=".//mstns:tblSprint" />
-      <xs:field xpath="mstns:StartDate" />
-    </xs:unique>
-    <xs:unique name="tblSprintEndDate">
-      <xs:selector xpath=".//mstns:tblSprint" />
-      <xs:field xpath="mstns:EndDate" />
-    </xs:unique>
-    <xs:unique name="tblSprintActual_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:tblSprintActual" />
-      <xs:field xpath="mstns:SprintActualID" />
-    </xs:unique>
-    <xs:unique name="tblSprintActualTeamID">
-      <xs:selector xpath=".//mstns:tblSprintActual" />
-      <xs:field xpath="mstns:TeamID" />
-    </xs:unique>
-    <xs:unique name="tblSprintActualSprintID">
-      <xs:selector xpath=".//mstns:tblSprintActual" />
-      <xs:field xpath="mstns:SprintID" />
     </xs:unique>
     <xs:unique name="tblCapacityPlan_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:tblCapacityPlan" />
@@ -332,20 +135,10 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="tblSprintTemplate_tblSprint" msdata:parent="tblSprintTemplate" msdata:child="tblSprint" msdata:parentkey="SprintTemplateID" msdata:childkey="SprintTemplateID" msprop:Generator_UserChildTable="tblSprint" msprop:Generator_ChildPropName="GettblSprintRows" msprop:Generator_UserRelationName="tblSprintTemplate_tblSprint" msprop:Generator_ParentPropName="tblSprintTemplateRow" msprop:Generator_RelationVarName="relationtblSprintTemplate_tblSprint" msprop:Generator_UserParentTable="tblSprintTemplate" />
-      <msdata:Relationship name="tblSprintTemplate_tblTeam" msdata:parent="tblSprintTemplate" msdata:child="tblTeam" msdata:parentkey="SprintTemplateID" msdata:childkey="SprintTemplateID" msprop:Generator_UserChildTable="tblTeam" msprop:Generator_ChildPropName="GettblTeamRows" msprop:Generator_UserRelationName="tblSprintTemplate_tblTeam" msprop:Generator_RelationVarName="relationtblSprintTemplate_tblTeam" msprop:Generator_UserParentTable="tblSprintTemplate" msprop:Generator_ParentPropName="tblSprintTemplateRow" />
-      <msdata:Relationship name="tblSprint_tblSprintActual" msdata:parent="tblSprint" msdata:child="tblSprintActual" msdata:parentkey="SprintID" msdata:childkey="SprintID" msprop:Generator_UserChildTable="tblSprintActual" msprop:Generator_ChildPropName="GettblSprintActualRows" msprop:Generator_UserRelationName="tblSprint_tblSprintActual" msprop:Generator_ParentPropName="tblSprintRow" msprop:Generator_RelationVarName="relationtblSprint_tblSprintActual" msprop:Generator_UserParentTable="tblSprint" />
-      <msdata:Relationship name="tblTeam_tblSprintActual" msdata:parent="tblTeam" msdata:child="tblSprintActual" msdata:parentkey="TeamID" msdata:childkey="TeamID" msprop:Generator_UserChildTable="tblSprintActual" msprop:Generator_ChildPropName="GettblSprintActualRows" msprop:Generator_UserRelationName="tblTeam_tblSprintActual" msprop:Generator_ParentPropName="tblTeamRow" msprop:Generator_RelationVarName="relationtblTeam_tblSprintActual" msprop:Generator_UserParentTable="tblTeam" />
-      <msdata:Relationship name="tblLocation_tblTeam" msdata:parent="tblLocation" msdata:child="tblTeam" msdata:parentkey="LocationID" msdata:childkey="LocationID" msprop:Generator_UserChildTable="tblTeam" msprop:Generator_ChildPropName="GettblTeamRows" msprop:Generator_UserRelationName="tblLocation_tblTeam" msprop:Generator_RelationVarName="relationtblLocation_tblTeam" msprop:Generator_UserParentTable="tblLocation" msprop:Generator_ParentPropName="tblLocationRow" />
-      <msdata:Relationship name="tblLocation_tblTeamAbsence" msdata:parent="tblLocation" msdata:child="tblTeamAbsence" msdata:parentkey="LocationID" msdata:childkey="LocationID" msprop:Generator_UserChildTable="tblTeamAbsence" msprop:Generator_ChildPropName="GettblTeamAbsenceRows" msprop:Generator_UserRelationName="tblLocation_tblTeamAbsence" msprop:Generator_ParentPropName="tblLocationRow" msprop:Generator_RelationVarName="relationtblLocation_tblTeamAbsence" msprop:Generator_UserParentTable="tblLocation" />
-      <msdata:Relationship name="tblTeam_tblPerson" msdata:parent="tblTeam" msdata:child="tblPerson" msdata:parentkey="TeamID" msdata:childkey="TeamID" msprop:Generator_UserChildTable="tblPerson" msprop:Generator_ChildPropName="GettblPersonRows" msprop:Generator_UserRelationName="tblTeam_tblPerson" msprop:Generator_RelationVarName="relationtblTeam_tblPerson" msprop:Generator_UserParentTable="tblTeam" msprop:Generator_ParentPropName="tblTeamRow" />
-      <msdata:Relationship name="tblPerson_tblAbsence" msdata:parent="tblPerson" msdata:child="tblAbsence" msdata:parentkey="PersonID" msdata:childkey="PersonID" msprop:Generator_UserChildTable="tblAbsence" msprop:Generator_ChildPropName="GettblAbsenceRows" msprop:Generator_UserRelationName="tblPerson_tblAbsence" msprop:Generator_ParentPropName="tblPersonRow" msprop:Generator_RelationVarName="relationtblPerson_tblAbsence" msprop:Generator_UserParentTable="tblPerson" />
-      <msdata:Relationship name="tblAbsenceType_tblAbsence" msdata:parent="tblAbsenceType" msdata:child="tblAbsence" msdata:parentkey="AbsenceTypeID" msdata:childkey="AbsenceTypeID" msprop:Generator_UserChildTable="tblAbsence" msprop:Generator_ChildPropName="GettblAbsenceRows" msprop:Generator_UserRelationName="tblAbsenceType_tblAbsence" msprop:Generator_RelationVarName="relationtblAbsenceType_tblAbsence" msprop:Generator_UserParentTable="tblAbsenceType" msprop:Generator_ParentPropName="tblAbsenceTypeRow" />
-      <msdata:Relationship name="tblTeam_tblCapacityPlan" msdata:parent="tblTeam" msdata:child="tblCapacityPlan" msdata:parentkey="TeamID" msdata:childkey="TeamID" msprop:Generator_UserChildTable="tblCapacityPlan" msprop:Generator_ChildPropName="GettblCapacityPlanRows" msprop:Generator_UserRelationName="tblTeam_tblCapacityPlan" msprop:Generator_ParentPropName="tblTeamRow" msprop:Generator_RelationVarName="relationtblTeam_tblCapacityPlan" msprop:Generator_UserParentTable="tblTeam" />
-      <msdata:Relationship name="tblCapacityPlan_tblCapacityPlanSprint" msdata:parent="tblCapacityPlan" msdata:child="tblCapacityPlanSprint" msdata:parentkey="CapacityPlanID" msdata:childkey="CapacityPlanID" msprop:Generator_UserChildTable="tblCapacityPlanSprint" msprop:Generator_ChildPropName="GettblCapacityPlanSprintRows" msprop:Generator_UserRelationName="tblCapacityPlan_tblCapacityPlanSprint" msprop:Generator_ParentPropName="tblCapacityPlanRow" msprop:Generator_RelationVarName="relationtblCapacityPlan_tblCapacityPlanSprint" msprop:Generator_UserParentTable="tblCapacityPlan" />
-      <msdata:Relationship name="tblSprint_tblCapacityPlanSprint" msdata:parent="tblSprint" msdata:child="tblCapacityPlanSprint" msdata:parentkey="SprintID" msdata:childkey="SprintID" msprop:Generator_UserChildTable="tblCapacityPlanSprint" msprop:Generator_ChildPropName="GettblCapacityPlanSprintRows" msprop:Generator_UserRelationName="tblSprint_tblCapacityPlanSprint" msprop:Generator_ParentPropName="tblSprintRow" msprop:Generator_RelationVarName="relationtblSprint_tblCapacityPlanSprint" msprop:Generator_UserParentTable="tblSprint" />
-      <msdata:Relationship name="tblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msdata:parent="tblCapacityPlanSprint" msdata:child="tblCapacityPlanTeamAbsence" msdata:parentkey="CapacityPlanSprintID" msdata:childkey="CapacityPlanSprintID" msprop:Generator_UserChildTable="tblCapacityPlanTeamAbsence" msprop:Generator_ChildPropName="GettblCapacityPlanTeamAbsenceRows" msprop:Generator_UserRelationName="tblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msprop:Generator_ParentPropName="tblCapacityPlanSprintRow" msprop:Generator_RelationVarName="relationtblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msprop:Generator_UserParentTable="tblCapacityPlanSprint" />
-      <msdata:Relationship name="tblCapacityPlanSprint_tblCapacityPlanAbsence" msdata:parent="tblCapacityPlanSprint" msdata:child="tblCapacityPlanAbsence" msdata:parentkey="CapacityPlanSprintID" msdata:childkey="CapacityPlanSprintID" msprop:Generator_UserChildTable="tblCapacityPlanAbsence" msprop:Generator_ChildPropName="GettblCapacityPlanAbsenceRows" msprop:Generator_UserRelationName="tblCapacityPlanSprint_tblCapacityPlanAbsence" msprop:Generator_ParentPropName="tblCapacityPlanSprintRow" msprop:Generator_RelationVarName="relationtblCapacityPlanSprint_tblCapacityPlanAbsence" msprop:Generator_UserParentTable="tblCapacityPlanSprint" />
+      <msdata:Relationship name="tblTeam_tblCapacityPlan" msdata:parent="tblTeam" msdata:child="tblCapacityPlan" msdata:parentkey="TeamID" msdata:childkey="TeamID" msprop:Generator_UserChildTable="tblCapacityPlan" msprop:Generator_ChildPropName="GettblCapacityPlanRows" msprop:Generator_UserRelationName="tblTeam_tblCapacityPlan" msprop:Generator_RelationVarName="relationtblTeam_tblCapacityPlan" msprop:Generator_UserParentTable="tblTeam" msprop:Generator_ParentPropName="tblTeamRow" />
+      <msdata:Relationship name="tblCapacityPlan_tblCapacityPlanSprint" msdata:parent="tblCapacityPlan" msdata:child="tblCapacityPlanSprint" msdata:parentkey="CapacityPlanID" msdata:childkey="CapacityPlanID" msprop:Generator_UserChildTable="tblCapacityPlanSprint" msprop:Generator_ChildPropName="GettblCapacityPlanSprintRows" msprop:Generator_UserRelationName="tblCapacityPlan_tblCapacityPlanSprint" msprop:Generator_RelationVarName="relationtblCapacityPlan_tblCapacityPlanSprint" msprop:Generator_UserParentTable="tblCapacityPlan" msprop:Generator_ParentPropName="tblCapacityPlanRow" />
+      <msdata:Relationship name="tblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msdata:parent="tblCapacityPlanSprint" msdata:child="tblCapacityPlanTeamAbsence" msdata:parentkey="CapacityPlanSprintID" msdata:childkey="CapacityPlanSprintID" msprop:Generator_UserChildTable="tblCapacityPlanTeamAbsence" msprop:Generator_ChildPropName="GettblCapacityPlanTeamAbsenceRows" msprop:Generator_UserRelationName="tblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msprop:Generator_RelationVarName="relationtblCapacityPlanSprint_tblCapacityPlanTeamAbsence" msprop:Generator_UserParentTable="tblCapacityPlanSprint" msprop:Generator_ParentPropName="tblCapacityPlanSprintRow" />
+      <msdata:Relationship name="tblCapacityPlanSprint_tblCapacityPlanAbsence" msdata:parent="tblCapacityPlanSprint" msdata:child="tblCapacityPlanAbsence" msdata:parentkey="CapacityPlanSprintID" msdata:childkey="CapacityPlanSprintID" msprop:Generator_UserChildTable="tblCapacityPlanAbsence" msprop:Generator_ChildPropName="GettblCapacityPlanAbsenceRows" msprop:Generator_UserRelationName="tblCapacityPlanSprint_tblCapacityPlanAbsence" msprop:Generator_RelationVarName="relationtblCapacityPlanSprint_tblCapacityPlanAbsence" msprop:Generator_UserParentTable="tblCapacityPlanSprint" msprop:Generator_ParentPropName="tblCapacityPlanSprintRow" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>

@@ -10,5 +10,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\CapacityPlan.mdf;Integrated Security=True</Value>
     </Setting>
+    <Setting Name="FormBackColour" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">AliceBlue</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

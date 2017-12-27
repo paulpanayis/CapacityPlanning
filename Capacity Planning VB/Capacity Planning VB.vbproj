@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9581BD40-8D2F-4865-801E-B27704DD4C85}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Capacity_Planning_VB.My.MyApplication</StartupObject>
-    <RootNamespace>Capacity_Planning_VB</RootNamespace>
-    <AssemblyName>Capacity Planning VB</AssemblyName>
+    <StartupObject>Capacity_Planning.My.MyApplication</StartupObject>
+    <RootNamespace>Capacity_Planning</RootNamespace>
+    <AssemblyName>Capacity Planning Tool</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -36,7 +36,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Capacity Planning VB.xml</DocumentationFile>
+    <DocumentationFile>Capacity Planning Tool.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -46,14 +46,14 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Capacity Planning VB.xml</DocumentationFile>
+    <DocumentationFile>Capacity Planning Tool.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionCompare>Binary</OptionCompare>
+    <OptionCompare>Text</OptionCompare>
   </PropertyGroup>
   <PropertyGroup>
     <OptionStrict>Off</OptionStrict>
@@ -92,19 +92,110 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CapacityPlanDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CapacityPlanDataSet.vb">
+      <DependentUpon>CapacityPlanDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlBigButton.Designer.vb">
+      <DependentUpon>ctlBigButton.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlBigButton.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlMonthView.Designer.vb">
+      <DependentUpon>ctlMonthView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlMonthView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\ctlYearView.Designer.vb">
       <DependentUpon>ctlYearView.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\ctlYearView.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\frmYearView.vb">
+    <Compile Include="Controls\frmDateSelector.designer.vb">
+      <DependentUpon>frmDateSelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmDateSelector.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmYearView.Designer.vb">
-      <DependentUpon>frmYearView.vb</DependentUpon>
+    <Compile Include="Controls\frmTimeSelect.designer.vb">
+      <DependentUpon>frmTimeSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmTimeSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\ctlRichButtonSmall.designer.vb">
+      <DependentUpon>ctlRichButtonSmall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlRichButtonSmall.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Database\clsSQLDB.vb" />
+    <Compile Include="Database\dbCommon.vb" />
+    <Compile Include="Database\modDatabaseFunctions.vb" />
+    <Compile Include="Forms\About.designer.vb">
+      <DependentUpon>About.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\About.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CapacityPlans.Designer.vb">
+      <DependentUpon>CapacityPlans.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CapacityPlans.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Holiday.Designer.vb">
+      <DependentUpon>Holiday.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Holiday.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reports.Designer.vb">
+      <DependentUpon>Reports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Reports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Sprints.Designer.vb">
+      <DependentUpon>Sprints.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Sprints.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Teams.Designer.vb">
+      <DependentUpon>Teams.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Teams.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Velocity.Designer.vb">
+      <DependentUpon>Velocity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Velocity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\YearView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\YearView.Designer.vb">
+      <DependentUpon>YearView.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainMenu.Designer.vb">
+      <DependentUpon>MainMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\clsExcel.vb" />
+    <Compile Include="Modules\modDatabaseCalls.vb" />
+    <Compile Include="Modules\modDateUtility.vb" />
+    <Compile Include="Modules\modListBoxUtility.vb" />
+    <Compile Include="Modules\modListViewUtility.vb" />
+    <Compile Include="Modules\modOffice.vb" />
+    <Compile Include="Modules\modUtilities.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -122,11 +213,50 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ctlBigButton.resx">
+      <DependentUpon>ctlBigButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlMonthView.resx">
+      <DependentUpon>ctlMonthView.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ctlYearView.resx">
       <DependentUpon>ctlYearView.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmYearView.resx">
-      <DependentUpon>frmYearView.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\frmDateSelector.resx">
+      <DependentUpon>frmDateSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\frmTimeSelect.resx">
+      <DependentUpon>frmTimeSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlRichButtonSmall.resx">
+      <DependentUpon>ctlRichButtonSmall.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CapacityPlans.resx">
+      <DependentUpon>CapacityPlans.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Holiday.resx">
+      <DependentUpon>Holiday.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reports.resx">
+      <DependentUpon>Reports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Sprints.resx">
+      <DependentUpon>Sprints.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Teams.resx">
+      <DependentUpon>Teams.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Velocity.resx">
+      <DependentUpon>Velocity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\YearView.resx">
+      <DependentUpon>YearView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainMenu.resx">
+      <DependentUpon>MainMenu.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -178,6 +308,35 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

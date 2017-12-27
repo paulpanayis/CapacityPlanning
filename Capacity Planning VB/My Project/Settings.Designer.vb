@@ -64,6 +64,15 @@ Namespace My
                 Return CType(Me("CapacityPlanConnectionString"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("AliceBlue")>  _
+        Public ReadOnly Property FormBackColour() As Global.System.Drawing.Color
+            Get
+                Return CType(Me("FormBackColour"),Global.System.Drawing.Color)
+            End Get
+        End Property
     End Class
 End Namespace
 
@@ -75,9 +84,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.Capacity_Planning_VB.My.MySettings
+        Friend ReadOnly Property Settings() As Global.Capacity_Planning.My.MySettings
             Get
-                Return Global.Capacity_Planning_VB.My.MySettings.Default
+                Return Global.Capacity_Planning.My.MySettings.Default
             End Get
         End Property
     End Module

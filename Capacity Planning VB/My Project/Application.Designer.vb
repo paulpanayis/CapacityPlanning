@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Capacity_Planning_VB.frmYearView
+            Me.MainForm = Global.Capacity_Planning.MainMenu
         End Sub
     End Class
 End Namespace

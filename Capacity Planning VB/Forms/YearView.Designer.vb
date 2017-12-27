@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmYearView
+Partial Class YearView
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,18 +22,22 @@ Partial Class frmYearView
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.pnlTopBar = New System.Windows.Forms.Panel()
         Me.cboTeamMember = New System.Windows.Forms.ComboBox()
         Me.cboTeam = New System.Windows.Forms.ComboBox()
         Me.cmdYearUp = New System.Windows.Forms.Button()
         Me.cmdYearDown = New System.Windows.Forms.Button()
         Me.lblYear = New System.Windows.Forms.Label()
+        Me.TblTeamBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.CapacityPlanDataSet = New Capacity_Planning.CapacityPlanDataSet()
+        Me.ctlYearView = New Capacity_Planning.ctlYearView()
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
-        Me.lblDateOver = New System.Windows.Forms.Label()
-        Me.lblDateClicked = New System.Windows.Forms.Label()
+        Me.blCopyright = New System.Windows.Forms.Label()
         Me.cmdClose = New System.Windows.Forms.Button()
-        Me.ctlYearView = New Capacity_Planning_VB.ctlYearView()
         Me.pnlTopBar.SuspendLayout()
+        CType(Me.TblTeamBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CapacityPlanDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -48,16 +52,20 @@ Partial Class frmYearView
         Me.pnlTopBar.Location = New System.Drawing.Point(1, 1)
         Me.pnlTopBar.Name = "pnlTopBar"
         Me.pnlTopBar.Padding = New System.Windows.Forms.Padding(6)
-        Me.pnlTopBar.Size = New System.Drawing.Size(1824, 71)
+        Me.pnlTopBar.Size = New System.Drawing.Size(1286, 71)
         Me.pnlTopBar.TabIndex = 1
         '
         'cboTeamMember
         '
+        Me.cboTeamMember.AccessibleDescription = "Select a person from the chosen team"
+        Me.cboTeamMember.AccessibleName = "People"
+        Me.cboTeamMember.AccessibleRole = System.Windows.Forms.AccessibleRole.DropList
         Me.cboTeamMember.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTeamMember.FormattingEnabled = True
+        Me.cboTeamMember.Items.AddRange(New Object() {"<Person - Select Team First>"})
         Me.cboTeamMember.Location = New System.Drawing.Point(678, 17)
         Me.cboTeamMember.Name = "cboTeamMember"
-        Me.cboTeamMember.Size = New System.Drawing.Size(384, 33)
+        Me.cboTeamMember.Size = New System.Drawing.Size(384, 21)
         Me.cboTeamMember.Sorted = True
         Me.cboTeamMember.TabIndex = 6
         '
@@ -65,10 +73,10 @@ Partial Class frmYearView
         '
         Me.cboTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTeam.FormattingEnabled = True
+        Me.cboTeam.Items.AddRange(New Object() {"<Team - Please Select>"})
         Me.cboTeam.Location = New System.Drawing.Point(274, 17)
         Me.cboTeam.Name = "cboTeam"
-        Me.cboTeam.Size = New System.Drawing.Size(384, 33)
-        Me.cboTeam.Sorted = True
+        Me.cboTeam.Size = New System.Drawing.Size(384, 21)
         Me.cboTeam.TabIndex = 5
         '
         'cmdYearUp
@@ -100,48 +108,15 @@ Partial Class frmYearView
         Me.lblYear.Text = "2017"
         Me.lblYear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'pnlBottomBar
+        'TblTeamBindingSource
         '
-        Me.pnlBottomBar.Controls.Add(Me.lblDateOver)
-        Me.pnlBottomBar.Controls.Add(Me.lblDateClicked)
-        Me.pnlBottomBar.Controls.Add(Me.cmdClose)
-        Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 1308)
-        Me.pnlBottomBar.Name = "pnlBottomBar"
-        Me.pnlBottomBar.Padding = New System.Windows.Forms.Padding(6)
-        Me.pnlBottomBar.Size = New System.Drawing.Size(1824, 71)
-        Me.pnlBottomBar.TabIndex = 2
+        Me.TblTeamBindingSource.DataMember = "tblTeam"
+        Me.TblTeamBindingSource.DataSource = Me.CapacityPlanDataSet
         '
-        'lblDateOver
+        'CapacityPlanDataSet
         '
-        Me.lblDateOver.Location = New System.Drawing.Point(7, 23)
-        Me.lblDateOver.Name = "lblDateOver"
-        Me.lblDateOver.Size = New System.Drawing.Size(266, 25)
-        Me.lblDateOver.TabIndex = 9
-        Me.lblDateOver.Text = "Mouse Over"
-        Me.lblDateOver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblDateClicked
-        '
-        Me.lblDateClicked.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblDateClicked.Location = New System.Drawing.Point(1352, 23)
-        Me.lblDateClicked.Name = "lblDateClicked"
-        Me.lblDateClicked.Size = New System.Drawing.Size(266, 25)
-        Me.lblDateClicked.TabIndex = 8
-        Me.lblDateClicked.Text = "Click Date"
-        Me.lblDateClicked.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cmdClose
-        '
-        Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdClose.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdClose.Location = New System.Drawing.Point(1624, 9)
-        Me.cmdClose.Name = "cmdClose"
-        Me.cmdClose.Size = New System.Drawing.Size(191, 53)
-        Me.cmdClose.TabIndex = 7
-        Me.cmdClose.Text = "Close"
-        Me.cmdClose.UseVisualStyleBackColor = False
+        Me.CapacityPlanDataSet.DataSetName = "CapacityPlanDataSet"
+        Me.CapacityPlanDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'ctlYearView
         '
@@ -157,30 +132,72 @@ Partial Class frmYearView
         Me.ctlYearView.Colour6 = System.Drawing.Color.Empty
         Me.ctlYearView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ctlYearView.Location = New System.Drawing.Point(1, 72)
+        Me.ctlYearView.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.ctlYearView.Name = "ctlYearView"
         Me.ctlYearView.OtherYearWeekdayColour = System.Drawing.Color.LightGray
         Me.ctlYearView.OtherYearWeekendColour = System.Drawing.Color.LightSteelBlue
-        Me.ctlYearView.Size = New System.Drawing.Size(1824, 1236)
+        Me.ctlYearView.Size = New System.Drawing.Size(1286, 635)
         Me.ctlYearView.TabIndex = 0
         Me.ctlYearView.ThisYearWeekdayColour = System.Drawing.Color.White
         Me.ctlYearView.ThisYearWeekendColour = System.Drawing.Color.PaleGoldenrod
         Me.ctlYearView.TodayColour = System.Drawing.Color.RoyalBlue
         Me.ctlYearView.TodayTextColour = System.Drawing.Color.White
         '
-        'frmYearView
+        'pnlBottomBar
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1826, 1380)
+        Me.pnlBottomBar.BackColor = System.Drawing.Color.Transparent
+        Me.pnlBottomBar.Controls.Add(Me.blCopyright)
+        Me.pnlBottomBar.Controls.Add(Me.cmdClose)
+        Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 707)
+        Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
+        Me.pnlBottomBar.Name = "pnlBottomBar"
+        Me.pnlBottomBar.Size = New System.Drawing.Size(1286, 68)
+        Me.pnlBottomBar.TabIndex = 60
+        '
+        'blCopyright
+        '
+        Me.blCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.blCopyright.BackColor = System.Drawing.Color.Transparent
+        Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.blCopyright.Location = New System.Drawing.Point(9, 30)
+        Me.blCopyright.Name = "blCopyright"
+        Me.blCopyright.Size = New System.Drawing.Size(181, 29)
+        Me.blCopyright.TabIndex = 61
+        Me.blCopyright.Text = "© Paul Panayis, 2018"
+        Me.blCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'cmdClose
+        '
+        Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
+        Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.cmdClose.Location = New System.Drawing.Point(1196, 30)
+        Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
+        Me.cmdClose.Name = "cmdClose"
+        Me.cmdClose.Size = New System.Drawing.Size(75, 23)
+        Me.cmdClose.TabIndex = 3
+        Me.cmdClose.Text = "Close"
+        Me.cmdClose.UseVisualStyleBackColor = False
+        '
+        'YearView
+        '
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(1288, 776)
         Me.Controls.Add(Me.ctlYearView)
-        Me.Controls.Add(Me.pnlBottomBar)
         Me.Controls.Add(Me.pnlTopBar)
-        Me.Name = "frmYearView"
+        Me.Controls.Add(Me.pnlBottomBar)
+        Me.Name = "YearView"
         Me.Padding = New System.Windows.Forms.Padding(1)
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Year Calendar 2017"
         Me.pnlTopBar.ResumeLayout(False)
+        CType(Me.TblTeamBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CapacityPlanDataSet, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBottomBar.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -191,10 +208,11 @@ Partial Class frmYearView
     Friend WithEvents cmdYearUp As Button
     Friend WithEvents cmdYearDown As Button
     Friend WithEvents lblYear As Label
-    Friend WithEvents pnlBottomBar As Panel
     Friend WithEvents cboTeamMember As ComboBox
     Friend WithEvents cboTeam As ComboBox
-    Friend WithEvents lblDateOver As Label
-    Friend WithEvents lblDateClicked As Label
+    Friend WithEvents TblTeamBindingSource As BindingSource
+    Friend WithEvents CapacityPlanDataSet As CapacityPlanDataSet
+    Friend WithEvents pnlBottomBar As Panel
+    Friend WithEvents blCopyright As Label
     Friend WithEvents cmdClose As Button
 End Class

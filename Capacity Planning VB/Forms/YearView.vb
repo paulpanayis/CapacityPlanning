@@ -1,4 +1,4 @@
-﻿Public Class frmYearView
+﻿Public Class YearView
     Private Sub ctlYearView_Resize(sender As Object, e As EventArgs) Handles ctlYearView.Resize
         ctlYearView.Refresh()
     End Sub
@@ -18,15 +18,16 @@
     End Sub
 
     Private Sub ctlYearView_DateClick(sender As Object, e As Date) Handles ctlYearView.DateClick
-        lblDateClicked.Text = e.ToLongDateString
+        ' lblDateClicked.Text = e.ToLongDateString
     End Sub
 
     Private Sub ctlYearView_DateOver(sender As Object, e As Date) Handles ctlYearView.DateOver
-        lblDateOver.Text = e.ToLongDateString
+        ' lblDateOver.Text = e.ToLongDateString
     End Sub
 
     Private Sub cmdClose_Click(sender As Object, e As EventArgs) Handles cmdClose.Click
         Me.Close()
     End Sub
+
 End Class
 
