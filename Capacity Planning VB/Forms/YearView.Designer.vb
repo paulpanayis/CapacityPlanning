@@ -52,7 +52,7 @@ Partial Class YearView
         Me.pnlTopBar.Location = New System.Drawing.Point(1, 1)
         Me.pnlTopBar.Name = "pnlTopBar"
         Me.pnlTopBar.Padding = New System.Windows.Forms.Padding(6)
-        Me.pnlTopBar.Size = New System.Drawing.Size(1286, 71)
+        Me.pnlTopBar.Size = New System.Drawing.Size(1050, 71)
         Me.pnlTopBar.TabIndex = 1
         '
         'cboTeamMember
@@ -136,7 +136,7 @@ Partial Class YearView
         Me.ctlYearView.Name = "ctlYearView"
         Me.ctlYearView.OtherYearWeekdayColour = System.Drawing.Color.LightGray
         Me.ctlYearView.OtherYearWeekendColour = System.Drawing.Color.LightSteelBlue
-        Me.ctlYearView.Size = New System.Drawing.Size(1286, 635)
+        Me.ctlYearView.Size = New System.Drawing.Size(1050, 464)
         Me.ctlYearView.TabIndex = 0
         Me.ctlYearView.ThisYearWeekdayColour = System.Drawing.Color.White
         Me.ctlYearView.ThisYearWeekendColour = System.Drawing.Color.PaleGoldenrod
@@ -149,10 +149,10 @@ Partial Class YearView
         Me.pnlBottomBar.Controls.Add(Me.blCopyright)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 707)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 536)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
-        Me.pnlBottomBar.Size = New System.Drawing.Size(1286, 68)
+        Me.pnlBottomBar.Size = New System.Drawing.Size(1050, 57)
         Me.pnlBottomBar.TabIndex = 60
         '
         'blCopyright
@@ -161,7 +161,7 @@ Partial Class YearView
         Me.blCopyright.BackColor = System.Drawing.Color.Transparent
         Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(9, 30)
+        Me.blCopyright.Location = New System.Drawing.Point(9, 19)
         Me.blCopyright.Name = "blCopyright"
         Me.blCopyright.Size = New System.Drawing.Size(181, 29)
         Me.blCopyright.TabIndex = 61
@@ -174,7 +174,7 @@ Partial Class YearView
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(1196, 30)
+        Me.cmdClose.Location = New System.Drawing.Point(960, 19)
         Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)
@@ -186,7 +186,7 @@ Partial Class YearView
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1288, 776)
+        Me.ClientSize = New System.Drawing.Size(1052, 594)
         Me.Controls.Add(Me.ctlYearView)
         Me.Controls.Add(Me.pnlTopBar)
         Me.Controls.Add(Me.pnlBottomBar)

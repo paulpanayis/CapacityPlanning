@@ -64,7 +64,7 @@ Public Class Reports
 
         strSQL = Get_Reports()
 
-        FillListView(Me, lvwReports, strSQL, "ReportID", True, True, True, True)
+        FillListView(Me, lvwReports, strSQL, "ID", True, True, True, True)
 
         If lvwReports.Items.Count > 0 Then
             lvwReports.Items.Item(0).Selected = True
@@ -109,7 +109,6 @@ Public Class Reports
 
     Private Sub ShowReport(ByVal intReportID As Integer)
         Dim strSQL As String
-        Dim rsResults As DataSet
         Dim dataTable As DataTable
 
 
@@ -155,8 +154,6 @@ Public Class Reports
                 ctlReport.Enabled = True
             Next
         End If
-
-        rsResults = Nothing
 
     End Sub
 
@@ -207,7 +204,6 @@ Public Class Reports
         Dim strWhere As String
         Dim blnWhereStarted As Boolean
 
-        'Me.Enabled = False
         ctlReport.Enabled = False
         ctlExcel.Enabled = False
         ctlPrint.Enabled = False
@@ -227,7 +223,6 @@ RES_QuerySyntax:
         ctlExcel.Enabled = True
         ctlPrint.Enabled = True
         ctlReport.Enabled = True
-        'Me.Enabled = True
 
         Exit Sub
 

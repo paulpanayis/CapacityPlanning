@@ -123,10 +123,10 @@ Partial Class MainMenu
         Me.pnlBottomBar.Controls.Add(Me.blCopyright)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomBar.Location = New System.Drawing.Point(0, 427)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(0, 438)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
-        Me.pnlBottomBar.Size = New System.Drawing.Size(663, 68)
+        Me.pnlBottomBar.Size = New System.Drawing.Size(663, 57)
         Me.pnlBottomBar.TabIndex = 66
         '
         'cmdAbout
@@ -135,7 +135,7 @@ Partial Class MainMenu
         Me.cmdAbout.BackColor = System.Drawing.SystemColors.Control
         Me.cmdAbout.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdAbout.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdAbout.Location = New System.Drawing.Point(15, 30)
+        Me.cmdAbout.Location = New System.Drawing.Point(15, 19)
         Me.cmdAbout.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdAbout.Name = "cmdAbout"
         Me.cmdAbout.Size = New System.Drawing.Size(75, 23)
@@ -150,9 +150,9 @@ Partial Class MainMenu
         Me.blCopyright.BackColor = System.Drawing.Color.Transparent
         Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(146, 24)
+        Me.blCopyright.Location = New System.Drawing.Point(99, 13)
         Me.blCopyright.Name = "blCopyright"
-        Me.blCopyright.Size = New System.Drawing.Size(371, 29)
+        Me.blCopyright.Size = New System.Drawing.Size(465, 29)
         Me.blCopyright.TabIndex = 61
         Me.blCopyright.Text = "© Paul Panayis, 2018"
         Me.blCopyright.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -163,7 +163,7 @@ Partial Class MainMenu
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(573, 30)
+        Me.cmdClose.Location = New System.Drawing.Point(573, 19)
         Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)

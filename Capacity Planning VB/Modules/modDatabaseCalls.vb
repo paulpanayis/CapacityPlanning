@@ -4,8 +4,8 @@
 
         Dim strSQL As String
 
-        strSQL = "SELECT TeamID "
-        strSQL = strSQL + ",TeamName Team "
+        strSQL = "SELECT TeamID ID "
+        strSQL = strSQL + ",TeamName Name "
         strSQL = strSQL + ",ISNULL(LocationName,'') Location "
         strSQL = strSQL + ",ISNULL(TemplateName,'') Template "
 
@@ -22,7 +22,7 @@
 
         Dim strSQL As String
 
-        strSQL = "SELECT PersonID "
+        strSQL = "SELECT PersonID ID "
         strSQL = strSQL + ",PersonName Name "
 
         strSQL = strSQL + "FROM Person "
@@ -38,7 +38,7 @@
     Public Function Get_Reports() As String
         Dim strSQL As String
 
-        strSQL = "SELECT ReportID "
+        strSQL = "SELECT ReportID ID "
         strSQL = strSQL + ",Name "
         strSQL = strSQL + ",Description "
 
@@ -50,10 +50,38 @@
     End Function
 
 
+    Public Function Get_Locations() As String
+        Dim strSQL As String
+
+        strSQL = "SELECT LocationID ID "
+        strSQL = strSQL + ",LocationName Name "
+
+        strSQL = strSQL + "FROM Location "
+
+        strSQL = strSQL + "ORDER BY LocationName "
+
+        Return strSQL
+    End Function
+
+
+    Public Function Get_SprintTemplates() As String
+        Dim strSQL As String
+
+        strSQL = "SELECT SprintTemplateID ID "
+        strSQL = strSQL + ",TemplateName Name "
+
+        strSQL = strSQL + "FROM SprintTemplate "
+
+        strSQL = strSQL + "ORDER BY TemplateName "
+
+        Return strSQL
+    End Function
+
+
     Public Function Get_ReportByID(ByVal intReportID As Integer) As String
         Dim strSQL As String
 
-        strSQL = "SELECT ReportID "
+        strSQL = "SELECT ReportID ID "
         strSQL = strSQL & ",Name "
         strSQL = strSQL & ",Description "
         strSQL = strSQL & ",StoredProcedure "
@@ -63,6 +91,35 @@
         strSQL = strSQL & "FROM Report "
 
         strSQL = strSQL & "WHERE ReportID = " & intReportID & " "
+
+        Return strSQL
+    End Function
+
+
+    Public Function Get_TeamByID(ByVal intTeamID As Integer) As String
+        Dim strSQL As String
+
+        strSQL = "SELECT TeamName Name "
+        strSQL = strSQL & ",SprintTemplateID "
+        strSQL = strSQL & ",LocationID "
+
+        strSQL = strSQL & "FROM Team "
+
+        strSQL = strSQL & "WHERE TeamID = " & intTeamID & " "
+
+        Return strSQL
+    End Function
+
+
+    Public Function Get_PersonByID(ByVal intPersonID As Integer) As String
+        Dim strSQL As String
+
+        strSQL = "SELECT PersonName Name "
+        strSQL = strSQL & ",TeamID "
+
+        strSQL = strSQL & "FROM Person "
+
+        strSQL = strSQL & "WHERE PersonID = " & intPersonID & " "
 
         Return strSQL
     End Function

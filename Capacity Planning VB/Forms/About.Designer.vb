@@ -40,10 +40,10 @@ Partial Class About
         Me.pnlBottomBar.Controls.Add(Me.blCopyright)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomBar.Location = New System.Drawing.Point(0, 323)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(0, 334)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
-        Me.pnlBottomBar.Size = New System.Drawing.Size(735, 68)
+        Me.pnlBottomBar.Size = New System.Drawing.Size(735, 57)
         Me.pnlBottomBar.TabIndex = 58
         '
         'blCopyright
@@ -52,7 +52,7 @@ Partial Class About
         Me.blCopyright.BackColor = System.Drawing.Color.Transparent
         Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(9, 30)
+        Me.blCopyright.Location = New System.Drawing.Point(9, 19)
         Me.blCopyright.Name = "blCopyright"
         Me.blCopyright.Size = New System.Drawing.Size(181, 29)
         Me.blCopyright.TabIndex = 61
@@ -65,7 +65,7 @@ Partial Class About
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(645, 30)
+        Me.cmdClose.Location = New System.Drawing.Point(645, 19)
         Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)
