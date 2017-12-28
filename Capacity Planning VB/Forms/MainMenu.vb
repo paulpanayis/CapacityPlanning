@@ -48,4 +48,8 @@
         CapacityPlans.Show(Me)
     End Sub
 
+    Private Sub ctlLocations_Clicked() Handles ctlLocations.Clicked
+        Locations.Visible = False
+        Locations.Show(Me)
+    End Sub
 End Class

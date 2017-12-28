@@ -71,15 +71,20 @@ Public Class Locations
 
         If mintLocationID > 0 Then
             ListViewSelectByTag(lvwLocations, mintLocationID)
+        Else
+            txtLocation.Text = ""
         End If
 
         mblnLoadingLocation = False
     End Sub
 
     Private Sub lvwLocations_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvwLocations.SelectedIndexChanged
+        mblnLoadingLocation = True
         If lvwLocations.SelectedItems.Count > 0 Then
             mintLocationID = Convert.ToInt32(lvwLocations.SelectedItems(0).Tag)
+            txtLocation.Text = lvwLocations.SelectedItems(0).Text
         End If
+        mblnLoadingLocation = False
     End Sub
 
     Private Sub txtLocation_TextChanged(sender As Object, e As EventArgs) Handles txtLocation.TextChanged
@@ -94,11 +99,48 @@ Public Class Locations
     End Sub
 
     Private Sub ctlDeleteLocation_Clicked() Handles ctlDeleteLocation.Clicked
+        Dim intLocationID As Integer
 
+        intLocationID = mintLocationID
+
+        If intLocationID > 0 Then
+            If MsgBox("Please confirm you wish to delete Location '" & txtLocation.Text & "'", Buttons:=MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                If Delete_Location(intLocationID) = False Then
+                    MsgBox("There was a problem when trying to delete the selected Location")
+                Else
+                    intLocationID = 0
+                    mintLocationID = 0
+                End If
+
+                LoadLocations()
+            End If
+        Else
+            MsgBox("Please select the Location to delete first")
+        End If
     End Sub
 
     Private Sub ctlAddLocation_Clicked() Handles ctlAddLocation.Clicked
+        Dim intLocationID As Integer
 
+        intLocationID = Add_Location()
+        mintLocationID = intLocationID
+        LoadLocations()
+    End Sub
+
+    Private Sub tmrLocationSave_Tick(sender As Object, e As EventArgs) Handles tmrLocationSave.Tick
+        Dim intLocationID As Integer
+        Dim strLocationName As String
+
+        tmrLocationSave.Enabled = False
+
+        intLocationID = mintLocationID
+        strLocationName = txtLocation.Text
+
+        If Update_Location(mintLocationID, strLocationName) = False Then
+            MsgBox("There was a problem trying to update the location's details")
+        Else
+            LoadLocations()
+        End If
     End Sub
 
 End Class

@@ -185,6 +185,29 @@
     End Function
 
 
+    Public Function Update_Location(ByVal intLocationID As Integer, ByVal strLocationName As String) As Boolean
+        Dim strSQL As String
+        Dim blnSuccess As Boolean
+
+        blnSuccess = True
+        On Error GoTo ERR_UpdateLocationFailed
+
+        strSQL = "UPDATE Location "
+
+        strSQL = strSQL & "SET LocationName = '" & SQLString(strLocationName) & "' "
+
+        strSQL = strSQL & "WHERE LocationID = " & intLocationID & " "
+
+        gDB.Execute(strSQL)
+
+RES_UpdateLocationFailed:
+        Return blnSuccess
+ERR_UpdateLocationFailed:
+        blnSuccess = False
+        Resume RES_UpdateLocationFailed
+    End Function
+
+
     Public Function Update_Person(ByVal intPersonID As Integer, ByVal strPersonName As String, ByVal intPersonTeamID As Integer) As Boolean
         Dim strSQL As String
         Dim blnSuccess As Boolean
@@ -207,6 +230,7 @@ ERR_UpdatePersonFailed:
         blnSuccess = False
         Resume RES_UpdatePersonFailed
     End Function
+
 
     Public Function Update_Team(ByVal intTeamID As Integer, ByVal strTeamName As String, ByVal intSprintTemplateID As Integer, ByVal intTeamLocationID As Integer) As Boolean
         Dim strSQL As String
@@ -232,6 +256,30 @@ ERR_UpdateTeamFailed:
         Resume RES_UpdateTeamFailed
     End Function
 
+
+    Public Function Add_Location() As Integer
+        Dim strSQL As String
+        Dim intLastID As Integer
+        Dim dataTable As DataTable
+
+        strSQL = "INSERT INTO Location (LocationName) VALUES ('New Location'); SELECT SCOPE_IDENTITY() ID; "
+        intLastID = 0
+
+        dataTable = gDB.OpenDataset(strSQL).Tables("Table")
+
+        If dataTable.Rows.Count > 0 Then
+            Dim drCurrent As DataRow
+
+            For Each drCurrent In dataTable.Rows
+                ' hopefully only one!
+                intLastID = drCurrent("ID")
+            Next
+        End If
+
+        Return intLastID
+    End Function
+
+
     Public Function Add_Team() As Integer
         Dim strSQL As String
         Dim intLastID As Integer
@@ -253,6 +301,7 @@ ERR_UpdateTeamFailed:
 
         Return intLastID
     End Function
+
 
     Public Function Add_Person(ByVal intTeamID As Integer) As Integer
         Dim strSQL As String
@@ -276,6 +325,27 @@ ERR_UpdateTeamFailed:
         Return intLastID
     End Function
 
+
+    Public Function Delete_Location(ByVal intLocationID As Integer) As Boolean
+        Dim strSQL As String
+        Dim blnSuccess As Boolean
+
+        blnSuccess = True
+        On Error GoTo ERR_DeleteLocationFailed
+
+        strSQL = "DELETE FROM Location "
+        strSQL = strSQL & "WHERE LocationID = " & intLocationID & " "
+
+        gDB.Execute(strSQL)
+
+RES_DeleteLocationFailed:
+        Return blnSuccess
+ERR_DeleteLocationFailed:
+        blnSuccess = False
+        Resume RES_DeleteLocationFailed
+    End Function
+
+
     Public Function Delete_Team(ByVal intTeamID As Integer) As Boolean
         Dim strSQL As String
         Dim blnSuccess As Boolean
@@ -283,7 +353,7 @@ ERR_UpdateTeamFailed:
         blnSuccess = True
         On Error GoTo ERR_DeleteTeamFailed
 
-        strSQL = "DELETE Team "
+        strSQL = "DELETE FROM Team "
         strSQL = strSQL & "WHERE TeamID = " & intTeamID & " "
 
         gDB.Execute(strSQL)
@@ -295,6 +365,7 @@ ERR_DeleteTeamFailed:
         Resume RES_DeleteTeamFailed
     End Function
 
+
     Public Function Delete_Person(ByVal intPersonID As Integer) As Boolean
         Dim strSQL As String
         Dim blnSuccess As Boolean
@@ -302,7 +373,7 @@ ERR_DeleteTeamFailed:
         blnSuccess = True
         On Error GoTo ERR_DeletePersonFailed
 
-        strSQL = "DELETE Person "
+        strSQL = "DELETE FROM Person "
         strSQL = strSQL & "WHERE PersonID = " & intPersonID & " "
 
         gDB.Execute(strSQL)
