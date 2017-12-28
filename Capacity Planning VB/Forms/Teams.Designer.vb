@@ -22,6 +22,7 @@ Partial Class Teams
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Teams))
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
         Me.blCopyright = New System.Windows.Forms.Label()
@@ -29,25 +30,28 @@ Partial Class Teams
         Me.lvwPeople = New System.Windows.Forms.ListView()
         Me.tabMain = New System.Windows.Forms.TabControl()
         Me.tabTeams = New System.Windows.Forms.TabPage()
+        Me.ctlLocations = New Capacity_Planning.ctlRichButtonSmall()
+        Me.ctlDeleteSprintTeam = New Capacity_Planning.ctlRichButtonSmall()
         Me.cboSprintTemplate = New System.Windows.Forms.ComboBox()
         Me.lblSprintTemplate = New System.Windows.Forms.Label()
         Me.cboTeamLocation = New System.Windows.Forms.ComboBox()
         Me.lbllocation = New System.Windows.Forms.Label()
         Me.txtTeamName = New System.Windows.Forms.TextBox()
         Me.lblTeamName = New System.Windows.Forms.Label()
-        Me.ctlDeleteTeam = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlAddTeam = New Capacity_Planning.ctlRichButtonSmall()
         Me.lvwTeams = New System.Windows.Forms.ListView()
-        Me.lblTeams = New System.Windows.Forms.Label()
+        Me.lblTeamsTitle = New System.Windows.Forms.Label()
         Me.tabPeople = New System.Windows.Forms.TabPage()
+        Me.ctlDeletePerson = New Capacity_Planning.ctlRichButtonSmall()
         Me.cboPersonTeam = New System.Windows.Forms.ComboBox()
         Me.lblPersonTeam = New System.Windows.Forms.Label()
         Me.txtPersonName = New System.Windows.Forms.TextBox()
         Me.lblPersonName = New System.Windows.Forms.Label()
         Me.cboTeams = New System.Windows.Forms.ComboBox()
+        Me.lblPeopleTitle = New System.Windows.Forms.Label()
         Me.ctlAddPerson = New Capacity_Planning.ctlRichButtonSmall()
-        Me.ctlDeletePerson = New Capacity_Planning.ctlRichButtonSmall()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.tmrPersonSave = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrTeamSave = New System.Windows.Forms.Timer(Me.components)
         Me.pnlBottomBar.SuspendLayout()
         Me.tabMain.SuspendLayout()
         Me.tabTeams.SuspendLayout()
@@ -103,7 +107,7 @@ Partial Class Teams
         Me.lvwPeople.Margin = New System.Windows.Forms.Padding(6)
         Me.lvwPeople.MultiSelect = False
         Me.lvwPeople.Name = "lvwPeople"
-        Me.lvwPeople.Size = New System.Drawing.Size(686, 394)
+        Me.lvwPeople.Size = New System.Drawing.Size(686, 405)
         Me.lvwPeople.TabIndex = 63
         Me.lvwPeople.UseCompatibleStateImageBehavior = False
         Me.lvwPeople.View = System.Windows.Forms.View.Details
@@ -123,16 +127,17 @@ Partial Class Teams
         '
         'tabTeams
         '
+        Me.tabTeams.Controls.Add(Me.ctlLocations)
+        Me.tabTeams.Controls.Add(Me.ctlDeleteSprintTeam)
         Me.tabTeams.Controls.Add(Me.cboSprintTemplate)
         Me.tabTeams.Controls.Add(Me.lblSprintTemplate)
         Me.tabTeams.Controls.Add(Me.cboTeamLocation)
         Me.tabTeams.Controls.Add(Me.lbllocation)
         Me.tabTeams.Controls.Add(Me.txtTeamName)
         Me.tabTeams.Controls.Add(Me.lblTeamName)
-        Me.tabTeams.Controls.Add(Me.ctlDeleteTeam)
         Me.tabTeams.Controls.Add(Me.ctlAddTeam)
         Me.tabTeams.Controls.Add(Me.lvwTeams)
-        Me.tabTeams.Controls.Add(Me.lblTeams)
+        Me.tabTeams.Controls.Add(Me.lblTeamsTitle)
         Me.tabTeams.Location = New System.Drawing.Point(4, 22)
         Me.tabTeams.Name = "tabTeams"
         Me.tabTeams.Padding = New System.Windows.Forms.Padding(3)
@@ -140,6 +145,38 @@ Partial Class Teams
         Me.tabTeams.TabIndex = 0
         Me.tabTeams.Text = "Teams"
         Me.tabTeams.UseVisualStyleBackColor = True
+        '
+        'ctlLocations
+        '
+        Me.ctlLocations.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlLocations.BackColor = System.Drawing.Color.Transparent
+        Me.ctlLocations.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlLocations.Image = CType(resources.GetObject("ctlLocations.Image"), System.Drawing.Image)
+        Me.ctlLocations.Location = New System.Drawing.Point(457, 457)
+        Me.ctlLocations.MaximumSize = New System.Drawing.Size(0, 38)
+        Me.ctlLocations.MinimumSize = New System.Drawing.Size(100, 38)
+        Me.ctlLocations.Name = "ctlLocations"
+        Me.ctlLocations.Selected = False
+        Me.ctlLocations.Size = New System.Drawing.Size(111, 38)
+        Me.ctlLocations.TabIndex = 62
+        Me.ctlLocations.TextDescription = "Locations"
+        Me.ctlLocations.TextTitle = "Edit"
+        '
+        'ctlDeleteSprintTeam
+        '
+        Me.ctlDeleteSprintTeam.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlDeleteSprintTeam.BackColor = System.Drawing.Color.Transparent
+        Me.ctlDeleteSprintTeam.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlDeleteSprintTeam.Image = CType(resources.GetObject("ctlDeleteSprintTeam.Image"), System.Drawing.Image)
+        Me.ctlDeleteSprintTeam.Location = New System.Drawing.Point(457, 413)
+        Me.ctlDeleteSprintTeam.MaximumSize = New System.Drawing.Size(0, 38)
+        Me.ctlDeleteSprintTeam.MinimumSize = New System.Drawing.Size(100, 38)
+        Me.ctlDeleteSprintTeam.Name = "ctlDeleteSprintTeam"
+        Me.ctlDeleteSprintTeam.Selected = False
+        Me.ctlDeleteSprintTeam.Size = New System.Drawing.Size(100, 38)
+        Me.ctlDeleteSprintTeam.TabIndex = 82
+        Me.ctlDeleteSprintTeam.TextDescription = "Team"
+        Me.ctlDeleteSprintTeam.TextTitle = "Delete"
         '
         'cboSprintTemplate
         '
@@ -206,22 +243,6 @@ Partial Class Teams
         Me.lblTeamName.TabIndex = 77
         Me.lblTeamName.Text = "Team Name"
         '
-        'ctlDeleteTeam
-        '
-        Me.ctlDeleteTeam.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ctlDeleteTeam.BackColor = System.Drawing.Color.Transparent
-        Me.ctlDeleteTeam.ColourHighlight = System.Drawing.Color.Lavender
-        Me.ctlDeleteTeam.Image = CType(resources.GetObject("ctlDeleteTeam.Image"), System.Drawing.Image)
-        Me.ctlDeleteTeam.Location = New System.Drawing.Point(457, 413)
-        Me.ctlDeleteTeam.MaximumSize = New System.Drawing.Size(0, 38)
-        Me.ctlDeleteTeam.MinimumSize = New System.Drawing.Size(100, 38)
-        Me.ctlDeleteTeam.Name = "ctlDeleteTeam"
-        Me.ctlDeleteTeam.Selected = False
-        Me.ctlDeleteTeam.Size = New System.Drawing.Size(100, 38)
-        Me.ctlDeleteTeam.TabIndex = 65
-        Me.ctlDeleteTeam.TextDescription = "Team"
-        Me.ctlDeleteTeam.TextTitle = "Delete"
-        '
         'ctlAddTeam
         '
         Me.ctlAddTeam.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -253,38 +274,54 @@ Partial Class Teams
         Me.lvwTeams.UseCompatibleStateImageBehavior = False
         Me.lvwTeams.View = System.Windows.Forms.View.Details
         '
-        'lblTeams
+        'lblTeamsTitle
         '
-        Me.lblTeams.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblTeams.AutoSize = True
-        Me.lblTeams.BackColor = System.Drawing.Color.Transparent
-        Me.lblTeams.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTeams.ForeColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(178, Byte), Integer))
-        Me.lblTeams.Location = New System.Drawing.Point(603, 394)
-        Me.lblTeams.Name = "lblTeams"
-        Me.lblTeams.Size = New System.Drawing.Size(155, 55)
-        Me.lblTeams.TabIndex = 75
-        Me.lblTeams.Text = "teams"
+        Me.lblTeamsTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblTeamsTitle.AutoSize = True
+        Me.lblTeamsTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTeamsTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTeamsTitle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(178, Byte), Integer))
+        Me.lblTeamsTitle.Location = New System.Drawing.Point(603, 394)
+        Me.lblTeamsTitle.Name = "lblTeamsTitle"
+        Me.lblTeamsTitle.Size = New System.Drawing.Size(155, 55)
+        Me.lblTeamsTitle.TabIndex = 75
+        Me.lblTeamsTitle.Text = "teams"
         '
         'tabPeople
         '
+        Me.tabPeople.Controls.Add(Me.ctlDeletePerson)
         Me.tabPeople.Controls.Add(Me.cboPersonTeam)
         Me.tabPeople.Controls.Add(Me.lblPersonTeam)
         Me.tabPeople.Controls.Add(Me.txtPersonName)
         Me.tabPeople.Controls.Add(Me.lblPersonName)
         Me.tabPeople.Controls.Add(Me.cboTeams)
         Me.tabPeople.Controls.Add(Me.lvwPeople)
+        Me.tabPeople.Controls.Add(Me.lblPeopleTitle)
         Me.tabPeople.Controls.Add(Me.ctlAddPerson)
-        Me.tabPeople.Controls.Add(Me.ctlDeletePerson)
-        Me.tabPeople.Controls.Add(Me.Label5)
         Me.tabPeople.ForeColor = System.Drawing.Color.Blue
         Me.tabPeople.Location = New System.Drawing.Point(4, 22)
         Me.tabPeople.Name = "tabPeople"
         Me.tabPeople.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabPeople.Size = New System.Drawing.Size(810, 530)
+        Me.tabPeople.Size = New System.Drawing.Size(810, 541)
         Me.tabPeople.TabIndex = 1
         Me.tabPeople.Text = "People"
         Me.tabPeople.UseVisualStyleBackColor = True
+        '
+        'ctlDeletePerson
+        '
+        Me.ctlDeletePerson.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlDeletePerson.BackColor = System.Drawing.Color.Transparent
+        Me.ctlDeletePerson.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlDeletePerson.Image = CType(resources.GetObject("ctlDeletePerson.Image"), System.Drawing.Image)
+        Me.ctlDeletePerson.Location = New System.Drawing.Point(457, 456)
+        Me.ctlDeletePerson.MaximumSize = New System.Drawing.Size(0, 38)
+        Me.ctlDeletePerson.MinimumSize = New System.Drawing.Size(100, 38)
+        Me.ctlDeletePerson.Name = "ctlDeletePerson"
+        Me.ctlDeletePerson.Selected = False
+        Me.ctlDeletePerson.Size = New System.Drawing.Size(100, 38)
+        Me.ctlDeletePerson.TabIndex = 85
+        Me.ctlDeletePerson.TextDescription = "Person"
+        Me.ctlDeletePerson.TextTitle = "Delete"
         '
         'cboPersonTeam
         '
@@ -292,7 +329,7 @@ Partial Class Teams
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cboPersonTeam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPersonTeam.FormattingEnabled = True
-        Me.cboPersonTeam.Location = New System.Drawing.Point(9, 503)
+        Me.cboPersonTeam.Location = New System.Drawing.Point(9, 514)
         Me.cboPersonTeam.Name = "cboPersonTeam"
         Me.cboPersonTeam.Size = New System.Drawing.Size(439, 21)
         Me.cboPersonTeam.TabIndex = 83
@@ -303,7 +340,7 @@ Partial Class Teams
         Me.lblPersonTeam.AutoSize = True
         Me.lblPersonTeam.BackColor = System.Drawing.Color.Transparent
         Me.lblPersonTeam.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblPersonTeam.Location = New System.Drawing.Point(6, 487)
+        Me.lblPersonTeam.Location = New System.Drawing.Point(6, 498)
         Me.lblPersonTeam.Name = "lblPersonTeam"
         Me.lblPersonTeam.Size = New System.Drawing.Size(34, 13)
         Me.lblPersonTeam.TabIndex = 82
@@ -313,7 +350,7 @@ Partial Class Teams
         '
         Me.txtPersonName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtPersonName.Location = New System.Drawing.Point(9, 461)
+        Me.txtPersonName.Location = New System.Drawing.Point(9, 472)
         Me.txtPersonName.Margin = New System.Windows.Forms.Padding(6)
         Me.txtPersonName.Name = "txtPersonName"
         Me.txtPersonName.Size = New System.Drawing.Size(439, 20)
@@ -325,7 +362,7 @@ Partial Class Teams
         Me.lblPersonName.AutoSize = True
         Me.lblPersonName.BackColor = System.Drawing.Color.Transparent
         Me.lblPersonName.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblPersonName.Location = New System.Drawing.Point(6, 442)
+        Me.lblPersonName.Location = New System.Drawing.Point(6, 453)
         Me.lblPersonName.Name = "lblPersonName"
         Me.lblPersonName.Size = New System.Drawing.Size(35, 13)
         Me.lblPersonName.TabIndex = 81
@@ -341,6 +378,19 @@ Partial Class Teams
         Me.cboTeams.Name = "cboTeams"
         Me.cboTeams.Size = New System.Drawing.Size(686, 21)
         Me.cboTeams.TabIndex = 69
+        '
+        'lblPeopleTitle
+        '
+        Me.lblPeopleTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblPeopleTitle.AutoSize = True
+        Me.lblPeopleTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblPeopleTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPeopleTitle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(178, Byte), Integer))
+        Me.lblPeopleTitle.Location = New System.Drawing.Point(586, 437)
+        Me.lblPeopleTitle.Name = "lblPeopleTitle"
+        Me.lblPeopleTitle.Size = New System.Drawing.Size(169, 55)
+        Me.lblPeopleTitle.TabIndex = 84
+        Me.lblPeopleTitle.Text = "people"
         '
         'ctlAddPerson
         '
@@ -358,34 +408,13 @@ Partial Class Teams
         Me.ctlAddPerson.TextDescription = "Person"
         Me.ctlAddPerson.TextTitle = "New"
         '
-        'ctlDeletePerson
+        'tmrPersonSave
         '
-        Me.ctlDeletePerson.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ctlDeletePerson.BackColor = System.Drawing.Color.Transparent
-        Me.ctlDeletePerson.ColourHighlight = System.Drawing.Color.Lavender
-        Me.ctlDeletePerson.Image = CType(resources.GetObject("ctlDeletePerson.Image"), System.Drawing.Image)
-        Me.ctlDeletePerson.Location = New System.Drawing.Point(457, 445)
-        Me.ctlDeletePerson.MaximumSize = New System.Drawing.Size(0, 38)
-        Me.ctlDeletePerson.MinimumSize = New System.Drawing.Size(100, 38)
-        Me.ctlDeletePerson.Name = "ctlDeletePerson"
-        Me.ctlDeletePerson.Selected = False
-        Me.ctlDeletePerson.Size = New System.Drawing.Size(100, 38)
-        Me.ctlDeletePerson.TabIndex = 67
-        Me.ctlDeletePerson.TextDescription = "Person"
-        Me.ctlDeletePerson.TextTitle = "Delete"
+        Me.tmrPersonSave.Interval = 1000
         '
-        'Label5
+        'tmrTeamSave
         '
-        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label5.AutoSize = True
-        Me.Label5.BackColor = System.Drawing.Color.Transparent
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(178, Byte), Integer))
-        Me.Label5.Location = New System.Drawing.Point(586, 426)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(169, 55)
-        Me.Label5.TabIndex = 84
-        Me.Label5.Text = "people"
+        Me.tmrTeamSave.Interval = 1000
         '
         'Teams
         '
@@ -411,11 +440,9 @@ Partial Class Teams
     Friend WithEvents blCopyright As Label
     Friend WithEvents cmdClose As Button
     Friend WithEvents lvwPeople As ListView
-    Friend WithEvents ctlDeletePerson As ctlRichButtonSmall
     Friend WithEvents ctlAddPerson As ctlRichButtonSmall
     Friend WithEvents tabMain As TabControl
     Friend WithEvents tabTeams As TabPage
-    Friend WithEvents ctlDeleteTeam As ctlRichButtonSmall
     Friend WithEvents ctlAddTeam As ctlRichButtonSmall
     Friend WithEvents lvwTeams As ListView
     Friend WithEvents tabPeople As TabPage
@@ -426,10 +453,15 @@ Partial Class Teams
     Friend WithEvents lbllocation As Label
     Friend WithEvents txtTeamName As TextBox
     Friend WithEvents lblTeamName As Label
-    Friend WithEvents lblTeams As Label
+    Friend WithEvents lblTeamsTitle As Label
     Friend WithEvents cboPersonTeam As ComboBox
     Friend WithEvents lblPersonTeam As Label
     Friend WithEvents txtPersonName As TextBox
     Friend WithEvents lblPersonName As Label
-    Friend WithEvents Label5 As Label
+    Friend WithEvents lblPeopleTitle As Label
+    Friend WithEvents tmrPersonSave As Timer
+    Friend WithEvents tmrTeamSave As Timer
+    Friend WithEvents ctlDeleteSprintTeam As ctlRichButtonSmall
+    Friend WithEvents ctlDeletePerson As ctlRichButtonSmall
+    Friend WithEvents ctlLocations As ctlRichButtonSmall
 End Class

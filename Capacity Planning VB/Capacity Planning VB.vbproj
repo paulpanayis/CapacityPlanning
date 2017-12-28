@@ -13,6 +13,7 @@
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -131,7 +131,6 @@
     </Compile>
     <Compile Include="Database\clsSQLDB.vb" />
     <Compile Include="Database\dbCommon.vb" />
-    <Compile Include="Database\modDatabaseFunctions.vb" />
     <Compile Include="Forms\About.designer.vb">
       <DependentUpon>About.vb</DependentUpon>
     </Compile>
@@ -148,6 +147,12 @@
       <DependentUpon>Holiday.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\Holiday.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Locations.Designer.vb">
+      <DependentUpon>Locations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Locations.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Reports.Designer.vb">
@@ -188,7 +193,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\clsExcel.vb" />
-    <Compile Include="Modules\modDatabaseCalls.vb" />
+    <Compile Include="Database\modDatabaseFunctions.vb" />
     <Compile Include="Modules\modDateUtility.vb" />
     <Compile Include="Modules\modListBoxUtility.vb" />
     <Compile Include="Modules\modListViewUtility.vb" />
@@ -241,6 +246,9 @@
     <EmbeddedResource Include="Forms\Holiday.resx">
       <DependentUpon>Holiday.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Locations.resx">
+      <DependentUpon>Locations.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports.resx">
       <DependentUpon>Reports.vb</DependentUpon>
     </EmbeddedResource>
@@ -280,11 +288,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CapacityPlan.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="CapacityPlan_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>CapacityPlan.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

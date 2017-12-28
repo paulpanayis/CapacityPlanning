@@ -110,20 +110,50 @@ Module modUtilities
         '
         ' this procedure will save the column widths for each listview on a Form
         '
-
         For Each ctrlX In frmForm.Controls
-            If TypeOf ctrlX Is ListView Then
+            If TypeOf ctrlX Is TabControl Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is Panel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is GroupBox Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is FlowLayoutPanel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is TableLayoutPanel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is SplitContainer Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is ListView Then
                 ctlListView = ctrlX
-                For intColumn = 0 To ctlListView.Columns.Count - 1
-                    SaveSetting(strKey,
-                                        frmForm.Name & "." & ctlListView.Name,
-                                        "Column " & intColumn,
-                                        ctlListView.Columns(intColumn).Width)
-                Next
-                SaveSetting(strKey,
-                                frmForm.Name & "." & ctlListView.Name,
-                                "View",
-                                ctlListView.View)
+                SaveListViewSizeAndPosition(frmForm, ctlListView)
+            End If
+        Next
+
+    End Sub
+
+    Public Sub SaveAllListViewSizesAndPositionsFromControl(ByRef frmForm As Form, ByRef ctlContainer As Control)
+        Dim ctrlX As Control
+        Dim strKey As String
+        Dim ctlListView As ListView
+
+        strKey = My.Application.Info.AssemblyName
+
+        For Each ctrlX In ctlContainer.Controls
+            If TypeOf ctrlX Is TabControl Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is Panel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is GroupBox Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is FlowLayoutPanel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is TableLayoutPanel Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is SplitContainer Then
+                SaveAllListViewSizesAndPositionsFromControl(frmForm, ctrlX)
+            ElseIf TypeOf ctrlX Is ListView Then
+                ctlListView = ctrlX
+                SaveListViewSizeAndPosition(frmForm, ctlListView)
             End If
         Next
 

@@ -7,12 +7,7 @@ Public Class About
         Me.Close()
     End Sub
 
-    Private Sub About_Load(sender As Object, e As EventArgs) Handles Me.Load
-        LoadFormSizeAndPosition(Me)
-    End Sub
-
     Private Sub About_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        SaveFormSizeAndPosition(Me)
         Me.Dispose()
     End Sub
 
