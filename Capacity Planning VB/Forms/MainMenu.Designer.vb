@@ -27,13 +27,14 @@ Partial Class MainMenu
         Me.ctlTeam = New Capacity_Planning.ctlBigButton()
         Me.ctlVelocity = New Capacity_Planning.ctlBigButton()
         Me.ctlCapacityPlan = New Capacity_Planning.ctlBigButton()
-        Me.ctlHoliday = New Capacity_Planning.ctlBigButton()
+        Me.ctlCalendar = New Capacity_Planning.ctlBigButton()
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
+        Me.lblCopyright = New System.Windows.Forms.Label()
         Me.cmdAbout = New System.Windows.Forms.Button()
         Me.cmdClose = New System.Windows.Forms.Button()
         Me.ctlReport = New Capacity_Planning.ctlBigButton()
         Me.ctlLocations = New Capacity_Planning.ctlBigButton()
-        Me.blCopyright = New System.Windows.Forms.Label()
+        Me.ctlOptions = New Capacity_Planning.ctlBigButton()
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -49,7 +50,7 @@ Partial Class MainMenu
         Me.ctlSprint.Name = "ctlSprint"
         Me.ctlSprint.Selected = False
         Me.ctlSprint.Size = New System.Drawing.Size(271, 86)
-        Me.ctlSprint.TabIndex = 4
+        Me.ctlSprint.TabIndex = 5
         Me.ctlSprint.TextDescription = "Setup Sprints and their regular cadence"
         Me.ctlSprint.TextTitle = "Sprints"
         '
@@ -65,7 +66,7 @@ Partial Class MainMenu
         Me.ctlTeam.Name = "ctlTeam"
         Me.ctlTeam.Selected = False
         Me.ctlTeam.Size = New System.Drawing.Size(271, 86)
-        Me.ctlTeam.TabIndex = 5
+        Me.ctlTeam.TabIndex = 4
         Me.ctlTeam.TextDescription = "Setup Teams and the team members"
         Me.ctlTeam.TextTitle = "Teams / People"
         '
@@ -101,26 +102,26 @@ Partial Class MainMenu
         Me.ctlCapacityPlan.TextDescription = "Current and past capacity plans"
         Me.ctlCapacityPlan.TextTitle = "Capacity Plans"
         '
-        'ctlHoliday
+        'ctlCalendar
         '
-        Me.ctlHoliday.BackColor = System.Drawing.Color.Transparent
-        Me.ctlHoliday.ColourHighlight = System.Drawing.Color.Lavender
-        Me.ctlHoliday.Image = CType(resources.GetObject("ctlHoliday.Image"), System.Drawing.Image)
-        Me.ctlHoliday.Location = New System.Drawing.Point(641, 27)
-        Me.ctlHoliday.Margin = New System.Windows.Forms.Padding(18)
-        Me.ctlHoliday.MaximumSize = New System.Drawing.Size(388, 122)
-        Me.ctlHoliday.MinimumSize = New System.Drawing.Size(236, 68)
-        Me.ctlHoliday.Name = "ctlHoliday"
-        Me.ctlHoliday.Selected = False
-        Me.ctlHoliday.Size = New System.Drawing.Size(271, 86)
-        Me.ctlHoliday.TabIndex = 3
-        Me.ctlHoliday.TextDescription = "Enter / View holidays and absences"
-        Me.ctlHoliday.TextTitle = "Holiday"
+        Me.ctlCalendar.BackColor = System.Drawing.Color.Transparent
+        Me.ctlCalendar.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlCalendar.Image = CType(resources.GetObject("ctlCalendar.Image"), System.Drawing.Image)
+        Me.ctlCalendar.Location = New System.Drawing.Point(641, 27)
+        Me.ctlCalendar.Margin = New System.Windows.Forms.Padding(18)
+        Me.ctlCalendar.MaximumSize = New System.Drawing.Size(388, 122)
+        Me.ctlCalendar.MinimumSize = New System.Drawing.Size(236, 68)
+        Me.ctlCalendar.Name = "ctlCalendar"
+        Me.ctlCalendar.Selected = False
+        Me.ctlCalendar.Size = New System.Drawing.Size(271, 86)
+        Me.ctlCalendar.TabIndex = 3
+        Me.ctlCalendar.TextDescription = "Enter holidays and other absences for both teams and individuals"
+        Me.ctlCalendar.TextTitle = "Calendar"
         '
         'pnlBottomBar
         '
         Me.pnlBottomBar.BackColor = System.Drawing.Color.Transparent
-        Me.pnlBottomBar.Controls.Add(Me.blCopyright)
+        Me.pnlBottomBar.Controls.Add(Me.lblCopyright)
         Me.pnlBottomBar.Controls.Add(Me.cmdAbout)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -129,6 +130,19 @@ Partial Class MainMenu
         Me.pnlBottomBar.Name = "pnlBottomBar"
         Me.pnlBottomBar.Size = New System.Drawing.Size(924, 57)
         Me.pnlBottomBar.TabIndex = 66
+        '
+        'lblCopyright
+        '
+        Me.lblCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblCopyright.BackColor = System.Drawing.Color.Transparent
+        Me.lblCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.lblCopyright.Location = New System.Drawing.Point(9, 19)
+        Me.lblCopyright.Name = "lblCopyright"
+        Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
+        Me.lblCopyright.TabIndex = 62
+        Me.lblCopyright.Text = "© Paul Panayis, 2018"
+        Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'cmdAbout
         '
@@ -140,7 +154,7 @@ Partial Class MainMenu
         Me.cmdAbout.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdAbout.Name = "cmdAbout"
         Me.cmdAbout.Size = New System.Drawing.Size(75, 23)
-        Me.cmdAbout.TabIndex = 7
+        Me.cmdAbout.TabIndex = 9
         Me.cmdAbout.Text = "About"
         Me.cmdAbout.UseVisualStyleBackColor = False
         '
@@ -170,7 +184,7 @@ Partial Class MainMenu
         Me.ctlReport.Name = "ctlReport"
         Me.ctlReport.Selected = False
         Me.ctlReport.Size = New System.Drawing.Size(271, 86)
-        Me.ctlReport.TabIndex = 6
+        Me.ctlReport.TabIndex = 7
         Me.ctlReport.TextDescription = "Run, Export and Print all management and team reports"
         Me.ctlReport.TextTitle = "Reports"
         '
@@ -186,28 +200,32 @@ Partial Class MainMenu
         Me.ctlLocations.Name = "ctlLocations"
         Me.ctlLocations.Selected = False
         Me.ctlLocations.Size = New System.Drawing.Size(271, 86)
-        Me.ctlLocations.TabIndex = 67
+        Me.ctlLocations.TabIndex = 6
         Me.ctlLocations.TextDescription = "Setup Locations for your teams. Team events and holidays are by Location"
         Me.ctlLocations.TextTitle = "Locations"
         '
-        'blCopyright
+        'ctlOptions
         '
-        Me.blCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.blCopyright.BackColor = System.Drawing.Color.Transparent
-        Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(9, 19)
-        Me.blCopyright.Name = "blCopyright"
-        Me.blCopyright.Size = New System.Drawing.Size(181, 29)
-        Me.blCopyright.TabIndex = 62
-        Me.blCopyright.Text = "© Paul Panayis, 2018"
-        Me.blCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.ctlOptions.BackColor = System.Drawing.Color.White
+        Me.ctlOptions.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlOptions.Image = CType(resources.GetObject("ctlOptions.Image"), System.Drawing.Image)
+        Me.ctlOptions.Location = New System.Drawing.Point(641, 271)
+        Me.ctlOptions.Margin = New System.Windows.Forms.Padding(18)
+        Me.ctlOptions.MaximumSize = New System.Drawing.Size(271, 86)
+        Me.ctlOptions.MinimumSize = New System.Drawing.Size(271, 86)
+        Me.ctlOptions.Name = "ctlOptions"
+        Me.ctlOptions.Selected = False
+        Me.ctlOptions.Size = New System.Drawing.Size(271, 86)
+        Me.ctlOptions.TabIndex = 8
+        Me.ctlOptions.TextDescription = "Select how you'd like to use the Capacity Planning Tool"
+        Me.ctlOptions.TextTitle = "Options"
         '
         'MainMenu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(924, 445)
+        Me.Controls.Add(Me.ctlOptions)
         Me.Controls.Add(Me.ctlLocations)
         Me.Controls.Add(Me.ctlReport)
         Me.Controls.Add(Me.pnlBottomBar)
@@ -215,7 +233,7 @@ Partial Class MainMenu
         Me.Controls.Add(Me.ctlTeam)
         Me.Controls.Add(Me.ctlVelocity)
         Me.Controls.Add(Me.ctlCapacityPlan)
-        Me.Controls.Add(Me.ctlHoliday)
+        Me.Controls.Add(Me.ctlCalendar)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(6)
@@ -226,7 +244,7 @@ Partial Class MainMenu
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ctlHoliday As ctlBigButton
+    Friend WithEvents ctlCalendar As ctlBigButton
     Friend WithEvents ctlCapacityPlan As ctlBigButton
     Friend WithEvents ctlVelocity As ctlBigButton
     Friend WithEvents ctlTeam As ctlBigButton
@@ -236,5 +254,6 @@ Partial Class MainMenu
     Friend WithEvents cmdAbout As Button
     Friend WithEvents ctlReport As ctlBigButton
     Friend WithEvents ctlLocations As ctlBigButton
-    Friend WithEvents blCopyright As Label
+    Friend WithEvents lblCopyright As Label
+    Friend WithEvents ctlOptions As ctlBigButton
 End Class

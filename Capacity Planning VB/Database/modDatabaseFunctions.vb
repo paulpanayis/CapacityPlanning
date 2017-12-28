@@ -129,6 +129,7 @@
 
         strSQL = "SELECT SprintTemplateID ID "
         strSQL = strSQL + ",TemplateName Name "
+        strSQL = strSQL + ",SprintStartDay StartDay "
 
         strSQL = strSQL + "FROM SprintTemplate "
 

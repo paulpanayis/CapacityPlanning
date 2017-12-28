@@ -159,4 +159,7 @@ Public Class frmDateSelector
         lblDate.Text = Format(MonthView.ActiveDate, mstrDateFormat)
     End Sub
 
+    Private Sub MonthView_Resize(sender As Object, e As EventArgs) Handles MonthView.Resize
+        MonthView.Refresh()
+    End Sub
 End Class

@@ -38,9 +38,9 @@
         Velocity.Show(Me)
     End Sub
 
-    Private Sub ctlHolidays_Load() Handles ctlHoliday.Clicked
-        Holiday.Visible = False
-        Holiday.Show(Me)
+    Private Sub ctlHolidays_Load() Handles ctlCalendar.Clicked
+        YearView.Visible = False
+        YearView.Show(Me)
     End Sub
 
     Private Sub ctlCapacityPlans_Load() Handles ctlCapacityPlan.Clicked

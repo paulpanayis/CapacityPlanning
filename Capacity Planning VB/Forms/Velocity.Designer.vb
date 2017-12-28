@@ -23,7 +23,7 @@ Partial Class Velocity
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
-        Me.blCopyright = New System.Windows.Forms.Label()
+        Me.lblCopyright = New System.Windows.Forms.Label()
         Me.cmdClose = New System.Windows.Forms.Button()
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
@@ -31,7 +31,7 @@ Partial Class Velocity
         'pnlBottomBar
         '
         Me.pnlBottomBar.BackColor = System.Drawing.Color.Transparent
-        Me.pnlBottomBar.Controls.Add(Me.blCopyright)
+        Me.pnlBottomBar.Controls.Add(Me.lblCopyright)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottomBar.Location = New System.Drawing.Point(0, 486)
@@ -40,18 +40,18 @@ Partial Class Velocity
         Me.pnlBottomBar.Size = New System.Drawing.Size(885, 57)
         Me.pnlBottomBar.TabIndex = 59
         '
-        'blCopyright
+        'lblCopyright
         '
-        Me.blCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.blCopyright.BackColor = System.Drawing.Color.Transparent
-        Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(9, 19)
-        Me.blCopyright.Name = "blCopyright"
-        Me.blCopyright.Size = New System.Drawing.Size(181, 29)
-        Me.blCopyright.TabIndex = 61
-        Me.blCopyright.Text = "© Paul Panayis, 2018"
-        Me.blCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblCopyright.BackColor = System.Drawing.Color.Transparent
+        Me.lblCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.lblCopyright.Location = New System.Drawing.Point(9, 19)
+        Me.lblCopyright.Name = "lblCopyright"
+        Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
+        Me.lblCopyright.TabIndex = 61
+        Me.lblCopyright.Text = "© Paul Panayis, 2018"
+        Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'cmdClose
         '
@@ -82,6 +82,6 @@ Partial Class Velocity
     End Sub
 
     Friend WithEvents pnlBottomBar As Panel
-    Friend WithEvents blCopyright As Label
+    Friend WithEvents lblCopyright As Label
     Friend WithEvents cmdClose As Button
 End Class

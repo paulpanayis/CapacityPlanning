@@ -41,7 +41,7 @@ Partial Class Reports
         Me.ctlExcel = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlReport = New Capacity_Planning.ctlRichButtonSmall()
         Me.cmdClose = New System.Windows.Forms.Button()
-        Me.blCopyright = New System.Windows.Forms.Label()
+        Me.lblCopyright = New System.Windows.Forms.Label()
         Me.fraReport.SuspendLayout()
         Me.pnlConditionDateTo.SuspendLayout()
         Me.pnlConditionDateFrom.SuspendLayout()
@@ -219,7 +219,7 @@ Partial Class Reports
         'pnlBottomBar
         '
         Me.pnlBottomBar.BackColor = System.Drawing.Color.White
-        Me.pnlBottomBar.Controls.Add(Me.blCopyright)
+        Me.pnlBottomBar.Controls.Add(Me.lblCopyright)
         Me.pnlBottomBar.Controls.Add(Me.ctlPrint)
         Me.pnlBottomBar.Controls.Add(Me.ctlExcel)
         Me.pnlBottomBar.Controls.Add(Me.ctlReport)
@@ -269,7 +269,7 @@ Partial Class Reports
         Me.ctlReport.BackColor = System.Drawing.Color.Transparent
         Me.ctlReport.ColourHighlight = System.Drawing.Color.Lavender
         Me.ctlReport.Image = CType(resources.GetObject("ctlReport.Image"), System.Drawing.Image)
-        Me.ctlReport.Location = New System.Drawing.Point(12, 7)
+        Me.ctlReport.Location = New System.Drawing.Point(485, 7)
         Me.ctlReport.MaximumSize = New System.Drawing.Size(0, 38)
         Me.ctlReport.MinimumSize = New System.Drawing.Size(100, 38)
         Me.ctlReport.Name = "ctlReport"
@@ -293,19 +293,18 @@ Partial Class Reports
         Me.cmdClose.Text = "Close"
         Me.cmdClose.UseVisualStyleBackColor = False
         '
-        'blCopyright
+        'lblCopyright
         '
-        Me.blCopyright.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.blCopyright.BackColor = System.Drawing.Color.Transparent
-        Me.blCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.blCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.blCopyright.Location = New System.Drawing.Point(118, 14)
-        Me.blCopyright.Name = "blCopyright"
-        Me.blCopyright.Size = New System.Drawing.Size(556, 29)
-        Me.blCopyright.TabIndex = 62
-        Me.blCopyright.Text = "© Paul Panayis, 2018"
-        Me.blCopyright.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.lblCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblCopyright.BackColor = System.Drawing.Color.Transparent
+        Me.lblCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.lblCopyright.Location = New System.Drawing.Point(9, 19)
+        Me.lblCopyright.Name = "lblCopyright"
+        Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
+        Me.lblCopyright.TabIndex = 62
+        Me.lblCopyright.Text = "© Paul Panayis, 2018"
+        Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Reports
         '
@@ -350,5 +349,5 @@ Partial Class Reports
     Friend WithEvents ctlPrint As ctlRichButtonSmall
     Friend WithEvents ctlExcel As ctlRichButtonSmall
     Friend WithEvents ctlReport As ctlRichButtonSmall
-    Friend WithEvents blCopyright As Label
+    Friend WithEvents lblCopyright As Label
 End Class

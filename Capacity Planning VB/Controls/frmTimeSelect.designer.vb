@@ -22,11 +22,11 @@ Partial Class frmTimeSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lstHour = New System.Windows.Forms.ListBox
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me.cmdOK = New System.Windows.Forms.Button
-        Me.lstMinutes = New System.Windows.Forms.ListBox
-        Me.lbl12hr = New System.Windows.Forms.Label
+        Me.lstHour = New System.Windows.Forms.ListBox()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me.cmdOK = New System.Windows.Forms.Button()
+        Me.lstMinutes = New System.Windows.Forms.ListBox()
+        Me.lbl12hr = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lstHour
@@ -46,7 +46,7 @@ Partial Class frmTimeSelect
         Me.cmdCancel.BackColor = System.Drawing.SystemColors.Control
         Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdCancel.Location = New System.Drawing.Point(11, 497)
+        Me.cmdCancel.Location = New System.Drawing.Point(11, 491)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 2
@@ -59,7 +59,7 @@ Partial Class frmTimeSelect
         Me.cmdOK.BackColor = System.Drawing.SystemColors.Control
         Me.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdOK.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdOK.Location = New System.Drawing.Point(92, 497)
+        Me.cmdOK.Location = New System.Drawing.Point(92, 491)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 3
@@ -90,10 +90,9 @@ Partial Class frmTimeSelect
         '
         'frmTimeSelect
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(179, 532)
+        Me.ClientSize = New System.Drawing.Size(179, 526)
         Me.ControlBox = False
         Me.Controls.Add(Me.lbl12hr)
         Me.Controls.Add(Me.cmdCancel)
@@ -101,6 +100,8 @@ Partial Class frmTimeSelect
         Me.Controls.Add(Me.lstMinutes)
         Me.Controls.Add(Me.lstHour)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.MaximumSize = New System.Drawing.Size(195, 565)
+        Me.MinimumSize = New System.Drawing.Size(195, 565)
         Me.Name = "frmTimeSelect"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False

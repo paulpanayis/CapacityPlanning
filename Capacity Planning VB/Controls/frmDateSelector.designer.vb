@@ -19,13 +19,13 @@ Partial Class frmDateSelector
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.cboYear = New System.Windows.Forms.ComboBox
-        Me.cboMonth = New System.Windows.Forms.ListBox
-        Me.cmdOK = New System.Windows.Forms.Button
-        Me.lblDate = New System.Windows.Forms.Label
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me.cmdToday = New System.Windows.Forms.Button
-        Me.MonthView = New ctlMonthView
+        Me.cboYear = New System.Windows.Forms.ComboBox()
+        Me.cboMonth = New System.Windows.Forms.ListBox()
+        Me.cmdOK = New System.Windows.Forms.Button()
+        Me.lblDate = New System.Windows.Forms.Label()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me.cmdToday = New System.Windows.Forms.Button()
+        Me.MonthView = New Capacity_Planning.ctlMonthView()
         Me.SuspendLayout()
         '
         'cboYear
@@ -44,8 +44,11 @@ Partial Class frmDateSelector
         '
         'cboMonth
         '
+        Me.cboMonth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cboMonth.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboMonth.FormattingEnabled = True
+        Me.cboMonth.IntegralHeight = False
         Me.cboMonth.ItemHeight = 18
         Me.cboMonth.Items.AddRange(New Object() {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"})
         Me.cboMonth.Location = New System.Drawing.Point(120, 12)
@@ -68,12 +71,14 @@ Partial Class frmDateSelector
         '
         'lblDate
         '
+        Me.lblDate.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblDate.BackColor = System.Drawing.Color.Transparent
         Me.lblDate.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDate.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.lblDate.Location = New System.Drawing.Point(12, 253)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(248, 20)
+        Me.lblDate.Size = New System.Drawing.Size(247, 20)
         Me.lblDate.TabIndex = 28
         '
         'cmdCancel
@@ -94,7 +99,7 @@ Partial Class frmDateSelector
         Me.cmdToday.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdToday.BackColor = System.Drawing.SystemColors.Control
         Me.cmdToday.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdToday.Location = New System.Drawing.Point(266, 252)
+        Me.cmdToday.Location = New System.Drawing.Point(265, 252)
         Me.cmdToday.Name = "cmdToday"
         Me.cmdToday.Size = New System.Drawing.Size(75, 23)
         Me.cmdToday.TabIndex = 3
@@ -105,6 +110,9 @@ Partial Class frmDateSelector
         '
         Me.MonthView.ActiveDate = New Date(CType(0, Long))
         Me.MonthView.ActiveDayColour = System.Drawing.Color.Orange
+        Me.MonthView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MonthView.BackColor = System.Drawing.Color.LightSteelBlue
         Me.MonthView.Colour1 = System.Drawing.Color.Empty
         Me.MonthView.Colour2 = System.Drawing.Color.Empty
@@ -124,8 +132,7 @@ Partial Class frmDateSelector
         'frmDateSelector
         '
         Me.AcceptButton = Me.cmdOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.cmdCancel
         Me.ClientSize = New System.Drawing.Size(515, 287)
@@ -137,7 +144,6 @@ Partial Class frmDateSelector
         Me.Controls.Add(Me.cboMonth)
         Me.Controls.Add(Me.MonthView)
         Me.Controls.Add(Me.cboYear)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmDateSelector"
