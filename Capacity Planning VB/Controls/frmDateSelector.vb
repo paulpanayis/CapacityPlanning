@@ -1,3 +1,4 @@
+Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
@@ -161,5 +162,13 @@ Public Class frmDateSelector
 
     Private Sub MonthView_Resize(sender As Object, e As EventArgs) Handles MonthView.Resize
         MonthView.Refresh()
+    End Sub
+
+    Private Sub frmDateSelector_Load(sender As Object, e As EventArgs) Handles Me.Load
+        LoadFormSizeAndPosition(Me)
+    End Sub
+
+    Private Sub frmDateSelector_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        SaveFormSizeAndPosition(Me)
     End Sub
 End Class

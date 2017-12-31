@@ -37,11 +37,11 @@ Partial Class Reports
         Me.PrintDialog = New System.Windows.Forms.PrintDialog()
         Me.PrintDoc = New System.Drawing.Printing.PrintDocument()
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
+        Me.lblCopyright = New System.Windows.Forms.Label()
         Me.ctlPrint = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlExcel = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlReport = New Capacity_Planning.ctlRichButtonSmall()
         Me.cmdClose = New System.Windows.Forms.Button()
-        Me.lblCopyright = New System.Windows.Forms.Label()
         Me.fraReport.SuspendLayout()
         Me.pnlConditionDateTo.SuspendLayout()
         Me.pnlConditionDateFrom.SuspendLayout()
@@ -231,6 +231,19 @@ Partial Class Reports
         Me.pnlBottomBar.Size = New System.Drawing.Size(985, 57)
         Me.pnlBottomBar.TabIndex = 59
         '
+        'lblCopyright
+        '
+        Me.lblCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblCopyright.BackColor = System.Drawing.Color.Transparent
+        Me.lblCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
+        Me.lblCopyright.Location = New System.Drawing.Point(9, 19)
+        Me.lblCopyright.Name = "lblCopyright"
+        Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
+        Me.lblCopyright.TabIndex = 62
+        Me.lblCopyright.Text = "© Paul Panayis, 2018"
+        Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'ctlPrint
         '
         Me.ctlPrint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -293,19 +306,6 @@ Partial Class Reports
         Me.cmdClose.Text = "Close"
         Me.cmdClose.UseVisualStyleBackColor = False
         '
-        'lblCopyright
-        '
-        Me.lblCopyright.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblCopyright.BackColor = System.Drawing.Color.Transparent
-        Me.lblCopyright.Font = New System.Drawing.Font("Calibri", 10.125!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCopyright.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.lblCopyright.Location = New System.Drawing.Point(9, 19)
-        Me.lblCopyright.Name = "lblCopyright"
-        Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
-        Me.lblCopyright.TabIndex = 62
-        Me.lblCopyright.Text = "© Paul Panayis, 2018"
-        Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'Reports
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -316,6 +316,7 @@ Partial Class Reports
         Me.Controls.Add(Me.lblResults)
         Me.Controls.Add(Me.fraReport)
         Me.Controls.Add(Me.lvwReports)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(6)
         Me.Name = "Reports"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

@@ -22,12 +22,14 @@ Partial Class Sprints
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Sprints))
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
         Me.lblCopyright = New System.Windows.Forms.Label()
         Me.cmdClose = New System.Windows.Forms.Button()
         Me.tabSprints = New System.Windows.Forms.TabControl()
         Me.tabTemplate = New System.Windows.Forms.TabPage()
+        Me.lblNote = New System.Windows.Forms.Label()
         Me.ctlDeleteTemplate = New Capacity_Planning.ctlRichButtonSmall()
         Me.cboSprintStartDay = New System.Windows.Forms.ComboBox()
         Me.lblSprintStartDay = New System.Windows.Forms.Label()
@@ -44,12 +46,14 @@ Partial Class Sprints
         Me.lblEndDate = New System.Windows.Forms.Label()
         Me.lblStartDate = New System.Windows.Forms.Label()
         Me.lblSprintNumber = New System.Windows.Forms.Label()
-        Me.ctlDeleteSprint = New Capacity_Planning.ctlRichButtonSmall()
         Me.txtSprintNumber = New System.Windows.Forms.TextBox()
         Me.cboTemplates = New System.Windows.Forms.ComboBox()
+        Me.ctlDeleteSprint = New Capacity_Planning.ctlRichButtonSmall()
         Me.lvwSprints = New System.Windows.Forms.ListView()
         Me.lblSprintsTitle = New System.Windows.Forms.Label()
         Me.ctlCreateSprints = New Capacity_Planning.ctlRichButtonSmall()
+        Me.tmrTemplateSave = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrSprintSave = New System.Windows.Forms.Timer(Me.components)
         Me.pnlBottomBar.SuspendLayout()
         Me.tabSprints.SuspendLayout()
         Me.tabTemplate.SuspendLayout()
@@ -110,6 +114,7 @@ Partial Class Sprints
         '
         'tabTemplate
         '
+        Me.tabTemplate.Controls.Add(Me.lblNote)
         Me.tabTemplate.Controls.Add(Me.ctlDeleteTemplate)
         Me.tabTemplate.Controls.Add(Me.cboSprintStartDay)
         Me.tabTemplate.Controls.Add(Me.lblSprintStartDay)
@@ -125,6 +130,19 @@ Partial Class Sprints
         Me.tabTemplate.TabIndex = 0
         Me.tabTemplate.Text = "Templates"
         Me.tabTemplate.UseVisualStyleBackColor = True
+        '
+        'lblNote
+        '
+        Me.lblNote.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblNote.BackColor = System.Drawing.Color.Transparent
+        Me.lblNote.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNote.ForeColor = System.Drawing.Color.Gray
+        Me.lblNote.Location = New System.Drawing.Point(409, 545)
+        Me.lblNote.Name = "lblNote"
+        Me.lblNote.Size = New System.Drawing.Size(478, 29)
+        Me.lblNote.TabIndex = 91
+        Me.lblNote.Text = "Note: Changing the sprint start day will not affect sprints already created"
+        Me.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ctlDeleteTemplate
         '
@@ -209,6 +227,7 @@ Partial Class Sprints
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvwTemplates.FullRowSelect = True
+        Me.lvwTemplates.HideSelection = False
         Me.lvwTemplates.Location = New System.Drawing.Point(9, 9)
         Me.lvwTemplates.Margin = New System.Windows.Forms.Padding(6)
         Me.lvwTemplates.MultiSelect = False
@@ -240,9 +259,9 @@ Partial Class Sprints
         Me.tabTemplateSprints.Controls.Add(Me.lblEndDate)
         Me.tabTemplateSprints.Controls.Add(Me.lblStartDate)
         Me.tabTemplateSprints.Controls.Add(Me.lblSprintNumber)
-        Me.tabTemplateSprints.Controls.Add(Me.ctlDeleteSprint)
         Me.tabTemplateSprints.Controls.Add(Me.txtSprintNumber)
         Me.tabTemplateSprints.Controls.Add(Me.cboTemplates)
+        Me.tabTemplateSprints.Controls.Add(Me.ctlDeleteSprint)
         Me.tabTemplateSprints.Controls.Add(Me.lvwSprints)
         Me.tabTemplateSprints.Controls.Add(Me.lblSprintsTitle)
         Me.tabTemplateSprints.Controls.Add(Me.ctlCreateSprints)
@@ -260,10 +279,10 @@ Partial Class Sprints
         Me.cboYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cboYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboYear.FormattingEnabled = True
-        Me.cboYear.Location = New System.Drawing.Point(661, 9)
+        Me.cboYear.Location = New System.Drawing.Point(636, 9)
         Me.cboYear.Margin = New System.Windows.Forms.Padding(6)
         Me.cboYear.Name = "cboYear"
-        Me.cboYear.Size = New System.Drawing.Size(117, 21)
+        Me.cboYear.Size = New System.Drawing.Size(142, 21)
         Me.cboYear.TabIndex = 99
         '
         'lblYear
@@ -271,11 +290,11 @@ Partial Class Sprints
         Me.lblYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblYear.AutoSize = True
         Me.lblYear.BackColor = System.Drawing.Color.Transparent
-        Me.lblYear.Location = New System.Drawing.Point(623, 12)
+        Me.lblYear.Location = New System.Drawing.Point(559, 12)
         Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(29, 13)
+        Me.lblYear.Size = New System.Drawing.Size(68, 13)
         Me.lblYear.TabIndex = 98
-        Me.lblYear.Text = "Year"
+        Me.lblYear.Text = "Filter by Year"
         '
         'cmdEndDate
         '
@@ -352,22 +371,6 @@ Partial Class Sprints
         Me.lblSprintNumber.TabIndex = 93
         Me.lblSprintNumber.Text = "Sprint Number"
         '
-        'ctlDeleteSprint
-        '
-        Me.ctlDeleteSprint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ctlDeleteSprint.BackColor = System.Drawing.Color.Transparent
-        Me.ctlDeleteSprint.ColourHighlight = System.Drawing.Color.Lavender
-        Me.ctlDeleteSprint.Image = CType(resources.GetObject("ctlDeleteSprint.Image"), System.Drawing.Image)
-        Me.ctlDeleteSprint.Location = New System.Drawing.Point(336, 476)
-        Me.ctlDeleteSprint.MaximumSize = New System.Drawing.Size(0, 38)
-        Me.ctlDeleteSprint.MinimumSize = New System.Drawing.Size(100, 38)
-        Me.ctlDeleteSprint.Name = "ctlDeleteSprint"
-        Me.ctlDeleteSprint.Selected = False
-        Me.ctlDeleteSprint.Size = New System.Drawing.Size(100, 38)
-        Me.ctlDeleteSprint.TabIndex = 92
-        Me.ctlDeleteSprint.TextDescription = "Sprint"
-        Me.ctlDeleteSprint.TextTitle = "Delete"
-        '
         'txtSprintNumber
         '
         Me.txtSprintNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -386,8 +389,24 @@ Partial Class Sprints
         Me.cboTemplates.Location = New System.Drawing.Point(9, 9)
         Me.cboTemplates.Margin = New System.Windows.Forms.Padding(6)
         Me.cboTemplates.Name = "cboTemplates"
-        Me.cboTemplates.Size = New System.Drawing.Size(605, 21)
+        Me.cboTemplates.Size = New System.Drawing.Size(541, 21)
         Me.cboTemplates.TabIndex = 88
+        '
+        'ctlDeleteSprint
+        '
+        Me.ctlDeleteSprint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ctlDeleteSprint.BackColor = System.Drawing.Color.Transparent
+        Me.ctlDeleteSprint.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlDeleteSprint.Image = CType(resources.GetObject("ctlDeleteSprint.Image"), System.Drawing.Image)
+        Me.ctlDeleteSprint.Location = New System.Drawing.Point(336, 476)
+        Me.ctlDeleteSprint.MaximumSize = New System.Drawing.Size(0, 38)
+        Me.ctlDeleteSprint.MinimumSize = New System.Drawing.Size(100, 38)
+        Me.ctlDeleteSprint.Name = "ctlDeleteSprint"
+        Me.ctlDeleteSprint.Selected = False
+        Me.ctlDeleteSprint.Size = New System.Drawing.Size(100, 38)
+        Me.ctlDeleteSprint.TabIndex = 92
+        Me.ctlDeleteSprint.TextDescription = "Sprint"
+        Me.ctlDeleteSprint.TextTitle = "Delete"
         '
         'lvwSprints
         '
@@ -395,6 +414,7 @@ Partial Class Sprints
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvwSprints.FullRowSelect = True
+        Me.lvwSprints.HideSelection = False
         Me.lvwSprints.Location = New System.Drawing.Point(9, 39)
         Me.lvwSprints.Margin = New System.Windows.Forms.Padding(6)
         Me.lvwSprints.MultiSelect = False
@@ -433,6 +453,14 @@ Partial Class Sprints
         Me.ctlCreateSprints.TextDescription = "Sprints"
         Me.ctlCreateSprints.TextTitle = "Create"
         '
+        'tmrTemplateSave
+        '
+        Me.tmrTemplateSave.Interval = 1000
+        '
+        'tmrSprintSave
+        '
+        Me.tmrSprintSave.Interval = 1000
+        '
         'Sprints
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -440,6 +468,7 @@ Partial Class Sprints
         Me.ClientSize = New System.Drawing.Size(925, 681)
         Me.Controls.Add(Me.tabSprints)
         Me.Controls.Add(Me.pnlBottomBar)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Sprints"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Sprints"
@@ -480,4 +509,7 @@ Partial Class Sprints
     Friend WithEvents cmdStartDate As Button
     Friend WithEvents cboYear As ComboBox
     Friend WithEvents lblYear As Label
+    Friend WithEvents tmrTemplateSave As Timer
+    Friend WithEvents lblNote As Label
+    Friend WithEvents tmrSprintSave As Timer
 End Class

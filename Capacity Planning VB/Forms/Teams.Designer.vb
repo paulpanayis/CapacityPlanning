@@ -102,6 +102,7 @@ Partial Class Teams
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvwPeople.FullRowSelect = True
+        Me.lvwPeople.HideSelection = False
         Me.lvwPeople.Location = New System.Drawing.Point(9, 42)
         Me.lvwPeople.Margin = New System.Windows.Forms.Padding(6)
         Me.lvwPeople.MultiSelect = False
@@ -247,6 +248,7 @@ Partial Class Teams
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvwTeams.FullRowSelect = True
+        Me.lvwTeams.HideSelection = False
         Me.lvwTeams.Location = New System.Drawing.Point(9, 9)
         Me.lvwTeams.Margin = New System.Windows.Forms.Padding(6)
         Me.lvwTeams.MultiSelect = False
@@ -405,6 +407,7 @@ Partial Class Teams
         Me.ClientSize = New System.Drawing.Size(842, 645)
         Me.Controls.Add(Me.tabMain)
         Me.Controls.Add(Me.pnlBottomBar)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Teams"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Teams"

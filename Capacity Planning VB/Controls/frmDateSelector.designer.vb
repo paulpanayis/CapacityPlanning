@@ -53,7 +53,7 @@ Partial Class frmDateSelector
         Me.cboMonth.Items.AddRange(New Object() {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"})
         Me.cboMonth.Location = New System.Drawing.Point(120, 12)
         Me.cboMonth.Name = "cboMonth"
-        Me.cboMonth.Size = New System.Drawing.Size(150, 220)
+        Me.cboMonth.Size = New System.Drawing.Size(150, 260)
         Me.cboMonth.TabIndex = 1
         '
         'cmdOK
@@ -62,7 +62,7 @@ Partial Class frmDateSelector
         Me.cmdOK.BackColor = System.Drawing.SystemColors.Control
         Me.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdOK.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdOK.Location = New System.Drawing.Point(428, 252)
+        Me.cmdOK.Location = New System.Drawing.Point(497, 292)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 5
@@ -76,9 +76,9 @@ Partial Class frmDateSelector
         Me.lblDate.BackColor = System.Drawing.Color.Transparent
         Me.lblDate.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDate.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lblDate.Location = New System.Drawing.Point(12, 253)
+        Me.lblDate.Location = New System.Drawing.Point(12, 293)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(247, 20)
+        Me.lblDate.Size = New System.Drawing.Size(316, 20)
         Me.lblDate.TabIndex = 28
         '
         'cmdCancel
@@ -87,7 +87,7 @@ Partial Class frmDateSelector
         Me.cmdCancel.BackColor = System.Drawing.SystemColors.Control
         Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdCancel.Location = New System.Drawing.Point(347, 252)
+        Me.cmdCancel.Location = New System.Drawing.Point(416, 292)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 4
@@ -99,7 +99,7 @@ Partial Class frmDateSelector
         Me.cmdToday.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdToday.BackColor = System.Drawing.SystemColors.Control
         Me.cmdToday.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdToday.Location = New System.Drawing.Point(265, 252)
+        Me.cmdToday.Location = New System.Drawing.Point(334, 292)
         Me.cmdToday.Name = "cmdToday"
         Me.cmdToday.Size = New System.Drawing.Size(75, 23)
         Me.cmdToday.TabIndex = 3
@@ -123,7 +123,7 @@ Partial Class frmDateSelector
         Me.MonthView.Location = New System.Drawing.Point(276, 13)
         Me.MonthView.Name = "MonthView"
         Me.MonthView.OtherMonthColour = System.Drawing.Color.Gray
-        Me.MonthView.Size = New System.Drawing.Size(233, 219)
+        Me.MonthView.Size = New System.Drawing.Size(302, 259)
         Me.MonthView.TabIndex = 2
         Me.MonthView.ThisMonthColour = System.Drawing.Color.White
         Me.MonthView.TodayColour = System.Drawing.Color.RoyalBlue
@@ -135,7 +135,7 @@ Partial Class frmDateSelector
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.cmdCancel
-        Me.ClientSize = New System.Drawing.Size(515, 287)
+        Me.ClientSize = New System.Drawing.Size(584, 327)
         Me.ControlBox = False
         Me.Controls.Add(Me.cmdToday)
         Me.Controls.Add(Me.lblDate)

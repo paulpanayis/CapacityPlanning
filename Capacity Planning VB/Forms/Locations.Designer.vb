@@ -174,6 +174,7 @@ Partial Class Locations
         Me.Controls.Add(Me.lvwLocations)
         Me.Controls.Add(Me.lblLocationsTitle)
         Me.Controls.Add(Me.pnlBottomBar)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Locations"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Locations"

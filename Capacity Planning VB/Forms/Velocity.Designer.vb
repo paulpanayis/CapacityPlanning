@@ -22,6 +22,7 @@ Partial Class Velocity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Velocity))
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
         Me.lblCopyright = New System.Windows.Forms.Label()
         Me.cmdClose = New System.Windows.Forms.Button()
@@ -73,6 +74,7 @@ Partial Class Velocity
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(885, 543)
         Me.Controls.Add(Me.pnlBottomBar)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Velocity"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Velocity"

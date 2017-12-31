@@ -135,6 +135,7 @@ Partial Class About
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.picCalendar)
         Me.Controls.Add(Me.pnlBottomBar)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(6)
         Me.MaximizeBox = False
         Me.MinimizeBox = False

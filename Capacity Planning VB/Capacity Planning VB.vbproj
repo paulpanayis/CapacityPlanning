@@ -130,7 +130,16 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Database\clsSQLDB.vb" />
-    <Compile Include="Database\dbCommon.vb" />
+    <Compile Include="Database\dbAbout.vb" />
+    <Compile Include="Database\dbCapacityPlans.vb" />
+    <Compile Include="Database\dbHoliday.vb" />
+    <Compile Include="Database\dbLocations.vb" />
+    <Compile Include="Database\dbMainMenu.vb" />
+    <Compile Include="Database\dbReports.vb" />
+    <Compile Include="Database\dbSprints.vb" />
+    <Compile Include="Database\dbTeams.vb" />
+    <Compile Include="Database\dbVelocity.vb" />
+    <Compile Include="Database\dbYearView.vb" />
     <Compile Include="Forms\About.designer.vb">
       <DependentUpon>About.vb</DependentUpon>
     </Compile>
@@ -165,6 +174,12 @@
       <DependentUpon>Sprints.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\Sprints.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SprintsAdd.Designer.vb">
+      <DependentUpon>SprintsAdd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SprintsAdd.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Teams.Designer.vb">
@@ -254,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Sprints.resx">
       <DependentUpon>Sprints.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SprintsAdd.resx">
+      <DependentUpon>SprintsAdd.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Teams.resx">
       <DependentUpon>Teams.vb</DependentUpon>

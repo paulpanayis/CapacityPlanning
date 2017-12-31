@@ -23,6 +23,7 @@ Partial Class YearView
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(YearView))
         Me.pnlTopBar = New System.Windows.Forms.Panel()
         Me.cmdYearUp = New System.Windows.Forms.Button()
         Me.cmdYearDown = New System.Windows.Forms.Button()
@@ -161,6 +162,7 @@ Partial Class YearView
         Me.Controls.Add(Me.pnlBottomBar)
         Me.Controls.Add(Me.pnlTopBar)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "YearView"
         Me.Padding = New System.Windows.Forms.Padding(1)
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show

@@ -1,3 +1,0 @@
-﻿Module dbCommon
-
-End Module

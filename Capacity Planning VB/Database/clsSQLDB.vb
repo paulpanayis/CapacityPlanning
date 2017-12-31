@@ -94,15 +94,15 @@ CloseDatabase_ERROR:
     End Function
 
     Public Sub BeginTrans()
-        Execute("START TRANSACTION")
+        Execute("BEGIN TRAN")
     End Sub
 
     Public Sub CommitTrans()
-        Execute("COMMIT")
+        Execute("COMMIT TRAN")
     End Sub
 
     Public Sub Rollback()
-        Execute("ROLLBACK")
+        Execute("ROLLBACK TRAN")
     End Sub
 
     Private Sub TerminateApp()

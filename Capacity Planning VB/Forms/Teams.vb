@@ -251,7 +251,7 @@ Public Class Teams
         If Update_Person(mintPersonID, mstrPersonName, mintPersonTeamID) = False Then
             MsgBox("There was a problem trying to update the person's details")
         Else
-            ' saved sucessfully
+            ' saved successfully
 
             ' get the team id
             intTeamID = maryTeams(cboTeams.SelectedIndex)
