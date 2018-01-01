@@ -4,7 +4,6 @@ Public Class ctlYearView
     Public Event DateClick(ByVal sender As Object, ByVal e As Date)
     Public Event DateOver(ByVal sender As Object, ByVal e As Date)
 
-    Private maryDiaryItems(,) As Double
     Private maryDateCoordinates(,) As Object
     Private maryDateUserAreaCoordinates(,) As Object
     Private mintMouseX As Integer = 0
@@ -19,6 +18,11 @@ Public Class ctlYearView
 
         ' Fill our control with the specified gradient
         DrawYear(g)
+    End Sub
+
+    Private maryDiaryItems(,) As Double ' date (.ToOADate), value
+    Public Sub DiaryItemArray(ByVal aryX(,) As Double)
+        maryDiaryItems = aryX.Clone
     End Sub
 
     Private Sub DrawYear(ByVal g As Graphics)
@@ -47,6 +51,7 @@ Public Class ctlYearView
         Dim lngColumn As Long
         Dim clrColour As Color
         Dim dteDrawingDate As Date
+        Dim intDiaryItemType As Integer
         Dim blnValidDate As Boolean
         Dim blnHitBox As Boolean
 
@@ -62,8 +67,20 @@ Public Class ctlYearView
         Dim textSize As SizeF
         Dim myString As String
 
-        'ReDim maryDateCoordinates(0 To 5, 0 To 42)
-        'ReDim maryDateUserAreaCoordinates(0 To 5, 0 To 42)
+        'ReDim maryDiaryItems(0 To 5, 0 To 2)
+        'maryDiaryItems(0, 1) = CDate("5 Feb 2018").ToOADate
+        'maryDiaryItems(0, 2) = 1
+        'maryDiaryItems(1, 1) = CDate("31 Mar 2018").ToOADate
+        'maryDiaryItems(1, 2) = 2
+        'maryDiaryItems(2, 1) = CDate("18 Mar 2018").ToOADate
+        'maryDiaryItems(2, 2) = 3
+        'maryDiaryItems(3, 1) = CDate("28 Mar 2018").ToOADate
+        'maryDiaryItems(3, 2) = 4
+        'maryDiaryItems(4, 1) = CDate("10 Feb 2018").ToOADate
+        'maryDiaryItems(4, 2) = 5
+        'maryDiaryItems(5, 1) = CDate("15 Feb 2018").ToOADate
+        'maryDiaryItems(5, 2) = 6
+
         mblnValidDate = False
         g.Clear(Me.BackColor)
         myForeBrush = New SolidBrush(Me.ForeColor)
@@ -184,11 +201,29 @@ Public Class ctlYearView
                     End If
                 End If
 
-                ' now draw in the client area @ 25% opacity
+                ' now draw in the client area
                 If blnValidDate Then
-                    g.FillRectangle(New SolidBrush(Color.FromArgb(25, Color.Green)), intClientLeft, intClientTop, intClientWidth, intClientHeight)
+                    intDiaryItemType = GetDiaryItemValue(dteDrawingDate.ToOADate) ' will default to zero
+                    If intDiaryItemType <> 0 Then
+                        Select Case intDiaryItemType
+                            Case 1
+                                clrColour = Colour1
+                            Case 2
+                                clrColour = Colour2
+                            Case 3
+                                clrColour = Colour3
+                            Case 4
+                                clrColour = Colour4
+                            Case 5
+                                clrColour = Colour5
+                            Case 6
+                                clrColour = Colour6
+                        End Select
+                        g.FillRectangle(New SolidBrush(clrColour), intClientLeft, intClientTop, intClientWidth, intClientHeight)
+                    Else
+                        g.FillRectangle(New SolidBrush(Color.FromArgb(25, Color.Green)), intClientLeft, intClientTop, intClientWidth, intClientHeight)
+                    End If
                 End If
-
 
                 ' now cut out the outline so each square is separate
                 g.DrawRectangle(New Pen(Me.BackColor), intLeft, intTop, intWidth, intHeight)
@@ -412,4 +447,21 @@ Public Class ctlYearView
         mintMouseY = 0
         mblnValidDate = False
     End Sub
+
+    Private Function GetDiaryItemValue(ByVal dblDate As Double) As Integer
+        Dim intReturn As Integer
+        Dim lngPointer As Long
+
+        intReturn = 0
+        If Not ((maryDiaryItems Is Nothing) OrElse (maryDiaryItems.Length = 0) OrElse (maryDiaryItems.GetValue(0, 1) Is Nothing)) Then
+            For lngPointer = maryDiaryItems.GetLowerBound(0) To maryDiaryItems.GetUpperBound(0)
+                If maryDiaryItems(lngPointer, 1) = dblDate Then
+                    intReturn = maryDiaryItems(lngPointer, 2)
+                    Exit For
+                End If
+            Next
+        End If
+        Return intReturn
+    End Function
+
 End Class
