@@ -171,7 +171,7 @@ Public Class ctlYearView
                     mblnValidDate = True
                 End If
 
-                If dteDrawingDate = Now.Date Then
+                If blnValidDate And dteDrawingDate = Now.Date Then
                     g.FillRectangle(New SolidBrush(TodayColour), intLeft, intTop, intWidth, intHeight)
 
                     If blnValidDate Then

@@ -22,20 +22,17 @@ Partial Class YearView
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(YearView))
         Me.pnlTopBar = New System.Windows.Forms.Panel()
         Me.cmdYearUp = New System.Windows.Forms.Button()
         Me.cmdYearDown = New System.Windows.Forms.Button()
         Me.lblYear = New System.Windows.Forms.Label()
-        Me.TblTeamBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
         Me.cmdClose = New System.Windows.Forms.Button()
         Me.lblCopyright = New System.Windows.Forms.Label()
         Me.ctlYearView = New Capacity_Planning.ctlYearView()
         Me.pnlOnRight = New System.Windows.Forms.Panel()
         Me.pnlTopBar.SuspendLayout()
-        CType(Me.TblTeamBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -86,7 +83,7 @@ Partial Class YearView
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Controls.Add(Me.lblCopyright)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 530)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(1, 532)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
         Me.pnlBottomBar.Size = New System.Drawing.Size(1130, 57)
@@ -137,7 +134,7 @@ Partial Class YearView
         Me.ctlYearView.Name = "ctlYearView"
         Me.ctlYearView.OtherYearWeekdayColour = System.Drawing.Color.LightGray
         Me.ctlYearView.OtherYearWeekendColour = System.Drawing.Color.LightSteelBlue
-        Me.ctlYearView.Size = New System.Drawing.Size(939, 499)
+        Me.ctlYearView.Size = New System.Drawing.Size(939, 501)
         Me.ctlYearView.TabIndex = 61
         Me.ctlYearView.ThisYearWeekdayColour = System.Drawing.Color.White
         Me.ctlYearView.ThisYearWeekendColour = System.Drawing.Color.PaleGoldenrod
@@ -149,14 +146,14 @@ Partial Class YearView
         Me.pnlOnRight.Dock = System.Windows.Forms.DockStyle.Right
         Me.pnlOnRight.Location = New System.Drawing.Point(940, 31)
         Me.pnlOnRight.Name = "pnlOnRight"
-        Me.pnlOnRight.Size = New System.Drawing.Size(191, 499)
+        Me.pnlOnRight.Size = New System.Drawing.Size(191, 501)
         Me.pnlOnRight.TabIndex = 62
         '
         'YearView
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1132, 588)
+        Me.ClientSize = New System.Drawing.Size(1132, 590)
         Me.Controls.Add(Me.ctlYearView)
         Me.Controls.Add(Me.pnlOnRight)
         Me.Controls.Add(Me.pnlBottomBar)
@@ -169,7 +166,6 @@ Partial Class YearView
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Year Calendar 2017"
         Me.pnlTopBar.ResumeLayout(False)
-        CType(Me.TblTeamBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBottomBar.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -179,7 +175,6 @@ Partial Class YearView
     Friend WithEvents cmdYearUp As Button
     Friend WithEvents cmdYearDown As Button
     Friend WithEvents lblYear As Label
-    Friend WithEvents TblTeamBindingSource As BindingSource
     Friend WithEvents pnlBottomBar As Panel
     Friend WithEvents lblCopyright As Label
     Friend WithEvents ctlYearView As ctlYearView
