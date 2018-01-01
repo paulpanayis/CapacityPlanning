@@ -16,7 +16,7 @@
 
     Private Sub cmdPic_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblText.MouseLeave, lblHeader.MouseLeave, Me.MouseLeave, pnlControl.MouseLeave, cmdPic.MouseLeave
         cmdPic.BackColor = Color.Transparent
-        Me.BackColor = Color.White
+        Me.BackColor = Color.Transparent
     End Sub
 
     Private mblnSelected As Boolean = False

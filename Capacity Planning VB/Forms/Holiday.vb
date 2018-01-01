@@ -20,7 +20,7 @@ Public Class Holiday
         gc.FillRectangle(linGrBrush, pevent.ClipRectangle)
     End Sub
 
-    Private Sub pnlBottomBar_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) 
+    Private Sub pnlBottomBar_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlBottomBar.Paint
         Dim x, y, w, h As Integer
         With e.ClipRectangle
             x = 0

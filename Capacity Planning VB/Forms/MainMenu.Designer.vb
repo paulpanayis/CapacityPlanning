@@ -34,7 +34,6 @@ Partial Class MainMenu
         Me.cmdClose = New System.Windows.Forms.Button()
         Me.ctlReport = New Capacity_Planning.ctlBigButton()
         Me.ctlLocations = New Capacity_Planning.ctlBigButton()
-        Me.ctlOptions = New Capacity_Planning.ctlBigButton()
         Me.lblTeamsTitle = New System.Windows.Forms.Label()
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
@@ -117,7 +116,7 @@ Partial Class MainMenu
         Me.ctlCalendar.Size = New System.Drawing.Size(271, 86)
         Me.ctlCalendar.TabIndex = 3
         Me.ctlCalendar.TextDescription = "Enter holidays and other absences for both teams and individuals"
-        Me.ctlCalendar.TextTitle = "Calendar"
+        Me.ctlCalendar.TextTitle = "Holidays / Sickness"
         '
         'pnlBottomBar
         '
@@ -205,41 +204,24 @@ Partial Class MainMenu
         Me.ctlLocations.TextDescription = "Setup Locations for your teams. Team events and holidays are by Location"
         Me.ctlLocations.TextTitle = "Locations"
         '
-        'ctlOptions
-        '
-        Me.ctlOptions.BackColor = System.Drawing.Color.Transparent
-        Me.ctlOptions.ColourHighlight = System.Drawing.Color.Lavender
-        Me.ctlOptions.Image = CType(resources.GetObject("ctlOptions.Image"), System.Drawing.Image)
-        Me.ctlOptions.Location = New System.Drawing.Point(641, 271)
-        Me.ctlOptions.Margin = New System.Windows.Forms.Padding(18)
-        Me.ctlOptions.MaximumSize = New System.Drawing.Size(271, 86)
-        Me.ctlOptions.MinimumSize = New System.Drawing.Size(271, 86)
-        Me.ctlOptions.Name = "ctlOptions"
-        Me.ctlOptions.Selected = False
-        Me.ctlOptions.Size = New System.Drawing.Size(271, 86)
-        Me.ctlOptions.TabIndex = 8
-        Me.ctlOptions.TextDescription = "Select how you'd like to use the Capacity Planning Tool"
-        Me.ctlOptions.TextTitle = "Options"
-        Me.ctlOptions.Visible = False
-        '
         'lblTeamsTitle
         '
         Me.lblTeamsTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblTeamsTitle.BackColor = System.Drawing.Color.Transparent
         Me.lblTeamsTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTeamsTitle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(178, Byte), Integer))
-        Me.lblTeamsTitle.Location = New System.Drawing.Point(390, 296)
+        Me.lblTeamsTitle.Location = New System.Drawing.Point(431, 296)
         Me.lblTeamsTitle.Name = "lblTeamsTitle"
-        Me.lblTeamsTitle.Size = New System.Drawing.Size(315, 134)
+        Me.lblTeamsTitle.Size = New System.Drawing.Size(493, 61)
         Me.lblTeamsTitle.TabIndex = 76
         Me.lblTeamsTitle.Text = "capacity planning tool"
+        Me.lblTeamsTitle.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'MainMenu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(924, 445)
-        Me.Controls.Add(Me.ctlOptions)
         Me.Controls.Add(Me.lblTeamsTitle)
         Me.Controls.Add(Me.ctlLocations)
         Me.Controls.Add(Me.ctlReport)
@@ -270,6 +252,5 @@ Partial Class MainMenu
     Friend WithEvents ctlReport As ctlBigButton
     Friend WithEvents ctlLocations As ctlBigButton
     Friend WithEvents lblCopyright As Label
-    Friend WithEvents ctlOptions As ctlBigButton
     Friend WithEvents lblTeamsTitle As Label
 End Class

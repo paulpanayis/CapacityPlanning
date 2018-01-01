@@ -90,11 +90,11 @@ Partial Class About
         '
         Me.lblTitle.BackColor = System.Drawing.Color.Transparent
         Me.lblTitle.Font = New System.Drawing.Font("Calibri", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTitle.Location = New System.Drawing.Point(319, 12)
+        Me.lblTitle.Location = New System.Drawing.Point(319, 32)
         Me.lblTitle.Margin = New System.Windows.Forms.Padding(3)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Padding = New System.Windows.Forms.Padding(3)
-        Me.lblTitle.Size = New System.Drawing.Size(393, 91)
+        Me.lblTitle.Size = New System.Drawing.Size(393, 59)
         Me.lblTitle.TabIndex = 60
         Me.lblTitle.Text = "Capacity Planning Tool"
         Me.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -103,11 +103,11 @@ Partial Class About
         '
         Me.lblSubTitle.BackColor = System.Drawing.Color.Transparent
         Me.lblSubTitle.Font = New System.Drawing.Font("Calibri", 16.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSubTitle.Location = New System.Drawing.Point(319, 109)
+        Me.lblSubTitle.Location = New System.Drawing.Point(321, 97)
         Me.lblSubTitle.Margin = New System.Windows.Forms.Padding(3)
         Me.lblSubTitle.Name = "lblSubTitle"
         Me.lblSubTitle.Padding = New System.Windows.Forms.Padding(3)
-        Me.lblSubTitle.Size = New System.Drawing.Size(393, 78)
+        Me.lblSubTitle.Size = New System.Drawing.Size(393, 51)
         Me.lblSubTitle.TabIndex = 61
         Me.lblSubTitle.Text = "for teams working in Sprints"
         Me.lblSubTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

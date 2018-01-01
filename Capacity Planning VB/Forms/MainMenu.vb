@@ -39,8 +39,8 @@
     End Sub
 
     Private Sub ctlHolidays_Load() Handles ctlCalendar.Clicked
-        YearView.Visible = False
-        YearView.Show(Me)
+        Holiday.Visible = False
+        Holiday.Show(Me)
     End Sub
 
     Private Sub ctlCapacityPlans_Load() Handles ctlCapacityPlan.Clicked
@@ -52,4 +52,5 @@
         Locations.Visible = False
         Locations.Show(Me)
     End Sub
+
 End Class

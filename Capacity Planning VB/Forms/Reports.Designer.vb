@@ -38,10 +38,10 @@ Partial Class Reports
         Me.PrintDoc = New System.Drawing.Printing.PrintDocument()
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
         Me.lblCopyright = New System.Windows.Forms.Label()
+        Me.cmdClose = New System.Windows.Forms.Button()
         Me.ctlPrint = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlExcel = New Capacity_Planning.ctlRichButtonSmall()
         Me.ctlReport = New Capacity_Planning.ctlRichButtonSmall()
-        Me.cmdClose = New System.Windows.Forms.Button()
         Me.fraReport.SuspendLayout()
         Me.pnlConditionDateTo.SuspendLayout()
         Me.pnlConditionDateFrom.SuspendLayout()
@@ -69,6 +69,7 @@ Partial Class Reports
         Me.fraReport.Controls.Add(Me.pnlConditionDateTo)
         Me.fraReport.Controls.Add(Me.pnlConditionDateFrom)
         Me.fraReport.Controls.Add(Me.lblReportDescription)
+        Me.fraReport.Controls.Add(Me.ctlReport)
         Me.fraReport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.fraReport.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.fraReport.Location = New System.Drawing.Point(467, 23)
@@ -222,7 +223,6 @@ Partial Class Reports
         Me.pnlBottomBar.Controls.Add(Me.lblCopyright)
         Me.pnlBottomBar.Controls.Add(Me.ctlPrint)
         Me.pnlBottomBar.Controls.Add(Me.ctlExcel)
-        Me.pnlBottomBar.Controls.Add(Me.ctlReport)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottomBar.Location = New System.Drawing.Point(0, 592)
@@ -243,6 +243,20 @@ Partial Class Reports
         Me.lblCopyright.TabIndex = 62
         Me.lblCopyright.Text = "© Paul Panayis, 2018"
         Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'cmdClose
+        '
+        Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
+        Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.cmdClose.Location = New System.Drawing.Point(895, 19)
+        Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
+        Me.cmdClose.Name = "cmdClose"
+        Me.cmdClose.Size = New System.Drawing.Size(75, 23)
+        Me.cmdClose.TabIndex = 3
+        Me.cmdClose.Text = "Close"
+        Me.cmdClose.UseVisualStyleBackColor = False
         '
         'ctlPrint
         '
@@ -278,11 +292,12 @@ Partial Class Reports
         '
         'ctlReport
         '
-        Me.ctlReport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ctlReport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ctlReport.BackColor = System.Drawing.Color.Transparent
         Me.ctlReport.ColourHighlight = System.Drawing.Color.Lavender
+        Me.ctlReport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ctlReport.Image = CType(resources.GetObject("ctlReport.Image"), System.Drawing.Image)
-        Me.ctlReport.Location = New System.Drawing.Point(485, 7)
+        Me.ctlReport.Location = New System.Drawing.Point(385, 239)
         Me.ctlReport.MaximumSize = New System.Drawing.Size(0, 38)
         Me.ctlReport.MinimumSize = New System.Drawing.Size(100, 38)
         Me.ctlReport.Name = "ctlReport"
@@ -291,20 +306,6 @@ Partial Class Reports
         Me.ctlReport.TabIndex = 4
         Me.ctlReport.TextDescription = "Report"
         Me.ctlReport.TextTitle = "Run"
-        '
-        'cmdClose
-        '
-        Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(895, 19)
-        Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
-        Me.cmdClose.Name = "cmdClose"
-        Me.cmdClose.Size = New System.Drawing.Size(75, 23)
-        Me.cmdClose.TabIndex = 3
-        Me.cmdClose.Text = "Close"
-        Me.cmdClose.UseVisualStyleBackColor = False
         '
         'Reports
         '
