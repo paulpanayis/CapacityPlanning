@@ -349,8 +349,6 @@ Public Class Sprints
             txtSprintNumber.Text = CInt(txtSprintNumber.Text)
             mblnLoadingSprints = False
 
-            MsgBox("Save Sprint")
-
             intSprintNumber = txtSprintNumber.Text
             strStartDate = cmdStartDate.Text
             strEndDate = cmdEndDate.Text

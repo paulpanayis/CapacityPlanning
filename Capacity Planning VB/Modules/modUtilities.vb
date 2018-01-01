@@ -296,6 +296,7 @@ Module modUtilities
         On Error Resume Next
         txtText.SelectionStart = 0
         txtText.SelectionLength = Len(txtText.Text)
+        txtText.Select()
     End Sub
 
     Public Sub Highlight(ByRef cboText As ComboBox)
