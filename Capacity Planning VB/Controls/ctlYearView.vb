@@ -67,19 +67,19 @@ Public Class ctlYearView
         Dim textSize As SizeF
         Dim myString As String
 
-        'ReDim maryDiaryItems(0 To 5, 0 To 2)
-        'maryDiaryItems(0, 1) = CDate("5 Feb 2018").ToOADate
-        'maryDiaryItems(0, 2) = 1
-        'maryDiaryItems(1, 1) = CDate("31 Mar 2018").ToOADate
-        'maryDiaryItems(1, 2) = 2
-        'maryDiaryItems(2, 1) = CDate("18 Mar 2018").ToOADate
-        'maryDiaryItems(2, 2) = 3
-        'maryDiaryItems(3, 1) = CDate("28 Mar 2018").ToOADate
-        'maryDiaryItems(3, 2) = 4
-        'maryDiaryItems(4, 1) = CDate("10 Feb 2018").ToOADate
-        'maryDiaryItems(4, 2) = 5
-        'maryDiaryItems(5, 1) = CDate("15 Feb 2018").ToOADate
-        'maryDiaryItems(5, 2) = 6
+        ReDim maryDiaryItems(0 To 5, 0 To 2)
+        maryDiaryItems(0, 1) = CDate("5 Feb 2018").ToOADate
+        maryDiaryItems(0, 2) = 1
+        maryDiaryItems(1, 1) = CDate("31 Mar 2018").ToOADate
+        maryDiaryItems(1, 2) = 2
+        maryDiaryItems(2, 1) = CDate("18 Mar 2018").ToOADate
+        maryDiaryItems(2, 2) = 3
+        maryDiaryItems(3, 1) = CDate("28 Mar 2018").ToOADate
+        maryDiaryItems(3, 2) = 4
+        maryDiaryItems(4, 1) = CDate("10 Feb 2018").ToOADate
+        maryDiaryItems(4, 2) = 5
+        maryDiaryItems(5, 1) = CDate("15 Feb 2018").ToOADate
+        maryDiaryItems(5, 2) = 6
 
         mblnValidDate = False
         g.Clear(Me.BackColor)
@@ -176,9 +176,9 @@ Public Class ctlYearView
                 ' get custom marker box sizes
                 textSize = g.MeasureString("88", mySmallFont)
                 intClientLeft = lngLeft + ((lngColumn - 1) * (dblXDivision)) + textSize.Width
-                intClientTop = lngTop + ((lngRow - 1) * dblYDivision) + 4
-                intClientWidth = dblXDivision - textSize.Width - 6
-                intClientHeight = dblYDivision - 6
+                intClientTop = lngTop + ((lngRow - 1) * dblYDivision) + 2
+                intClientWidth = dblXDivision - textSize.Width - 2
+                intClientHeight = dblYDivision - 4
 
 
                 If blnValidDate And (mintMouseX >= intLeft And mintMouseX <= intLeft + intWidth) And (mintMouseY >= intTop And mintMouseY <= intTop + intHeight) Then
