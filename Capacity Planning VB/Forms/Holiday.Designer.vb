@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Holiday
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,14 +20,15 @@ Partial Class Holiday
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Holiday))
         Me.pnlBottomBar = New System.Windows.Forms.Panel()
+        Me.cmdView = New System.Windows.Forms.Button()
+        Me.cmdEdit = New System.Windows.Forms.Button()
         Me.lblHalfDay = New System.Windows.Forms.Label()
         Me.ctlHalfDay = New Capacity_Planning.ctlSwitch()
-        Me.lblWriteMode = New System.Windows.Forms.Label()
-        Me.ctlEditMode = New Capacity_Planning.ctlSwitch()
         Me.lblShowType6 = New System.Windows.Forms.Label()
         Me.ctlType6 = New Capacity_Planning.ctlSwitch()
         Me.lblShowType5 = New System.Windows.Forms.Label()
@@ -48,16 +49,17 @@ Partial Class Holiday
         Me.lblTeam = New System.Windows.Forms.Label()
         Me.lblPerson = New System.Windows.Forms.Label()
         Me.ctlYearView = New Capacity_Planning.ctlYearView()
+        Me.tmrShowCalendar = New System.Windows.Forms.Timer(Me.components)
         Me.pnlBottomBar.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlBottomBar
         '
         Me.pnlBottomBar.BackColor = System.Drawing.Color.Transparent
+        Me.pnlBottomBar.Controls.Add(Me.cmdView)
+        Me.pnlBottomBar.Controls.Add(Me.cmdEdit)
         Me.pnlBottomBar.Controls.Add(Me.lblHalfDay)
         Me.pnlBottomBar.Controls.Add(Me.ctlHalfDay)
-        Me.pnlBottomBar.Controls.Add(Me.lblWriteMode)
-        Me.pnlBottomBar.Controls.Add(Me.ctlEditMode)
         Me.pnlBottomBar.Controls.Add(Me.lblShowType6)
         Me.pnlBottomBar.Controls.Add(Me.ctlType6)
         Me.pnlBottomBar.Controls.Add(Me.lblShowType5)
@@ -72,224 +74,231 @@ Partial Class Holiday
         Me.pnlBottomBar.Controls.Add(Me.ctlType1)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlBottomBar.Location = New System.Drawing.Point(878, 0)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(952, 0)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
         Me.pnlBottomBar.Padding = New System.Windows.Forms.Padding(6)
-        Me.pnlBottomBar.Size = New System.Drawing.Size(107, 720)
+        Me.pnlBottomBar.Size = New System.Drawing.Size(107, 641)
         Me.pnlBottomBar.TabIndex = 59
+        '
+        'cmdView
+        '
+        Me.cmdView.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdView.BackColor = System.Drawing.SystemColors.Control
+        Me.cmdView.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.cmdView.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.cmdView.Location = New System.Drawing.Point(17, 15)
+        Me.cmdView.Margin = New System.Windows.Forms.Padding(6)
+        Me.cmdView.Name = "cmdView"
+        Me.cmdView.Size = New System.Drawing.Size(75, 23)
+        Me.cmdView.TabIndex = 124
+        Me.cmdView.Text = "View"
+        Me.cmdView.UseVisualStyleBackColor = False
+        '
+        'cmdEdit
+        '
+        Me.cmdEdit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdEdit.BackColor = System.Drawing.SystemColors.Control
+        Me.cmdEdit.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.cmdEdit.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.cmdEdit.Location = New System.Drawing.Point(17, 50)
+        Me.cmdEdit.Margin = New System.Windows.Forms.Padding(6)
+        Me.cmdEdit.Name = "cmdEdit"
+        Me.cmdEdit.Size = New System.Drawing.Size(75, 23)
+        Me.cmdEdit.TabIndex = 121
+        Me.cmdEdit.Text = "Edit"
+        Me.cmdEdit.UseVisualStyleBackColor = False
         '
         'lblHalfDay
         '
         Me.lblHalfDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblHalfDay.BackColor = System.Drawing.Color.Transparent
-        Me.lblHalfDay.Location = New System.Drawing.Point(6, 73)
+        Me.lblHalfDay.Location = New System.Drawing.Point(9, 470)
         Me.lblHalfDay.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblHalfDay.Name = "lblHalfDay"
         Me.lblHalfDay.Size = New System.Drawing.Size(89, 13)
         Me.lblHalfDay.TabIndex = 120
-        Me.lblHalfDay.Text = "HalfDay"
+        Me.lblHalfDay.Text = "Half Day"
+        Me.lblHalfDay.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.lblHalfDay.Visible = False
         '
         'ctlHalfDay
         '
         Me.ctlHalfDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ctlHalfDay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlHalfDay.Location = New System.Drawing.Point(6, 92)
+        Me.ctlHalfDay.Location = New System.Drawing.Point(32, 486)
         Me.ctlHalfDay.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlHalfDay.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlHalfDay.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlHalfDay.Name = "ctlHalfDay"
-        Me.ctlHalfDay.Size = New System.Drawing.Size(86, 30)
-        Me.ctlHalfDay.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.OrangeYesWhiteNo
+        Me.ctlHalfDay.Size = New System.Drawing.Size(43, 30)
+        Me.ctlHalfDay.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.ButtonGreenTick
         Me.ctlHalfDay.TabIndex = 119
+        Me.ctlHalfDay.TextColour = System.Drawing.Color.White
         Me.ctlHalfDay.Value = False
-        '
-        'lblWriteMode
-        '
-        Me.lblWriteMode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblWriteMode.BackColor = System.Drawing.Color.Transparent
-        Me.lblWriteMode.Location = New System.Drawing.Point(6, 15)
-        Me.lblWriteMode.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
-        Me.lblWriteMode.Name = "lblWriteMode"
-        Me.lblWriteMode.Size = New System.Drawing.Size(89, 13)
-        Me.lblWriteMode.TabIndex = 118
-        Me.lblWriteMode.Text = "Edit Mode"
-        '
-        'ctlEditMode
-        '
-        Me.ctlEditMode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ctlEditMode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlEditMode.Location = New System.Drawing.Point(6, 34)
-        Me.ctlEditMode.Margin = New System.Windows.Forms.Padding(0)
-        Me.ctlEditMode.MaximumSize = New System.Drawing.Size(86, 30)
-        Me.ctlEditMode.MinimumSize = New System.Drawing.Size(43, 30)
-        Me.ctlEditMode.Name = "ctlEditMode"
-        Me.ctlEditMode.Size = New System.Drawing.Size(86, 30)
-        Me.ctlEditMode.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.GreenYesWhiteNo
-        Me.ctlEditMode.TabIndex = 117
-        Me.ctlEditMode.Value = False
+        Me.ctlHalfDay.Visible = False
         '
         'lblShowType6
         '
         Me.lblShowType6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType6.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType6.Location = New System.Drawing.Point(6, 445)
+        Me.lblShowType6.Location = New System.Drawing.Point(9, 396)
         Me.lblShowType6.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType6.Name = "lblShowType6"
         Me.lblShowType6.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType6.TabIndex = 116
         Me.lblShowType6.Text = "Other"
-        Me.lblShowType6.Visible = False
         '
         'ctlType6
         '
         Me.ctlType6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType6.BackColor = System.Drawing.Color.Silver
         Me.ctlType6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType6.Location = New System.Drawing.Point(6, 464)
+        Me.ctlType6.Location = New System.Drawing.Point(9, 415)
         Me.ctlType6.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType6.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType6.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType6.Name = "ctlType6"
         Me.ctlType6.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType6.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType6.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType6.TabIndex = 115
+        Me.ctlType6.TextColour = System.Drawing.Color.White
         Me.ctlType6.Value = True
-        Me.ctlType6.Visible = False
         '
         'lblShowType5
         '
         Me.lblShowType5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType5.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType5.Location = New System.Drawing.Point(6, 387)
+        Me.lblShowType5.Location = New System.Drawing.Point(9, 338)
         Me.lblShowType5.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType5.Name = "lblShowType5"
         Me.lblShowType5.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType5.TabIndex = 114
         Me.lblShowType5.Text = "Parental"
-        Me.lblShowType5.Visible = False
         '
         'ctlType5
         '
         Me.ctlType5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType5.BackColor = System.Drawing.Color.Pink
         Me.ctlType5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType5.Location = New System.Drawing.Point(6, 406)
+        Me.ctlType5.Location = New System.Drawing.Point(9, 357)
         Me.ctlType5.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType5.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType5.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType5.Name = "ctlType5"
         Me.ctlType5.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType5.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType5.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType5.TabIndex = 113
+        Me.ctlType5.TextColour = System.Drawing.Color.DimGray
         Me.ctlType5.Value = True
-        Me.ctlType5.Visible = False
         '
         'lblShowType4
         '
         Me.lblShowType4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType4.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType4.Location = New System.Drawing.Point(6, 329)
+        Me.lblShowType4.Location = New System.Drawing.Point(9, 280)
         Me.lblShowType4.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType4.Name = "lblShowType4"
         Me.lblShowType4.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType4.TabIndex = 112
-        Me.lblShowType4.Text = "Other Holiday"
-        Me.lblShowType4.Visible = False
+        Me.lblShowType4.Text = "Holiday - Other"
         '
         'ctlType4
         '
         Me.ctlType4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType4.BackColor = System.Drawing.Color.Goldenrod
         Me.ctlType4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType4.Location = New System.Drawing.Point(6, 348)
+        Me.ctlType4.Location = New System.Drawing.Point(9, 299)
         Me.ctlType4.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType4.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType4.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType4.Name = "ctlType4"
         Me.ctlType4.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType4.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType4.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType4.TabIndex = 111
+        Me.ctlType4.TextColour = System.Drawing.Color.White
         Me.ctlType4.Value = True
-        Me.ctlType4.Visible = False
         '
         'lblShowType3
         '
         Me.lblShowType3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType3.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType3.Location = New System.Drawing.Point(6, 271)
+        Me.lblShowType3.Location = New System.Drawing.Point(9, 222)
         Me.lblShowType3.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType3.Name = "lblShowType3"
         Me.lblShowType3.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType3.TabIndex = 110
-        Me.lblShowType3.Text = "Training"
-        Me.lblShowType3.Visible = False
+        Me.lblShowType3.Text = "Training / Study"
         '
         'ctlType3
         '
         Me.ctlType3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType3.BackColor = System.Drawing.Color.Firebrick
         Me.ctlType3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType3.Location = New System.Drawing.Point(6, 290)
+        Me.ctlType3.Location = New System.Drawing.Point(9, 241)
         Me.ctlType3.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType3.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType3.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType3.Name = "ctlType3"
         Me.ctlType3.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType3.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType3.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType3.TabIndex = 109
+        Me.ctlType3.TextColour = System.Drawing.Color.White
         Me.ctlType3.Value = True
-        Me.ctlType3.Visible = False
         '
         'lblShowType2
         '
         Me.lblShowType2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType2.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType2.Location = New System.Drawing.Point(6, 213)
+        Me.lblShowType2.Location = New System.Drawing.Point(9, 164)
         Me.lblShowType2.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType2.Name = "lblShowType2"
         Me.lblShowType2.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType2.TabIndex = 108
         Me.lblShowType2.Text = "Sickness"
-        Me.lblShowType2.Visible = False
         '
         'ctlType2
         '
         Me.ctlType2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType2.BackColor = System.Drawing.Color.MediumAquamarine
         Me.ctlType2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType2.Location = New System.Drawing.Point(6, 232)
+        Me.ctlType2.Location = New System.Drawing.Point(9, 183)
         Me.ctlType2.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType2.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType2.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType2.Name = "ctlType2"
         Me.ctlType2.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType2.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType2.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType2.TabIndex = 107
+        Me.ctlType2.TextColour = System.Drawing.Color.White
         Me.ctlType2.Value = True
-        Me.ctlType2.Visible = False
         '
         'lblShowType1
         '
         Me.lblShowType1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblShowType1.BackColor = System.Drawing.Color.Transparent
-        Me.lblShowType1.Location = New System.Drawing.Point(6, 155)
+        Me.lblShowType1.Location = New System.Drawing.Point(9, 106)
         Me.lblShowType1.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.lblShowType1.Name = "lblShowType1"
         Me.lblShowType1.Size = New System.Drawing.Size(89, 13)
         Me.lblShowType1.TabIndex = 106
         Me.lblShowType1.Text = "Holiday"
-        Me.lblShowType1.Visible = False
         '
         'ctlType1
         '
         Me.ctlType1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ctlType1.BackColor = System.Drawing.Color.CornflowerBlue
         Me.ctlType1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctlType1.Location = New System.Drawing.Point(6, 174)
+        Me.ctlType1.Location = New System.Drawing.Point(9, 125)
         Me.ctlType1.Margin = New System.Windows.Forms.Padding(0)
         Me.ctlType1.MaximumSize = New System.Drawing.Size(86, 30)
         Me.ctlType1.MinimumSize = New System.Drawing.Size(43, 30)
         Me.ctlType1.Name = "ctlType1"
         Me.ctlType1.Size = New System.Drawing.Size(86, 30)
-        Me.ctlType1.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.BlueOnWhiteOff
+        Me.ctlType1.SwitchType = Capacity_Planning.ctlSwitch.enumSwitchType.TransparentOnWhiteOff
         Me.ctlType1.TabIndex = 105
+        Me.ctlType1.TextColour = System.Drawing.Color.White
         Me.ctlType1.Value = True
-        Me.ctlType1.Visible = False
         '
         'cmdClose
         '
@@ -297,7 +306,7 @@ Partial Class Holiday
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(20, 682)
+        Me.cmdClose.Location = New System.Drawing.Point(20, 603)
         Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)
@@ -322,7 +331,7 @@ Partial Class Holiday
         Me.cboPeople.FormattingEnabled = True
         Me.cboPeople.Location = New System.Drawing.Point(473, 28)
         Me.cboPeople.Name = "cboPeople"
-        Me.cboPeople.Size = New System.Drawing.Size(396, 21)
+        Me.cboPeople.Size = New System.Drawing.Size(470, 21)
         Me.cboPeople.TabIndex = 71
         '
         'cboYear
@@ -383,18 +392,22 @@ Partial Class Holiday
         Me.ctlYearView.Name = "ctlYearView"
         Me.ctlYearView.OtherYearWeekdayColour = System.Drawing.Color.LightGray
         Me.ctlYearView.OtherYearWeekendColour = System.Drawing.Color.LightSteelBlue
-        Me.ctlYearView.Size = New System.Drawing.Size(858, 652)
+        Me.ctlYearView.Size = New System.Drawing.Size(932, 573)
         Me.ctlYearView.TabIndex = 105
         Me.ctlYearView.ThisYearWeekdayColour = System.Drawing.Color.White
         Me.ctlYearView.ThisYearWeekendColour = System.Drawing.Color.PaleGoldenrod
         Me.ctlYearView.TodayColour = System.Drawing.Color.RoyalBlue
         Me.ctlYearView.TodayTextColour = System.Drawing.Color.White
         '
+        'tmrShowCalendar
+        '
+        Me.tmrShowCalendar.Interval = 1000
+        '
         'Holiday
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(985, 720)
+        Me.ClientSize = New System.Drawing.Size(1059, 641)
         Me.Controls.Add(Me.ctlYearView)
         Me.Controls.Add(Me.lblPerson)
         Me.Controls.Add(Me.lblTeam)
@@ -406,7 +419,7 @@ Partial Class Holiday
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Holiday"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Holiday"
+        Me.Text = "View Holiday"
         Me.pnlBottomBar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -436,6 +449,7 @@ Partial Class Holiday
     Friend WithEvents ctlType3 As ctlSwitch
     Friend WithEvents lblHalfDay As Label
     Friend WithEvents ctlHalfDay As ctlSwitch
-    Friend WithEvents lblWriteMode As Label
-    Friend WithEvents ctlEditMode As ctlSwitch
+    Friend WithEvents cmdEdit As Button
+    Friend WithEvents cmdView As Button
+    Friend WithEvents tmrShowCalendar As Timer
 End Class
