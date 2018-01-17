@@ -5,12 +5,10 @@
 
         strSQL = "SELECT TeamID ID "
         strSQL = strSQL + ",TeamName Name "
-        strSQL = strSQL + ",ISNULL(LocationName,'') Location "
         strSQL = strSQL + ",ISNULL(TemplateName,'') Template "
 
         strSQL = strSQL + "FROM Team "
         strSQL = strSQL + "LEFT JOIN SprintTemplate ON Team.SprintTemplateID = SprintTemplate.SprintTemplateID "
-        strSQL = strSQL + "LEFT JOIN Location ON Team.LocationID = Location.LocationID "
 
         strSQL = strSQL + "ORDER BY TeamName "
 
@@ -24,8 +22,10 @@
 
         strSQL = "SELECT PersonID ID "
         strSQL = strSQL + ",PersonName Name "
+        strSQL = strSQL + ",ISNULL(LocationName,'') Location "
 
         strSQL = strSQL + "FROM Person "
+        strSQL = strSQL + "LEFT JOIN Location ON Person.LocationID = Location.LocationID "
 
         strSQL = strSQL & "WHERE TeamID = " & intTeamID & " "
 
@@ -40,7 +40,6 @@
 
         strSQL = "SELECT TeamName Name "
         strSQL = strSQL & ",ISNULL(SprintTemplateID,0) SprintTemplateID "
-        strSQL = strSQL & ",ISNULL(LocationID,0) LocationID "
 
         strSQL = strSQL & "FROM Team "
 
@@ -55,6 +54,7 @@
 
         strSQL = "SELECT PersonName Name "
         strSQL = strSQL & ",TeamID "
+        strSQL = strSQL & ",LocationID "
 
         strSQL = strSQL & "FROM Person "
 
@@ -64,7 +64,7 @@
     End Function
 
 
-    Public Function Update_Team(ByVal intTeamID As Integer, ByVal strTeamName As String, ByVal intSprintTemplateID As Integer, ByVal intTeamLocationID As Integer) As Boolean
+    Public Function Update_Team(ByVal intTeamID As Integer, ByVal strTeamName As String, ByVal intSprintTemplateID As Integer) As Boolean
         Dim strSQL As String
         Dim blnSuccess As Boolean
 
@@ -75,7 +75,6 @@
 
         strSQL = strSQL & "SET TeamName = '" & SQLString(strTeamName) & "' "
         strSQL = strSQL & ",SprintTemplateID = " & intSprintTemplateID & " "
-        strSQL = strSQL & ",LocationID = " & intTeamLocationID & " "
 
         strSQL = strSQL & "WHERE TeamID = " & intTeamID & " "
 
@@ -89,7 +88,7 @@ ERR_UpdateTeamFailed:
     End Function
 
 
-    Public Function Update_Person(ByVal intPersonID As Integer, ByVal strPersonName As String, ByVal intPersonTeamID As Integer) As Boolean
+    Public Function Update_Person(ByVal intPersonID As Integer, ByVal strPersonName As String, ByVal intPersonTeamID As Integer, ByVal intLocationID As Integer) As Boolean
         Dim strSQL As String
         Dim blnSuccess As Boolean
 
@@ -100,6 +99,7 @@ ERR_UpdateTeamFailed:
 
         strSQL = strSQL & "SET PersonName = '" & SQLString(strPersonName) & "' "
         strSQL = strSQL & ",TeamID = " & intPersonTeamID & " "
+        strSQL = strSQL & ",LocationID = " & intLocationID & " "
 
         strSQL = strSQL & "WHERE PersonID = " & intPersonID & " "
 
@@ -141,7 +141,7 @@ ERR_UpdatePersonFailed:
         Dim intLastID As Integer
         Dim dataTable As DataTable
 
-        strSQL = "INSERT INTO Person (PersonName, TeamID) VALUES ('New Person'," & intTeamID & "); SELECT SCOPE_IDENTITY() ID; "
+        strSQL = "INSERT INTO Person (PersonName, TeamID, LocationID) VALUES ('New Person'," & intTeamID & ",0); SELECT SCOPE_IDENTITY() ID; "
         intLastID = 0
 
         dataTable = gDB.OpenDataset(strSQL).Tables("Table")

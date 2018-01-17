@@ -10,12 +10,12 @@ Public Class Teams
     Private mintTeamID As Integer
     Private mstrTeamName As String
     Private mintSprintTemplateID As Integer
-    Private mintTeamLocationID As Integer
     Private mblnLoadingTeam As Boolean
 
     Private mintPersonID As Integer
     Private mstrPersonName As String
     Private mintPersonTeamID As Integer
+    Private mintLocationID As Integer
     Private mblnLoadingPerson As Boolean
 
     Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
@@ -66,7 +66,7 @@ Public Class Teams
 
         ' fill out the locations
         strSQL = Get_Locations()
-        FillListBox(cboTeamLocation, maryLocations, "Name", strSQL, "ID")
+        FillListBox(cboLocation, maryLocations, "Name", strSQL, "ID")
 
         ' fill out the sprint templates
         strSQL = Get_SprintTemplates()
@@ -124,11 +124,11 @@ Public Class Teams
             ' blank
             mstrTeamName = ""
             mintSprintTemplateID = 0
-            mintTeamLocationID = 0
+            mintLocationID = 0
 
             txtTeamName.Text = ""
             cboSprintTemplate.SelectedIndex = -1
-            cboTeamLocation.SelectedIndex = -1
+            cboLocation.SelectedIndex = -1
         Else
             strSQL = Get_TeamByID(intTeamID)
             dataTable = gDB.OpenDataset(strSQL).Tables("Table")
@@ -140,11 +140,9 @@ Public Class Teams
                     ' hopefully only one!
                     mstrTeamName = drCurrent("Name").ToString
                     mintSprintTemplateID = drCurrent("SprintTemplateID")
-                    mintTeamLocationID = drCurrent("LocationID")
 
                     txtTeamName.Text = mstrTeamName
                     ListBoxSelect(cboSprintTemplate, marySprintTemplates, mintSprintTemplateID)
-                    ListBoxSelect(cboTeamLocation, maryLocations, mintTeamLocationID)
                 Next
             End If
         End If
@@ -194,9 +192,11 @@ Public Class Teams
                     ' hopefully only one!
                     mstrPersonName = drCurrent("Name").ToString
                     mintPersonTeamID = drCurrent("TeamID")
+                    mintLocationID = drCurrent("LocationID")
 
                     txtPersonName.Text = mstrPersonName
                     ListBoxSelect(cboPersonTeam, maryTeams, mintPersonTeamID)
+                    ListBoxSelect(cboLocation, maryLocations, mintLocationID)
                 Next
             End If
         End If
@@ -213,6 +213,10 @@ Public Class Teams
         StartSavePersonTimer()
     End Sub
 
+    Private Sub cboLocation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboLocation.SelectedIndexChanged
+        StartSavePersonTimer()
+    End Sub
+
     Private Sub StartSavePersonTimer()
         If mblnLoadingPerson = False Then
             tmrPersonSave.Enabled = False
@@ -221,10 +225,6 @@ Public Class Teams
     End Sub
 
     Private Sub txtTeamName_TextChanged(sender As Object, e As EventArgs) Handles txtTeamName.TextChanged
-        StartSaveTeamTimer()
-    End Sub
-
-    Private Sub cboTeamLocation_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboTeamLocation.SelectedIndexChanged
         StartSaveTeamTimer()
     End Sub
 
@@ -248,7 +248,13 @@ Public Class Teams
         mstrPersonName = txtPersonName.Text
         mintPersonTeamID = maryTeams(cboPersonTeam.SelectedIndex)
 
-        If Update_Person(mintPersonID, mstrPersonName, mintPersonTeamID) = False Then
+        If cboLocation.SelectedIndex = -1 Then
+            mintLocationID = 0
+        Else
+            mintLocationID = maryLocations(cboLocation.SelectedIndex)
+        End If
+
+        If Update_Person(mintPersonID, mstrPersonName, mintPersonTeamID, mintLocationID) = False Then
             MsgBox("There was a problem trying to update the person's details")
         Else
             ' saved successfully
@@ -280,13 +286,8 @@ Public Class Teams
             mintSprintTemplateID = marySprintTemplates(cboSprintTemplate.SelectedIndex)
         End If
 
-        If cboTeamLocation.SelectedIndex = -1 Then
-            mintTeamLocationID = 0
-        Else
-            mintTeamLocationID = maryLocations(cboTeamLocation.SelectedIndex)
-        End If
 
-        If Update_Team(mintTeamID, mstrTeamName, mintSprintTemplateID, mintTeamLocationID) = False Then
+        If Update_Team(mintTeamID, mstrTeamName, mintSprintTemplateID) = False Then
             MsgBox("There was a problem trying to update the team's details")
         Else
             intTeamID = mintTeamID
