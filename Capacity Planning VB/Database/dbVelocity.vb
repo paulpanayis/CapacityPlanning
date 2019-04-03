@@ -4,20 +4,20 @@
 
         ' there could be a lot of sprints, so limit to last 200
         strSQL = "SELECT Top 200 Sprint.SprintID ID "
-        strSQL = strSQL + ",Sprint.SprintNumber [Sprint Number] "
-        strSQL = strSQL + ",FORMAT(StartDate,'d MMM yyyy') [Start Date] "
-        strSQL = strSQL + ",FORMAT(EndDate,'d MMM yyyy') [End Date] "
-        strSQL = strSQL + ",ISNULL(CAST(StoryPoints AS varchar(11)),'<no record>') Velocity "
+        strSQL = strSQL & ",Sprint.SprintNumber [Sprint Number] "
+        strSQL = strSQL & ",FORMAT(StartDate,'d MMM yyyy') [Start Date] "
+        strSQL = strSQL & ",FORMAT(EndDate,'d MMM yyyy') [End Date] "
+        strSQL = strSQL & ",ISNULL(CAST(StoryPoints AS varchar(11)),'<no record>') Velocity "
 
-        strSQL = strSQL + "FROM Team "
-        strSQL = strSQL + "INNER JOIN Sprint ON Team.SprintTemplateID = Sprint.SprintTemplateID "
-        strSQL = strSQL + "LEFT JOIN SprintActual ON Sprint.SprintID = SprintActual.SprintID AND SprintActual.TeamID = " & intTeamID & " "
+        strSQL = strSQL & "FROM Team "
+        strSQL = strSQL & "INNER JOIN Sprint ON Team.SprintTemplateID = Sprint.SprintTemplateID "
+        strSQL = strSQL & "LEFT JOIN SprintActual ON Sprint.SprintID = SprintActual.SprintID AND SprintActual.TeamID = " & intTeamID & " "
 
-        strSQL = strSQL + "WHERE Team.TeamID = " & intTeamID & " "
-        strSQL = strSQL + "AND Sprint.EndDate < DateAdd(d,1,GetDate()) "
+        strSQL = strSQL & "WHERE Team.TeamID = " & intTeamID & " "
+        strSQL = strSQL & "AND Sprint.EndDate < DateAdd(d,1,GetDate()) "
 
         ' display in reverse date order (so we get latest first)
-        strSQL = strSQL + "ORDER BY Sprint.EndDate DESC "
+        strSQL = strSQL & "ORDER BY Sprint.EndDate DESC "
 
         Return strSQL
     End Function

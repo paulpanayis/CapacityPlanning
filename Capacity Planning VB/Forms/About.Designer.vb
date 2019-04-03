@@ -56,7 +56,7 @@ Partial Class About
         Me.lblCopyright.Name = "lblCopyright"
         Me.lblCopyright.Size = New System.Drawing.Size(181, 29)
         Me.lblCopyright.TabIndex = 61
-        Me.lblCopyright.Text = "© Paul Panayis, 2018"
+        Me.lblCopyright.Text = "© Paul Panayis, 2019"
         Me.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'cmdClose

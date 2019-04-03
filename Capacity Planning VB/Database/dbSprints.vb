@@ -3,12 +3,12 @@
         Dim strSQL As String
 
         strSQL = "SELECT SprintTemplateID ID "
-        strSQL = strSQL + ",TemplateName Name "
-        strSQL = strSQL + ",SprintStartDay StartDay "
+        strSQL = strSQL & ",TemplateName Name "
+        strSQL = strSQL & ",SprintStartDay StartDay "
 
-        strSQL = strSQL + "FROM SprintTemplate "
+        strSQL = strSQL & "FROM SprintTemplate "
 
-        strSQL = strSQL + "ORDER BY TemplateName "
+        strSQL = strSQL & "ORDER BY TemplateName "
 
         Return strSQL
     End Function
@@ -19,19 +19,19 @@
 
         ' there could be a lot of sprints, so limit to last 200
         strSQL = "SELECT Top 200 SprintID ID "
-        strSQL = strSQL + ",SprintNumber [Sprint Number] "
-        strSQL = strSQL + ",FORMAT(StartDate,'d MMM yyyy') [Start Date] "
-        strSQL = strSQL + ",FORMAT(EndDate,'d MMM yyyy') [End Date] "
+        strSQL = strSQL & ",SprintNumber [Sprint Number] "
+        strSQL = strSQL & ",FORMAT(StartDate,'d MMM yyyy') [Start Date] "
+        strSQL = strSQL & ",FORMAT(EndDate,'d MMM yyyy') [End Date] "
 
-        strSQL = strSQL + "FROM Sprint "
+        strSQL = strSQL & "FROM Sprint "
 
-        strSQL = strSQL + "WHERE SprintTemplateID = " & intSprintTemplateID & " "
+        strSQL = strSQL & "WHERE SprintTemplateID = " & intSprintTemplateID & " "
         If intYearFilter > 0 Then
-            strSQL = strSQL + "AND (YEAR(StartDate) = " & intYearFilter & " OR YEAR(EndDate) = " & intYearFilter & ") "
+            strSQL = strSQL & "AND (YEAR(StartDate) = " & intYearFilter & " OR YEAR(EndDate) = " & intYearFilter & ") "
         End If
 
         ' display in reverse date order (so we get latest first)
-        strSQL = strSQL + "ORDER BY StartDate DESC "
+        strSQL = strSQL & "ORDER BY StartDate DESC "
 
         Return strSQL
     End Function

@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE [dbo].GET_PEOPLE
+	@param1 date,
+	@param2 date 
+AS
+	SELECT PersonName FROM Person

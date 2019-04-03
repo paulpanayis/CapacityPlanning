@@ -17,53 +17,57 @@
 
         ' firstly the team and person absences
         strSQL = "SELECT Absence.AbsenceID ID "
-        strSQL = strSQL + ", Absence.AbsenceDate "
-        strSQL = strSQL + ", Absence.AbsenceTypeID "
-        strSQL = strSQL + ", Team.TeamID "
-        strSQL = strSQL + ", ISNULL(Absence.PersonID, 0) PersonID "
-        strSQL = strSQL + ", Absence.HalfDay "
-        strSQL = strSQL + ", Absence.WholeTeamAbsence "
-        strSQL = strSQL + ", Absence.OtherReason "
-        strSQL = strSQL + ", 0 AS LocationAbsence "
+        strSQL = strSQL & ", Absence.AbsenceDate "
+        strSQL = strSQL & ", Absence.AbsenceTypeID "
+        strSQL = strSQL & ", Team.TeamID "
+        strSQL = strSQL & ", ISNULL(Absence.PersonID, 0) PersonID "
+        strSQL = strSQL & ", Absence.HalfDay "
+        strSQL = strSQL & ", Absence.WholeTeamAbsence "
+        strSQL = strSQL & ", Absence.OtherReason "
+        strSQL = strSQL & ", 0 AS LocationAbsence "
 
-        strSQL = strSQL + "FROM Team "
-        strSQL = strSQL + "INNER JOIN Absence ON Team.TeamID = Absence.TeamID "
+        strSQL = strSQL & "FROM Team "
+        strSQL = strSQL & "INNER JOIN Absence ON Team.TeamID = Absence.TeamID "
 
         strSQL = strSQL & "WHERE Team.TeamID = " & TeamID & " "
         strSQL = strSQL & "AND YEAR(Absence.AbsenceDate) = " & intYear & " "
         If PersonID > 0 Then
             strSQL = strSQL & "AND (Absence.PersonID = " & PersonID & " OR Absence.WholeTeamAbsence = 1) "
+        Else
+            strSQL = strSQL & "AND Absence.WholeTeamAbsence = 1 "
         End If
         If strTypesCSV <> "" Then
             strSQL = strSQL & "AND Absence.AbsenceTypeID IN (" & strTypesCSV & ") "
         End If
 
-        strSQL = strSQL + "ORDER BY Absence.AbsenceDate "
+        strSQL = strSQL & "ORDER BY Absence.AbsenceDate "
 
         Return strSQL
     End Function
 
-    Public Function Get_LocationAbsences(ByVal intYear As Integer, ByVal TeamID As Integer) As String
+    Public Function Get_LocationAbsences(ByVal intYear As Integer, ByVal PersonID As Integer) As String
         Dim strSQL As String
 
-        ' firstly the team and person absences
+        ' different team members may be in different locations, with different public holidays
+        ' so we have to do location absences by person and can't do it by team
         strSQL = "SELECT LocationAbsence.LocationAbsenceID ID "
-        strSQL = strSQL + ", LocationAbsence.AbsenceDate "
-        strSQL = strSQL + ", LocationAbsence.AbsenceTypeID "
-        strSQL = strSQL + ", Team.TeamID "
-        strSQL = strSQL + ", 0 AS PersonID "
-        strSQL = strSQL + ", 0 AS HalfDay "
-        strSQL = strSQL + ", 1 AS WholeTeamAbsence "
-        strSQL = strSQL + ", LocationAbsence.OtherReason "
-        strSQL = strSQL + ", 1 AS LocationAbsence "
+        strSQL = strSQL & ", LocationAbsence.AbsenceDate "
+        strSQL = strSQL & ", LocationAbsence.AbsenceTypeID "
+        strSQL = strSQL & ", Team.TeamID "
+        strSQL = strSQL & ", Person.PersonID AS PersonID "
+        strSQL = strSQL & ", 0 AS HalfDay "
+        strSQL = strSQL & ", 0 AS WholeTeamAbsence "
+        strSQL = strSQL & ", LocationAbsence.OtherReason "
+        strSQL = strSQL & ", 1 AS LocationAbsence "
 
-        strSQL = strSQL + "FROM Team "
-        strSQL = strSQL + "INNER JOIN LocationAbsence ON Team.LocationID = LocationAbsence.LocationID "
+        strSQL = strSQL & "FROM Person "
+        strSQL = strSQL & "INNER JOIN Team ON Person.TeamID = Team.TeamID "
+        strSQL = strSQL & "INNER JOIN LocationAbsence ON Person.LocationID = LocationAbsence.LocationID "
 
-        strSQL = strSQL & "WHERE Team.TeamID = " & TeamID & " "
+        strSQL = strSQL & "WHERE Person.PersonID = " & PersonID & " "
         strSQL = strSQL & "AND YEAR(LocationAbsence.AbsenceDate) = " & intYear & " "
 
-        strSQL = strSQL + "ORDER BY LocationAbsence.AbsenceDate "
+        strSQL = strSQL & "ORDER BY LocationAbsence.AbsenceDate "
 
         Return strSQL
     End Function

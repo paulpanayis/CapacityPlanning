@@ -4,13 +4,13 @@
         Dim strSQL As String
 
         strSQL = "SELECT TeamID ID "
-        strSQL = strSQL + ",TeamName Name "
-        strSQL = strSQL + ",ISNULL(TemplateName,'') Template "
+        strSQL = strSQL & ",TeamName Name "
+        strSQL = strSQL & ",ISNULL(TemplateName,'') Template "
 
-        strSQL = strSQL + "FROM Team "
-        strSQL = strSQL + "LEFT JOIN SprintTemplate ON Team.SprintTemplateID = SprintTemplate.SprintTemplateID "
+        strSQL = strSQL & "FROM Team "
+        strSQL = strSQL & "LEFT JOIN SprintTemplate ON Team.SprintTemplateID = SprintTemplate.SprintTemplateID "
 
-        strSQL = strSQL + "ORDER BY TeamName "
+        strSQL = strSQL & "ORDER BY TeamName "
 
         Return strSQL
     End Function
@@ -21,15 +21,15 @@
         Dim strSQL As String
 
         strSQL = "SELECT PersonID ID "
-        strSQL = strSQL + ",PersonName Name "
-        strSQL = strSQL + ",ISNULL(LocationName,'') Location "
+        strSQL = strSQL & ",PersonName Name "
+        strSQL = strSQL & ",ISNULL(LocationName,'') Location "
 
-        strSQL = strSQL + "FROM Person "
-        strSQL = strSQL + "LEFT JOIN Location ON Person.LocationID = Location.LocationID "
+        strSQL = strSQL & "FROM Person "
+        strSQL = strSQL & "LEFT JOIN Location ON Person.LocationID = Location.LocationID "
 
         strSQL = strSQL & "WHERE TeamID = " & intTeamID & " "
 
-        strSQL = strSQL + "ORDER BY PersonName "
+        strSQL = strSQL & "ORDER BY PersonName "
 
         Return strSQL
     End Function

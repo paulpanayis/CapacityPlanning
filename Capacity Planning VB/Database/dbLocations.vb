@@ -3,11 +3,11 @@
         Dim strSQL As String
 
         strSQL = "SELECT LocationID ID "
-        strSQL = strSQL + ",LocationName Name "
+        strSQL = strSQL & ",LocationName Name "
 
-        strSQL = strSQL + "FROM Location "
+        strSQL = strSQL & "FROM Location "
 
-        strSQL = strSQL + "ORDER BY LocationName "
+        strSQL = strSQL & "ORDER BY LocationName "
 
         Return strSQL
     End Function

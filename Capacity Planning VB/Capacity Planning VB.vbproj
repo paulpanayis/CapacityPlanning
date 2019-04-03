@@ -99,6 +99,12 @@
     <Compile Include="Controls\ctlMonthView.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\ctlSprintView.Designer.vb">
+      <DependentUpon>ctlSprintView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlSprintView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\ctlSwitch.Designer.vb">
       <DependentUpon>ctlSwitch.vb</DependentUpon>
     </Compile>
@@ -228,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ctlMonthView.resx">
       <DependentUpon>ctlMonthView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlSprintView.resx">
+      <DependentUpon>ctlSprintView.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ctlSwitch.resx">
       <DependentUpon>ctlSwitch.vb</DependentUpon>

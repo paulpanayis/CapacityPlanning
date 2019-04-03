@@ -246,4 +246,7 @@ ERR_QuerySyntax:
         SaveListViewSizeAndPosition(Me, lvwResults)
     End Sub
 
+    Private Sub ctlReport_Resize(sender As Object, e As EventArgs) Handles ctlReport.Resize
+
+    End Sub
 End Class

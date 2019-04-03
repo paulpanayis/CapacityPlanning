@@ -69,6 +69,15 @@ Public Class Holiday
         FillListBox(cboPeople, maryPeople, "Name", strSQL, "ID", True)
     End Sub
 
+    Private Function IDofSelectedTeam() As Integer
+        ' get the team id
+        IDofSelectedTeam = maryTeams(cboTeams.SelectedIndex)
+    End Function
+
+    Private Function IDofSelectedPerson() As Integer
+        ' get the person id
+        IDofSelectedPerson = maryPeople(cboPeople.SelectedIndex)
+    End Function
 
     ' indicate if the form is in edit (view mode if false)
     Private mblnEditMode As Boolean = False
@@ -149,6 +158,16 @@ Public Class Holiday
             If ctlHalfDay.Visible = False Then
                 ctlHalfDay.Visible = True
             End If
+            ' if we are in edit mode show only the view button
+            If cmdView.Visible = False Then
+                cmdView.Visible = True
+            End If
+            If cmdEdit.Visible = True Then
+                cmdEdit.Visible = False
+            End If
+            If lblMode.Text <> "Edit Mode" Then
+                lblMode.Text = "Edit Mode"
+            End If
         Else
             ' in view mode, so make sure we dont display the half day or whole team
             ' dont display the half day option
@@ -157,6 +176,16 @@ Public Class Holiday
             End If
             If ctlHalfDay.Visible = True Then
                 ctlHalfDay.Visible = False
+            End If
+            ' if we are in edit mode show only the view button
+            If cmdView.Visible = True Then
+                cmdView.Visible = False
+            End If
+            If cmdEdit.Visible = False Then
+                cmdEdit.Visible = True
+            End If
+            If lblMode.Text <> "View Mode" Then
+                lblMode.Text = "View Mode"
             End If
         End If
 
@@ -202,6 +231,7 @@ Public Class Holiday
         Dim intTeamID As Integer
         Dim intPersonID As Integer
         Dim strSQL As String
+        Dim strSQL2 As String
 
 
         strTypeCSV = GetTypeCSV()
@@ -215,8 +245,9 @@ Public Class Holiday
             End If
 
             strSQL = Get_Absences(intYear, intTeamID, strTypeCSV, intPersonID)
+            strSQL2 = Get_LocationAbsences(intYear, intPersonID)
 
-            PopulateAbsenceArray(strSQL)
+            PopulateAbsenceArray(strSQL, strSQL2)
 
             PopulateDiaryDisplayArray()
 
@@ -271,25 +302,40 @@ Public Class Holiday
         Return strTypeCSV
     End Function
 
-    Private Sub PopulateAbsenceArray(ByVal SQLStatement As String)
+    Private Sub PopulateAbsenceArray(ByVal SQLStatement As String, Optional ByVal SQLStatement2 As String = "")
         Dim dataTable As DataTable
+        Dim dataTable2 As DataTable
         Dim dataRow As DataRow
+        Dim dataRow2 As DataRow
 
         Dim strSQL As String
+        Dim strSQL2 As String
         Dim intMaxRows As Integer
+        Dim intMaxRows2 As Integer
         Dim intItem As Integer
 
 
         strSQL = SQLStatement
+        strSQL2 = SQLStatement2
 
         intItem = 1
 
         dataTable = gDB.OpenDataset(strSQL).Tables("Table")
 
+        intMaxRows2 = 0
+        If SQLStatement2 <> "" Then
+            dataTable2 = gDB.OpenDataset(SQLStatement2).Tables("Table")
+        End If
+
         If dataTable.IsInitialized Then
             intMaxRows = dataTable.Rows.Count
+            If SQLStatement2 <> "" Then
+                If dataTable2.IsInitialized Then
+                    intMaxRows2 = dataTable2.Rows.Count
+                End If
+            End If
 
-            ReDim maryDiaryItems(0 To intMaxRows, 0 To 9)
+            ReDim maryDiaryItems(0 To intMaxRows + intMaxRows2, 0 To 9)
 
             For Each dataRow In dataTable.Rows
                 maryDiaryItems(intItem, enumAbsenceArrayColumn.ID) = dataRow.Item("ID").ToString & ""
@@ -305,8 +351,26 @@ Public Class Holiday
 
                 intItem = intItem + 1
             Next
-        End If
+            If SQLStatement2 <> "" Then
+                If dataTable2.IsInitialized Then
 
+                    For Each dataRow2 In dataTable2.Rows
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.ID) = dataRow2.Item("ID").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.AbsenceDate) = dataRow2.Item("AbsenceDate").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.AbsenceType) = "6"
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.TeamID) = dataRow2.Item("TeamID").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.PersonID) = dataRow2.Item("PersonID").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.HalfDay) = dataRow2.Item("HalfDay").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.WholeTeamAbsence) = dataRow2.Item("WholeTeamAbsence").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.OtherReason) = dataRow2.Item("OtherReason").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.LocationAbsence) = dataRow2.Item("LocationAbsence").ToString & ""
+                        maryDiaryItems(intItem, enumAbsenceArrayColumn.UpdateStatus) = "0" ' 0 = unchanged
+
+                        intItem = intItem + 1
+                    Next
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub PopulateDiaryDisplayArray()
@@ -320,8 +384,55 @@ Public Class Holiday
         Next
     End Sub
 
-    Private Sub SelectionChanged(sender As Object, e As EventArgs) Handles cboYear.SelectedIndexChanged, cboTeams.SelectedIndexChanged, cboPeople.SelectedIndexChanged
+    Private Sub YearSelectionChanged(sender As Object, e As EventArgs) Handles cboYear.SelectedIndexChanged
         ctlYearView.ActiveYear = cboYear.Text
         StartShowYearTimer()
+    End Sub
+
+    Private Sub PersonSelectionChanged(sender As Object, e As EventArgs) Handles cboPeople.SelectedIndexChanged
+        ctlYearView.ActiveYear = cboYear.Text
+        StartShowYearTimer()
+    End Sub
+
+
+
+    Private Sub ctlYearView_DateClick(sender As Object, e As Date) Handles ctlYearView.DateClick
+        Dim strType As String
+        Dim blnHalfDay As Boolean
+
+        strType = ""
+        If EditMode() Then
+            If cboPeople.Items.Count = 0 Then
+                MsgBox("Please select a team or person to edit befor trying to edit")
+            Else
+                If cboPeople.SelectedItem = "<Whole Team>" Then
+                    MsgBox("Whole Team Selected:  ID=" & IDofSelectedTeam().ToString)
+                Else
+                    MsgBox("Person Selected: " & cboPeople.SelectedItem & ":  ID=" & IDofSelectedPerson().ToString)
+                End If
+
+                If ctlType1.Value Then
+                    strType = "1"
+                End If
+                If ctlType2.Value Then
+                    strType = "2"
+                End If
+                If ctlType3.Value Then
+                    strType = "3"
+                End If
+                If ctlType4.Value Then
+                    strType = "4"
+                End If
+                If ctlType5.Value Then
+                    strType = "5"
+                End If
+                If ctlType6.Value Then
+                    strType = "6"
+                End If
+                blnHalfDay = ctlHalfDay.Value
+
+                MsgBox("Date Clicked: " & e.ToShortDateString & " Type = " & strType & " Half Day = " & blnHalfDay.ToString)
+            End If
+        End If
     End Sub
 End Class

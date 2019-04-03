@@ -3,12 +3,12 @@
         Dim strSQL As String
 
         strSQL = "SELECT ReportID ID "
-        strSQL = strSQL + ",Name "
-        strSQL = strSQL + ",Description "
+        strSQL = strSQL & ",Name "
+        strSQL = strSQL & ",Description "
 
-        strSQL = strSQL + "FROM Report "
+        strSQL = strSQL & "FROM Report "
 
-        strSQL = strSQL + "ORDER BY Name "
+        strSQL = strSQL & "ORDER BY Name "
 
         Return strSQL
     End Function
