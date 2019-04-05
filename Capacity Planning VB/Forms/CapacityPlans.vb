@@ -42,6 +42,7 @@ Public Class CapacityPlans
     End Sub
 
     Private Sub About_Load(sender As Object, e As EventArgs) Handles Me.Load
+        lblCopyright.Text = My.Settings.Copyright
         LoadFormSizeAndPosition(Me)
     End Sub
 

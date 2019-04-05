@@ -53,4 +53,7 @@
         Locations.Show(Me)
     End Sub
 
+    Private Sub MainMenu_Load(sender As Object, e As EventArgs) Handles Me.Load
+        lblCopyright.Text = My.Settings.Copyright
+    End Sub
 End Class

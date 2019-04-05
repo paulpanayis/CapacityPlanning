@@ -441,14 +441,27 @@ Public Class ctlYearView
     Private Function GetDiaryItemValue(ByVal dblDate As Double) As Integer
         Dim intReturn As Integer
         Dim lngPointer As Long
+        Dim blnFound As Boolean
+        Dim lngFound As Long
+        Dim intFoundLowestValue As Integer
+
 
         intReturn = 0
+        lngFound = 0
+        intFoundLowestValue = 999
         If Not ((maryDiaryItems Is Nothing) OrElse (maryDiaryItems.Length = 0) OrElse (maryDiaryItems.GetValue(0, 1) Is Nothing)) Then
             For lngPointer = maryDiaryItems.GetLowerBound(0) To maryDiaryItems.GetUpperBound(0)
                 If maryDiaryItems(lngPointer, 1) = dblDate Then
-                    intReturn = maryDiaryItems(lngPointer, 2)
-                    Exit For
+                    blnFound = True
+                    If (maryDiaryItems(lngPointer, 2) < intFoundLowestValue) Then
+                        intFoundLowestValue = maryDiaryItems(lngPointer, 2)
+                    End If
                 End If
+                ' if we found one or more matching dates then make sure we take the lowest type (which will have the least scope)
+                If blnFound Then
+                    intReturn = intFoundLowestValue
+                End If
+                intReturn = maryDiaryItems(lngPointer, 2)
             Next
         End If
         Return intReturn

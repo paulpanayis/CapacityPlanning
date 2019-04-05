@@ -58,6 +58,7 @@ Public Class Teams
 
     Private Sub Teams_Load(sender As Object, e As EventArgs) Handles Me.Load
         LoadFormData()
+        lblCopyright.Text = My.Settings.Copyright
         LoadFormSizeAndPosition(Me)
     End Sub
 

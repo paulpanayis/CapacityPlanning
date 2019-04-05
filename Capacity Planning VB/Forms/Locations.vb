@@ -48,6 +48,7 @@ Public Class Locations
 
     Private Sub MeLoad(sender As Object, e As EventArgs) Handles Me.Load
         LoadFormSizeAndPosition(Me)
+        lblCopyright.Text = My.Settings.Copyright
         LoadLocations()
     End Sub
 

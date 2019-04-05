@@ -71,4 +71,40 @@
 
         Return strSQL
     End Function
+
+    Public Function Update_Absence(ByVal dteAbsenceDate As Date, ByVal blnHalfDay As Boolean, ByVal intAbsenceType As Integer, ByVal intTeamID As Integer, Optional ByVal intPersonID As Integer = 0) As Boolean
+        Dim strSQL As String
+        Dim blnSuccess As Boolean
+
+        blnSuccess = True
+        On Error GoTo ERR_UpdateAbsenceFailed
+
+        If intPersonID = 0 Then
+            strSQL = "EXEC HOLIDAY_TOGGLE_ABSENCE_TEAM " & intTeamID & " "
+            strSQL = strSQL & ", " & SQLDate(dteAbsenceDate) & " "
+            strSQL = strSQL & ", " & intAbsenceType & " "
+            If blnHalfDay Then
+                strSQL = strSQL & ", 1 "
+            Else
+                strSQL = strSQL & ", 0 "
+            End If
+        Else
+            strSQL = "EXEC HOLIDAY_TOGGLE_ABSENCE_PERSON " & intPersonID & " "
+            strSQL = strSQL & ", " & intTeamID & " "
+            strSQL = strSQL & ", " & SQLDate(dteAbsenceDate) & " "
+            strSQL = strSQL & ", " & intAbsenceType & " "
+            If blnHalfDay Then
+                strSQL = strSQL & ", 1 "
+            Else
+                strSQL = strSQL & ", 0 "
+            End If
+        End If
+        gDB.Execute(strSQL)
+
+RES_UpdateAbsenceFailed:
+        Return blnSuccess
+ERR_UpdateAbsenceFailed:
+        blnSuccess = False
+        Resume RES_UpdateAbsenceFailed
+    End Function
 End Module

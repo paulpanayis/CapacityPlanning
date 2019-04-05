@@ -1,0 +1,34 @@
+﻿CREATE PROCEDURE [dbo].HOLIDAY_TOGGLE_ABSENCE_PERSON
+	@personid integer
+,	@teamid integer
+,	@date date
+,	@type integer
+,	@halfday bit
+AS
+	IF EXISTS( 	SELECT 1 
+			FROM Absence 
+			WHERE PersonID = @personid 
+			AND AbsenceDate = @date 
+		)
+	
+		DELETE FROM Absence
+		WHERE PersonID = @personid 
+		AND AbsenceDate = @date 
+	
+	ELSE
+
+		INSERT INTO Absence (
+		  PersonID
+		, TeamID
+		, AbsenceDate
+		, AbsenceTypeID
+		, HalfDay
+		, WholeTeamAbsence
+		) VALUES (
+		  @personid 
+		, @teamid 
+		, @date 
+		, @type 
+		, @halfday 
+		, 0
+		)

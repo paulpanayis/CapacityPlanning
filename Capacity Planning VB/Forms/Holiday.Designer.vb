@@ -76,11 +76,11 @@ Partial Class Holiday
         Me.pnlBottomBar.Controls.Add(Me.ctlType1)
         Me.pnlBottomBar.Controls.Add(Me.cmdClose)
         Me.pnlBottomBar.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlBottomBar.Location = New System.Drawing.Point(1635, 0)
+        Me.pnlBottomBar.Location = New System.Drawing.Point(1084, 0)
         Me.pnlBottomBar.Margin = New System.Windows.Forms.Padding(6)
         Me.pnlBottomBar.Name = "pnlBottomBar"
         Me.pnlBottomBar.Padding = New System.Windows.Forms.Padding(6)
-        Me.pnlBottomBar.Size = New System.Drawing.Size(107, 1116)
+        Me.pnlBottomBar.Size = New System.Drawing.Size(107, 626)
         Me.pnlBottomBar.TabIndex = 59
         '
         'lblMode
@@ -321,7 +321,7 @@ Partial Class Holiday
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cmdClose.Location = New System.Drawing.Point(20, 1078)
+        Me.cmdClose.Location = New System.Drawing.Point(20, 588)
         Me.cmdClose.Margin = New System.Windows.Forms.Padding(6)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)
@@ -335,7 +335,7 @@ Partial Class Holiday
         Me.cboTeams.FormattingEnabled = True
         Me.cboTeams.Location = New System.Drawing.Point(162, 28)
         Me.cboTeams.Name = "cboTeams"
-        Me.cboTeams.Size = New System.Drawing.Size(305, 33)
+        Me.cboTeams.Size = New System.Drawing.Size(305, 21)
         Me.cboTeams.TabIndex = 70
         '
         'cboPeople
@@ -346,7 +346,7 @@ Partial Class Holiday
         Me.cboPeople.FormattingEnabled = True
         Me.cboPeople.Location = New System.Drawing.Point(473, 28)
         Me.cboPeople.Name = "cboPeople"
-        Me.cboPeople.Size = New System.Drawing.Size(1153, 33)
+        Me.cboPeople.Size = New System.Drawing.Size(602, 21)
         Me.cboPeople.TabIndex = 71
         '
         'cboYear
@@ -356,7 +356,7 @@ Partial Class Holiday
         Me.cboYear.Location = New System.Drawing.Point(11, 28)
         Me.cboYear.Margin = New System.Windows.Forms.Padding(6)
         Me.cboYear.Name = "cboYear"
-        Me.cboYear.Size = New System.Drawing.Size(142, 33)
+        Me.cboYear.Size = New System.Drawing.Size(142, 21)
         Me.cboYear.TabIndex = 101
         '
         'lblYear
@@ -365,7 +365,7 @@ Partial Class Holiday
         Me.lblYear.BackColor = System.Drawing.Color.Transparent
         Me.lblYear.Location = New System.Drawing.Point(8, 9)
         Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(58, 25)
+        Me.lblYear.Size = New System.Drawing.Size(29, 13)
         Me.lblYear.TabIndex = 100
         Me.lblYear.Text = "Year"
         '
@@ -375,7 +375,7 @@ Partial Class Holiday
         Me.lblTeam.BackColor = System.Drawing.Color.Transparent
         Me.lblTeam.Location = New System.Drawing.Point(160, 9)
         Me.lblTeam.Name = "lblTeam"
-        Me.lblTeam.Size = New System.Drawing.Size(66, 25)
+        Me.lblTeam.Size = New System.Drawing.Size(34, 13)
         Me.lblTeam.TabIndex = 102
         Me.lblTeam.Text = "Team"
         '
@@ -385,7 +385,7 @@ Partial Class Holiday
         Me.lblPerson.BackColor = System.Drawing.Color.Transparent
         Me.lblPerson.Location = New System.Drawing.Point(470, 9)
         Me.lblPerson.Name = "lblPerson"
-        Me.lblPerson.Size = New System.Drawing.Size(80, 25)
+        Me.lblPerson.Size = New System.Drawing.Size(40, 13)
         Me.lblPerson.TabIndex = 103
         Me.lblPerson.Text = "Person"
         '
@@ -403,11 +403,11 @@ Partial Class Holiday
         Me.ctlYearView.Colour5 = System.Drawing.Color.Pink
         Me.ctlYearView.Colour6 = System.Drawing.Color.Silver
         Me.ctlYearView.Location = New System.Drawing.Point(11, 57)
-        Me.ctlYearView.Margin = New System.Windows.Forms.Padding(2)
+        Me.ctlYearView.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.ctlYearView.Name = "ctlYearView"
         Me.ctlYearView.OtherYearWeekdayColour = System.Drawing.Color.LightGray
         Me.ctlYearView.OtherYearWeekendColour = System.Drawing.Color.LightSteelBlue
-        Me.ctlYearView.Size = New System.Drawing.Size(1615, 1048)
+        Me.ctlYearView.Size = New System.Drawing.Size(1064, 558)
         Me.ctlYearView.TabIndex = 105
         Me.ctlYearView.ThisYearWeekdayColour = System.Drawing.Color.White
         Me.ctlYearView.ThisYearWeekendColour = System.Drawing.Color.PaleGoldenrod
@@ -422,7 +422,7 @@ Partial Class Holiday
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1742, 1116)
+        Me.ClientSize = New System.Drawing.Size(1191, 626)
         Me.Controls.Add(Me.ctlYearView)
         Me.Controls.Add(Me.lblPerson)
         Me.Controls.Add(Me.lblTeam)

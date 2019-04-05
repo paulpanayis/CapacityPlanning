@@ -14,4 +14,8 @@ Public Class About
     Private Sub About_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         MainMenu.Focus()
     End Sub
+
+    Private Sub About_Load(sender As Object, e As EventArgs) Handles Me.Load
+        lblCopyright.Text = My.Settings.Copyright
+    End Sub
 End Class

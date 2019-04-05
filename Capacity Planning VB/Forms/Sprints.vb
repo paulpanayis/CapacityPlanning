@@ -53,6 +53,7 @@ Public Class Sprints
 
     Private Sub MeLoad(sender As Object, e As EventArgs) Handles Me.Load
         LoadFormData()
+        lblCopyright.Text = My.Settings.Copyright
         LoadFormSizeAndPosition(Me)
     End Sub
 

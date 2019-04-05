@@ -70,6 +70,7 @@ Public Class Reports
             lvwReports.Items.Item(0).Selected = True
         End If
 
+        lblCopyright.Text = My.Settings.Copyright
         LoadFormSizeAndPosition(Me)
 
     End Sub

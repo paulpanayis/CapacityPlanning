@@ -67,6 +67,7 @@ Public Class Holiday
         cboPeople.SelectedItem = cboPeople.Items(intItem)
 
         FillListBox(cboPeople, maryPeople, "Name", strSQL, "ID", True)
+        StartShowYearTimer()
     End Sub
 
     Private Function IDofSelectedTeam() As Integer
@@ -394,44 +395,42 @@ Public Class Holiday
         StartShowYearTimer()
     End Sub
 
-
-
     Private Sub ctlYearView_DateClick(sender As Object, e As Date) Handles ctlYearView.DateClick
-        Dim strType As String
-        Dim blnHalfDay As Boolean
+        Dim intType As Integer
 
-        strType = ""
+        intType = 1
         If EditMode() Then
             If cboPeople.Items.Count = 0 Then
-                MsgBox("Please select a team or person to edit befor trying to edit")
+                MsgBox("Please select a team or person to edit befor trying to edit." & vbCrLf & "To change a Location specific holiday, please use the Locations screen.")
             Else
-                If cboPeople.SelectedItem = "<Whole Team>" Then
-                    MsgBox("Whole Team Selected:  ID=" & IDofSelectedTeam().ToString)
-                Else
-                    MsgBox("Person Selected: " & cboPeople.SelectedItem & ":  ID=" & IDofSelectedPerson().ToString)
-                End If
-
                 If ctlType1.Value Then
-                    strType = "1"
+                    intType = 1
                 End If
                 If ctlType2.Value Then
-                    strType = "2"
+                    intType = 2
                 End If
                 If ctlType3.Value Then
-                    strType = "3"
+                    intType = 3
                 End If
                 If ctlType4.Value Then
-                    strType = "4"
+                    intType = 4
                 End If
                 If ctlType5.Value Then
-                    strType = "5"
+                    intType = 5
                 End If
                 If ctlType6.Value Then
-                    strType = "6"
+                    intType = 6
                 End If
-                blnHalfDay = ctlHalfDay.Value
 
-                MsgBox("Date Clicked: " & e.ToShortDateString & " Type = " & strType & " Half Day = " & blnHalfDay.ToString)
+                If cboPeople.SelectedItem = "<Whole Team>" Then
+                    If Update_Absence(e, ctlHalfDay.Value, intType, IDofSelectedTeam().ToString, 0) Then
+                        StartShowYearTimer()
+                    End If
+                Else
+                    If Update_Absence(e, ctlHalfDay.Value, intType, IDofSelectedTeam().ToString, IDofSelectedPerson().ToString) Then
+                        StartShowYearTimer()
+                    End If
+                End If
             End If
         End If
     End Sub
