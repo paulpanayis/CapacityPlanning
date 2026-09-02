@@ -1167,6 +1167,27 @@
       white-space: nowrap;
       text-align: center;
     }
+    .plan-drop-line {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74, 136, 180, 0.22);
+      pointer-events: none;
+      display: none;
+      z-index: 20;
+    }
+    .row-card.is-dragging {
+      opacity: 0.45;
+    }
+    .row-card-drag-handle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+    }
 
     .team-members {
       display: grid;
@@ -1386,30 +1407,97 @@
         velocityMode: 'sprint',
         currentSquadIndex: 0,
         currentTeamIndex: 0,
-        currentSprintIndex: 0,
-        currentDeveloperIndex: 0,
-        currentPlanIndex: 0,
-        showSelectedPlanSprintsOnly: false,
-        masterSprintIndex: 0,
-        squads: [{ name: 'Squad 1' }],
-        teams: [{ squadIndex: 0, name: 'Team 1' }],
-        developers: [{ teamIndex: 0, name: 'Dev 1' }],
-        releases: [{ name: 'Plan 1' }],
-        sprints: [{ name: 'Sprint 0', days: 10, releaseIndex: 0 }],
-        developerCapacity: [[{ capacity: 10, isDefault: true }]],
-        teamVelocity: [[{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }]]
+        currentSprintIndex: 6,
+        currentDeveloperIndex: 14,
+        currentPlanIndex: 1,
+        showSelectedPlanSprintsOnly: true,
+        masterSprintIndex: 6,
+        squads: [
+          { name: 'Product X' },
+          { name: 'Product Y' },
+          { name: 'Product Z' }
+        ],
+        teams: [
+          { squadIndex: 0, name: 'X Team 1' },
+          { squadIndex: 0, name: 'X Team 2' },
+          { squadIndex: 1, name: 'Y Team 1' },
+          { squadIndex: 2, name: 'Z Team 1' }
+        ],
+        developers: [
+          { teamIndex: 0, name: 'Susan' },
+          { teamIndex: 0, name: 'Michael' },
+          { teamIndex: 0, name: 'Rachel' },
+          { teamIndex: 0, name: 'Thomas' },
+          { teamIndex: 1, name: 'Nick' },
+          { teamIndex: 1, name: 'Dave' },
+          { teamIndex: 2, name: 'Paula' },
+          { teamIndex: 2, name: 'Zoe' },
+          { teamIndex: 2, name: 'Steve' },
+          { teamIndex: 3, name: 'Alex' },
+          { teamIndex: 3, name: 'Emma' },
+          { teamIndex: 3, name: 'James' },
+          { teamIndex: 3, name: 'Lisa' },
+          { teamIndex: 3, name: 'Mark' },
+          { teamIndex: 3, name: 'Sarah' }
+        ],
+        releases: [
+          { name: '2026-Q4' },
+          { name: '2027-Q1' },
+          { name: '2027-Q2' },
+          { name: '2027-Q3' },
+          { name: '2027-Q4' }
+        ],
+        sprints: [
+          { name: '2026-S19', days: 10, releaseIndex: 0 },
+          { name: '2026-S20', days: 10, releaseIndex: 0 },
+          { name: '2026-S21', days: 10, releaseIndex: 0 },
+          { name: '2026-S22', days: 10, releaseIndex: 0 },
+          { name: '2026-S23', days: 10, releaseIndex: 0 },
+          { name: '2026-S24', days: 10, releaseIndex: 0 },
+          { name: '2027-S1', days: 10, releaseIndex: 1 },
+          { name: '2027-S2', days: 10, releaseIndex: 1 },
+          { name: '2027-S3', days: 10, releaseIndex: 1 },
+          { name: '2027-S4', days: 10, releaseIndex: 1 },
+          { name: '2027-S5', days: 10, releaseIndex: 1 },
+          { name: '2027-S6', days: 10, releaseIndex: 1 },
+          { name: '2027-S7', days: 10, releaseIndex: 2 },
+          { name: '2027-S8', days: 10, releaseIndex: 2 },
+          { name: '2027-S9', days: 10, releaseIndex: 2 },
+          { name: '2027-S10', days: 10, releaseIndex: 2 },
+          { name: '2027-S11', days: 10, releaseIndex: 2 },
+          { name: '2027-S12', days: 10, releaseIndex: 2 }
+        ],
+        developerCapacity: [
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }]
+        ],
+        teamVelocity: [
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }]
+        ]
       };
     }
 
     let state = loadState();
     let draggedSprintIndex = null;
     let sprintDropPlacement = null;
+    let draggedPlanIndex = null;
+    let planDropPlacement = null;
     let pendingSquadFocusIndex = null;
     let pendingTeamFocusIndex = null;
     let pendingDeveloperFocusIndex = null;
     let collapsedTeamIndexes = new Set();
     let isSquadsSectionCollapsed = false;
     let hasInitializedSquadsCollapsedView = false;
+    let isDeleteDeveloperConfirmOpen = false;
+    let deleteDeveloperIndex = null;
+    let deleteDeveloperName = null;
+    let isTeamDeleteBlockedOpen = false;
+    let isResetConfirmOpen = false;
     let hasInitializedTeamsCollapsedView = false;
     let isPlansSectionCollapsed = false;
     let hasInitializedPlansCollapsedView = false;
@@ -1417,6 +1505,8 @@
     let capacityToastTimeoutId = null;
     let saveToastTimeoutId = null;
     let isHelpOpen = false;
+    let isPurgeConfirmOpen = false;
+    let purgeSprintRange = null;
     let storageMeta = loadStorageMeta();
 
     function loadState() {
@@ -1939,13 +2029,13 @@
     }
 
     function freshStart() {
-      if (!confirm('Delete all data and restore the default demo state?')) return;
       state = normalizeState(defaultState());
       storageMeta.importedAt = null;
       storageMeta.exportedAt = null;
       recomputeDerived();
       saveState();
       render();
+      showTopbarToast('Data reset to default');
     }
 
     function addSquad() {
@@ -2004,6 +2094,8 @@
     }
 
     function addDeveloper(teamIndex) {
+      // Keep the team card open by removing it from collapsed set before render
+      collapsedTeamIndexes.delete(teamIndex);
       update((draft) => {
         draft.developers.push({ teamIndex, name: DEFAULT_NEW_DEVELOPER_NAME });
         draft.developerCapacity.push(state.sprints.map((_, sprintIndex) => ({
@@ -2030,6 +2122,11 @@
     }
 
     function deleteDeveloper(index) {
+      // Keep the team card open by removing it from collapsed set before render
+      const developer = state.developers[index];
+      if (developer) {
+        collapsedTeamIndexes.delete(developer.teamIndex);
+      }
       update((draft) => {
         if (!canDeleteDeveloper(index)) return;
         draft.developers.splice(index, 1);
@@ -2137,6 +2234,23 @@
       });
     }
 
+    function moveRelease(fromIndex, toIndex) {
+      update((draft) => {
+        if (fromIndex === toIndex) return;
+        if (fromIndex < 0 || toIndex < 0 || fromIndex >= draft.releases.length || toIndex >= draft.releases.length) return;
+
+        moveArrayItem(draft.releases, fromIndex, toIndex);
+        
+        // Update all sprint releaseIndex values
+        draft.sprints.forEach((sprint) => {
+          sprint.releaseIndex = moveIndex(sprint.releaseIndex, fromIndex, toIndex);
+        });
+        
+        // Update current plan selection
+        draft.currentPlanIndex = moveIndex(draft.currentPlanIndex, fromIndex, toIndex);
+      });
+    }
+
     function clearSprintDragState() {
       draggedSprintIndex = null;
       sprintDropPlacement = null;
@@ -2148,16 +2262,46 @@
       });
     }
 
+    function clearPlanDragState() {
+      draggedPlanIndex = null;
+      planDropPlacement = null;
+      document.querySelectorAll('.plan-drop-line').forEach((line) => {
+        line.style.display = 'none';
+      });
+      document.querySelectorAll('[data-plan-row]').forEach((row) => {
+        row.classList.remove('is-dragging', 'drop-before', 'drop-after');
+      });
+    }
+
     function purgeOldSprints() {
       if (state.masterSprintIndex <= 10) return;
+      const cutoff = state.masterSprintIndex - 10;
+      const firstSprintName = state.sprints[0]?.name ?? 'Unknown';
+      const lastSprintName = state.sprints[cutoff - 1]?.name ?? 'Unknown';
+      
+      isPurgeConfirmOpen = true;
+      purgeSprintRange = { firstSprintName, lastSprintName, cutoff };
+      render();
+    }
+
+    function confirmPurgeOldSprints() {
+      if (state.masterSprintIndex <= 10) return;
+      const cutoff = state.masterSprintIndex - 10;
       update((draft) => {
-        const cutoff = draft.masterSprintIndex - 10;
         draft.sprints.splice(0, cutoff);
         draft.developerCapacity.forEach((row) => row.splice(0, cutoff));
         draft.teamVelocity.forEach((row) => row.splice(0, cutoff));
         draft.currentSprintIndex = Math.max(0, draft.currentSprintIndex - cutoff);
         draft.masterSprintIndex = Math.max(0, draft.masterSprintIndex - cutoff);
       });
+      isPurgeConfirmOpen = false;
+      purgeSprintRange = null;
+    }
+
+    function cancelPurgeOldSprints() {
+      isPurgeConfirmOpen = false;
+      purgeSprintRange = null;
+      render();
     }
 
     function renderTabs() {
@@ -2238,7 +2382,7 @@
             'The Select button marks a sprint as the current sprint (it then shows as Current). The current sprint is the baseline used by the Home screen summaries and the default sprint in the Velocity by Sprint view.',
             'Days sets the length of the sprint in working days. This caps developer capacity values on the Capacity tab — if you reduce sprint Days, any capacity values above the new length are automatically clamped down.',
             'Drag the ☰ handle to reorder sprints. Reordering is disabled when the Selected plan only filter is active — turn it off first.',
-            'Delete old sprints removes historical data permanently. The DELETE old sprints button appears once there are more than 10 sprints before the current one.'
+            'Delete old sprints removes historical data permanently. When clicked, a confirmation dialog will show you exactly which sprints will be deleted (from the first sprint up to 10 sprints before the current one). The DELETE old sprints button appears once there are more than 10 sprints before the current sprint.'
           ]
         }
       };
@@ -2256,6 +2400,102 @@
             <ul class="help-list">
               ${help.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
             </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPurgeConfirmModal() {
+      if (!isPurgeConfirmOpen || !purgeSprintRange) return '';
+      const { firstSprintName, lastSprintName } = purgeSprintRange;
+      return `
+        <div class="help-backdrop" data-action="cancel-purge" role="dialog" aria-modal="true" aria-label="Confirm delete old sprints">
+          <div class="help-modal" data-purge-modal>
+            <div class="help-head">
+              <div>
+                <h2>Delete old sprints?</h2>
+                <p class="subtle">This action cannot be undone</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>You are about to permanently delete sprints <strong>${escapeHtml(firstSprintName)}</strong> through <strong>${escapeHtml(lastSprintName)}</strong>.</p>
+              <p>All associated data (velocity, capacity, and other metrics) for these sprints will be removed permanently. This cannot be undone.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-purge">Cancel</button>
+              <button class="danger-btn" data-action="confirm-purge">Delete sprints</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDeleteDeveloperConfirmModal() {
+      if (!isDeleteDeveloperConfirmOpen || deleteDeveloperIndex === null) return '';
+      return `
+        <div class="help-backdrop" data-action="cancel-delete-developer" role="dialog" aria-modal="true" aria-label="Confirm delete developer">
+          <div class="help-modal" data-delete-developer-modal>
+            <div class="help-head">
+              <div>
+                <h2>Delete developer?</h2>
+                <p class="subtle">This action cannot be undone</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>Are you sure you want to delete <strong>${escapeHtml(deleteDeveloperName || 'this team member')}</strong>?</p>
+              <p>All associated capacity data for this developer will be removed permanently.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-delete-developer">Cancel</button>
+              <button class="danger-btn" data-action="confirm-delete-developer">Delete developer</button>
+            </div>
+          </div>
+        </div>
+      `;
+     }
+
+    function renderTeamDeleteBlockedModal() {
+      if (!isTeamDeleteBlockedOpen) return '';
+      return `
+        <div class="help-backdrop" data-action="close-team-delete-blocked" role="dialog" aria-modal="true" aria-label="Cannot delete team">
+          <div class="help-modal" data-team-delete-blocked-modal>
+            <div class="help-head">
+              <div>
+                <h2>Cannot delete team</h2>
+                <p class="subtle">This team still has developers</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>Unable to delete this team because it still has developers assigned to it.</p>
+              <p>Please delete all developers from this team first, then you'll be able to delete the team.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="primary-btn" data-action="close-team-delete-blocked">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResetConfirmModal() {
+      if (!isResetConfirmOpen) return '';
+      return `
+        <div class="help-backdrop" data-action="cancel-reset" role="dialog" aria-modal="true" aria-label="Reset data">
+          <div class="help-modal" data-reset-confirm-modal>
+            <div class="help-head">
+              <div>
+                <h2>Reset data</h2>
+                <p class="subtle">Restore default demo state</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>This will clear all your data and restore the default demo state with sample teams, sprints, and data.</p>
+              <p><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-reset">Cancel</button>
+              <button class="danger-btn" data-action="confirm-reset">Reset data</button>
+            </div>
           </div>
         </div>
       `;
@@ -2904,26 +3144,31 @@
           sprint.releaseIndex === index ? count + 1 : count
         ), 0);
         return `
-          <div class="row-card ${index === state.currentPlanIndex ? 'selected-squad-card' : ''}">
+         <div class="row-card ${index === state.currentPlanIndex ? 'selected-squad-card' : ''}" draggable="true" data-plan-row data-index="${index}">
             <div class="row-head">
-              <div class="row-title">
-                <span class="pill">Plan ${index + 1}</span>
-                <strong>${escapeHtml(release.name)}</strong>
-              </div>
-              <div class="inline-actions">
-                <button class="${index === state.currentPlanIndex ? 'squad-selected-btn' : 'ghost-btn small squad-select-btn'}" data-action="set-current-plan" data-index="${index}">${index === state.currentPlanIndex ? 'Selected' : 'Select'}</button>
-                <button class="danger-btn small" data-action="delete-release" data-index="${index}" ${state.releases.length > 1 ? '' : 'disabled'}>
-                  ${state.releases.length > 1 ? 'Delete' : 'Last plan'}
-                </button>
-              </div>
-            </div>
-            <div class="subtle" style="margin-bottom:10px;">${sprintCount} sprint${sprintCount === 1 ? '' : 's'}</div>
-            <label>
-              <span class="label">Plan name</span>
-              <input type="text" data-action="edit-release-name" data-index="${index}" value="${escapeHtml(release.name)}" placeholder="Plan name">
-            </label>
-          </div>
-        `;
+             <div style="display: flex; align-items: center;">
+               <div class="row-card-drag-handle">
+                 <span class="drag-handle" aria-hidden="true" title="Drag to reorder">☰</span>
+               </div>
+               <div class="row-title">
+                 <span class="pill">Plan ${index + 1}</span>
+                 <strong>${escapeHtml(release.name)}</strong>
+               </div>
+             </div>
+             <div class="inline-actions">
+               <button class="${index === state.currentPlanIndex ? 'squad-selected-btn' : 'ghost-btn small squad-select-btn'}" data-action="set-current-plan" data-index="${index}">${index === state.currentPlanIndex ? 'Selected' : 'Select'}</button>
+               <button class="danger-btn small" data-action="delete-release" data-index="${index}" ${state.releases.length > 1 ? '' : 'disabled'}>
+                 ${state.releases.length > 1 ? 'Delete' : 'Last plan'}
+               </button>
+             </div>
+           </div>
+           <div class="subtle" style="margin-bottom:10px;">${sprintCount} sprint${sprintCount === 1 ? '' : 's'}</div>
+           <label>
+             <span class="label">Plan name</span>
+             <input type="text" data-action="edit-release-name" data-index="${index}" value="${escapeHtml(release.name)}" placeholder="Plan name">
+           </label>
+         </div>
+       `;
       }).join('');
 
       return `
@@ -2947,8 +3192,9 @@
               </div>
             `
             : `
-              <div class="row-stack" style="margin-top:12px;">
+              <div class="row-stack" style="margin-top:12px; position: relative;">
                 ${releaseRows || '<div class="muted-box">No plans defined</div>'}
+                <div class="plan-drop-line" aria-hidden="true"></div>
               </div>
             `}
         </div>
@@ -3050,7 +3296,7 @@
         teams: renderTeams,
         sprints: renderSprints
       }[state.view]();
-      document.getElementById('app').innerHTML = `${viewHtml}${renderHelpModal()}`;
+      document.getElementById('app').innerHTML = `${viewHtml}${renderHelpModal()}${renderPurgeConfirmModal()}${renderDeleteDeveloperConfirmModal()}${renderTeamDeleteBlockedModal()}${renderResetConfirmModal()}`;
 
       if (pendingSquadFocusIndex !== null) {
         const input = document.querySelector(`[data-action="edit-squad-name"][data-index="${pendingSquadFocusIndex}"]`);
@@ -3075,6 +3321,7 @@
       if (pendingDeveloperFocusIndex !== null) {
         const input = document.querySelector(`[data-action="edit-developer-name"][data-index="${pendingDeveloperFocusIndex}"]`);
         if (input) {
+          input.closest('.member-row')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
           input.focus();
           input.setSelectionRange(0, 0);
         }
@@ -3123,6 +3370,46 @@
       }
       if (action === 'close-help') {
         isHelpOpen = false;
+        render();
+        return;
+      }
+      if (action === 'confirm-purge') {
+        confirmPurgeOldSprints();
+        render();
+        return;
+      }
+      if (action === 'cancel-purge') {
+        cancelPurgeOldSprints();
+        return;
+      }
+      if (action === 'confirm-delete-developer') {
+        isDeleteDeveloperConfirmOpen = false;
+        if (deleteDeveloperIndex !== null) {
+          deleteDeveloper(deleteDeveloperIndex);
+        }
+        deleteDeveloperIndex = null;
+        deleteDeveloperName = null;
+        return;
+      }
+      if (action === 'cancel-delete-developer') {
+        isDeleteDeveloperConfirmOpen = false;
+        deleteDeveloperIndex = null;
+        deleteDeveloperName = null;
+        render();
+        return;
+      }
+      if (action === 'close-team-delete-blocked') {
+        isTeamDeleteBlockedOpen = false;
+        render();
+        return;
+      }
+      if (action === 'confirm-reset') {
+        isResetConfirmOpen = false;
+        freshStart();
+        return;
+      }
+      if (action === 'cancel-reset') {
+        isResetConfirmOpen = false;
         render();
         return;
       }
@@ -3211,11 +3498,8 @@
         return;
       }
       if (action === 'reset-data') {
-        if (!confirm('This will clear all configuration, including teams, sprints, and other data. Are you sure you want to continue?')) {
-          return;
-        }
-        freshStart();
-        showTopbarToast('Data cleared');
+        isResetConfirmOpen = true;
+        render();
         return;
       }
       if (action === 'save-now') {
@@ -3243,7 +3527,10 @@
       }
       if (action === 'add-team') return addTeam(Number(target.dataset.index));
       if (action === 'show-team-delete-blocked') {
-        alert('Unable to delete a Team that has developers. Please delete its developers first.');
+        const teamIndex = Number(target.dataset.index);
+        collapsedTeamIndexes.delete(teamIndex);
+        isTeamDeleteBlockedOpen = true;
+        render();
         return;
       }
       if (action === 'show-purge-sprints-blocked') {
@@ -3257,8 +3544,11 @@
         if (state.developers.length < 2) return;
         const index = Number(target.dataset.index);
         const developerName = state.developers[index]?.name ?? 'this team member';
-        if (!confirm(`Delete ${developerName}?`)) return;
-        return deleteDeveloper(index);
+        isDeleteDeveloperConfirmOpen = true;
+        deleteDeveloperIndex = index;
+        deleteDeveloperName = developerName;
+        render();
+        return;
       }
       if (action === 'add-sprint') return addSprint();
       if (action === 'add-release') return addRelease();
@@ -3433,6 +3723,115 @@
 
     document.addEventListener('dragend', () => {
       clearSprintDragState();
+      clearPlanDragState();
+    });
+
+    document.addEventListener('dragstart', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (!row) return;
+
+      draggedPlanIndex = Number(row.dataset.index);
+      row.classList.add('is-dragging');
+
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(draggedPlanIndex));
+      }
+    });
+
+    document.addEventListener('dragover', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (!row || draggedPlanIndex === null) return;
+
+      event.preventDefault();
+      const rect = row.getBoundingClientRect();
+      const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+      const wrap = row.closest('.row-stack');
+      const dropLine = wrap?.querySelector('.plan-drop-line');
+      const rows = Array.from(document.querySelectorAll('[data-plan-row]'));
+      const rowPosition = rows.indexOf(row);
+      const gapIndexDom = rowPosition + (placeAfter ? 1 : 0);
+      const sourceDomPos = rows.findIndex((item) => Number(item.dataset.index) === draggedPlanIndex);
+      const isNoOpGap = gapIndexDom === sourceDomPos || gapIndexDom === sourceDomPos + 1;
+
+      document.querySelectorAll('[data-plan-row]').forEach((item) => item.classList.remove('drop-before', 'drop-after'));
+      if (!isNoOpGap) {
+        planDropPlacement = { gapIndexDom };
+        if (dropLine && wrap) {
+          const wrapRect = wrap.getBoundingClientRect();
+          let lineY = rect.top;
+          if (gapIndexDom <= 0) {
+            lineY = rows[0]?.getBoundingClientRect().top ?? rect.top;
+          } else if (gapIndexDom >= rows.length) {
+            lineY = rows[rows.length - 1]?.getBoundingClientRect().bottom ?? rect.bottom;
+          } else {
+            const prevRect = rows[gapIndexDom - 1].getBoundingClientRect();
+            const nextRect = rows[gapIndexDom].getBoundingClientRect();
+            lineY = (prevRect.bottom + nextRect.top) / 2;
+          }
+          dropLine.style.top = `${lineY - wrapRect.top - 2}px`;
+          dropLine.style.display = 'block';
+        }
+      } else {
+        planDropPlacement = null;
+        if (dropLine) {
+          dropLine.style.display = 'none';
+        }
+      }
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'move';
+      }
+    });
+
+    document.addEventListener('drop', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (draggedPlanIndex === null) return;
+
+      event.preventDefault();
+      const sourceIndex = draggedPlanIndex;
+      const rows = Array.from(document.querySelectorAll('[data-plan-row]'));
+      if (!rows.length) {
+        clearPlanDragState();
+        return;
+      }
+
+      const domIndices = rows.map((item) => Number(item.dataset.index));
+      const sourceDomPos = domIndices.indexOf(sourceIndex);
+      if (sourceDomPos < 0) {
+        clearPlanDragState();
+        return;
+      }
+
+      let rawGapIndex = planDropPlacement?.gapIndexDom;
+      if (!Number.isInteger(rawGapIndex) && row) {
+        const rect = row.getBoundingClientRect();
+        const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+        const rowPosition = rows.indexOf(row);
+        rawGapIndex = rowPosition + (placeAfter ? 1 : 0);
+      }
+      if (!Number.isInteger(rawGapIndex)) {
+        clearPlanDragState();
+        return;
+      }
+
+      if (rawGapIndex === sourceDomPos || rawGapIndex === sourceDomPos + 1) {
+        clearPlanDragState();
+        return;
+      }
+
+      const remaining = domIndices.filter((index) => index !== sourceIndex);
+      const insertPos = sourceDomPos < rawGapIndex ? rawGapIndex - 1 : rawGapIndex;
+      const clampedInsertPos = Math.max(0, Math.min(insertPos, remaining.length));
+      remaining.splice(clampedInsertPos, 0, sourceIndex);
+
+      const destinationDomPos = remaining.indexOf(sourceIndex);
+      const destinationIndex = destinationDomPos;
+
+      clearPlanDragState();
+      if (destinationIndex !== sourceIndex) {
+        moveRelease(sourceIndex, destinationIndex);
+      }
     });
 
     document.addEventListener('toggle', (event) => {
@@ -3492,6 +3891,27 @@
         target.classList.add('default-dev-name');
       } else {
         target.classList.remove('default-dev-name');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      const target = event.target.closest('[data-action="edit-developer-name"]');
+      if (!target) return;
+      const developerIndex = Number(target.dataset.index);
+      if (!Number.isInteger(developerIndex) || !state.developers[developerIndex]) return;
+      
+      const developer = state.developers[developerIndex];
+      const teamIndex = developer.teamIndex;
+      
+      // Count developers in this team and find if this is the last one
+      const developersInTeam = state.developers.filter(dev => dev.teamIndex === teamIndex);
+      const isLastInTeam = developersInTeam[developersInTeam.length - 1] === developer;
+      
+      // If this is the last developer in the team, add a new one
+      if (isLastInTeam) {
+        event.preventDefault();
+        addDeveloper(teamIndex);
       }
     });
 
