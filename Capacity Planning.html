@@ -56,6 +56,16 @@
       outline-offset: 2px;
     }
 
+    /* Remove spinner buttons from all number inputs */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
     .app {
       max-width: 1440px;
       margin: 0 auto;
@@ -86,9 +96,9 @@
     .topbar {
       display: flex;
       justify-content: space-between;
-      gap: var(--space-4);
-      align-items: center;
-      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: flex-start;
+      flex-wrap: nowrap;
       margin-top: 14px;
       margin-bottom: 2px;
     }
@@ -97,11 +107,15 @@
       display: flex;
       align-items: center;
       gap: 14px;
+      flex: 1;
+      min-width: 0;
     }
     .topbar-actions {
       margin-left: auto;
       justify-content: flex-end;
       flex-wrap: nowrap;
+      flex-shrink: 0;
+      align-self: flex-start;
     }
     .topbar-toast {
       font-size: 0.82rem;
@@ -112,11 +126,13 @@
       padding: 7px 10px;
       white-space: nowrap;
       opacity: 0;
+      display: none;
       transform: translateX(6px);
       transition: opacity 0.18s ease, transform 0.18s ease;
       pointer-events: none;
     }
     .topbar-toast.is-visible {
+      display: inline-flex;
       opacity: 1;
       transform: translateX(0);
     }
@@ -239,7 +255,7 @@
     }
 
     h1, h2, h3, p { margin: 0; }
-    h1 { font-size: 1.4rem; }
+    h1 { font-size: 1.4rem; white-space: nowrap; }
     .subtle { color: var(--muted); font-size: 0.92rem; margin-top: 4px; }
 
     .tabs {
@@ -303,6 +319,7 @@
     .squad-delete-btn {
       min-width: 92px;
       text-align: center;
+      margin-left: auto;
     }
     .squad-select-btn {
       min-width: 92px;
@@ -321,6 +338,17 @@
       font-size: 0.84rem;
       font-weight: 600;
       cursor: default;
+    }
+    /* Left-align squad select button, right-align delete button */
+    .squad-select-btn.squad-select-btn,
+    .squad-selected-btn.squad-selected-btn {
+      margin-left: 0;
+    }
+    .row-head:has(.squad-select-btn) .inline-actions,
+    .row-head:has(.squad-selected-btn) .inline-actions {
+      margin-left: 0;
+      justify-content: flex-start;
+      flex: 1;
     }
     .team-delete-btn {
       min-width: 92px;
@@ -362,16 +390,14 @@
     .summary-box-format .card .footnote {
       margin: 0;
       line-height: 1.1;
-      width: max-content;
-      max-width: 100%;
-      justify-self: center;
+      width: 100%;
+      text-align: center;
     }
     .summary-box-format .card .metric {
       margin: 0;
       align-self: center;
-      width: max-content;
-      max-width: 100%;
-      justify-self: center;
+      width: 100%;
+      text-align: center;
     }
     .summary-box-format .card .section-title {
       justify-content: center;
@@ -550,7 +576,7 @@
     .current-sprint-card {
       display: grid;
       grid-template-columns: minmax(0, 1fr) fit-content(156px);
-      align-items: stretch;
+      align-items: center;
       gap: 12px;
     }
     .current-sprint-hero {
@@ -753,33 +779,42 @@
     }
     .sprint-table th:nth-child(1),
     .sprint-table td:nth-child(1) {
-      width: 34%;
+      width: 30%;
     }
     .sprint-table th:nth-child(2),
     .sprint-table td:nth-child(2),
     .sprint-table th:nth-child(3),
     .sprint-table td:nth-child(3),
     .sprint-table th:nth-child(4),
-    .sprint-table td:nth-child(4),
-    .sprint-table th:nth-child(5),
-    .sprint-table td:nth-child(5) {
-      width: 16.5%;
+    .sprint-table td:nth-child(4) {
+      width: 23.3%;
     }
     .sprint-table td {
       overflow: hidden;
     }
     .sprint-table th,
     .sprint-table td {
-      padding-left: 6px;
-      padding-right: 6px;
+      padding-left: 2px;
+      padding-right: 2px;
     }
     .sprint-table th {
-      white-space: normal;
+      white-space: nowrap;
       line-height: 1.15;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.01em;
     }
     .sprint-table input {
       min-width: 0;
+      width: 100%;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 0.92rem;
+      -moz-appearance: textfield;
+    }
+    .sprint-table input::-webkit-outer-spin-button,
+    .sprint-table input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     .sprints-table-wrap {
       overflow-x: auto;
@@ -884,41 +919,46 @@
     }
     .velocity-team-sprints-table th:nth-child(1),
     .velocity-team-sprints-table td:nth-child(1) {
-      width: 34%;
+      width: 30%;
     }
     .velocity-team-sprints-table th:nth-child(2),
     .velocity-team-sprints-table td:nth-child(2),
     .velocity-team-sprints-table th:nth-child(3),
     .velocity-team-sprints-table td:nth-child(3),
     .velocity-team-sprints-table th:nth-child(4),
-    .velocity-team-sprints-table td:nth-child(4),
-    .velocity-team-sprints-table th:nth-child(5),
-    .velocity-team-sprints-table td:nth-child(5) {
-      width: 16.5%;
+    .velocity-team-sprints-table td:nth-child(4) {
+      width: 23.3%;
     }
     .velocity-team-sprints-table td {
       overflow: hidden;
     }
     .velocity-team-sprints-table th,
     .velocity-team-sprints-table td {
-      padding-left: 6px;
-      padding-right: 6px;
+      padding-left: 2px;
+      padding-right: 2px;
     }
     .velocity-team-sprints-table th {
-      white-space: normal;
+      white-space: nowrap;
       line-height: 1.15;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.01em;
     }
     .sprint-table th:nth-child(n + 2),
     .velocity-team-sprints-table th:nth-child(n + 2) {
       text-align: center;
     }
-    .sprint-table td:nth-child(5) input,
-    .velocity-team-sprints-table td:nth-child(5) input {
-      text-align: right;
-    }
     .velocity-team-sprints-table input {
       min-width: 0;
+      width: 100%;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 0.92rem;
+      -moz-appearance: textfield;
+    }
+    .velocity-team-sprints-table input::-webkit-outer-spin-button,
+    .velocity-team-sprints-table input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     .velocity-inline-current {
       margin-left: 6px !important;
@@ -1330,10 +1370,76 @@
       }
     }
     @media (max-width: 500px) {
+      .sprints-card-grid {
+        grid-template-columns: 1fr;
+      }
+      .sprint-item-card {
+        background: var(--panel);
+        border: var(--control-border);
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: var(--elevation-card);
+      }
+      .sprint-item-card.selected-plan-sprint {
+        background: #f0f7ff;
+        border-color: rgba(74, 136, 180, 0.45);
+      }
+      .sprint-card-row-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .sprint-card-row-top .left-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+      }
+      .sprint-card-row-bottom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sprint-card-row-bottom .sprint-plan-select {
+        flex: 1;
+        min-width: 0;
+      }
+      .sprint-card-row-bottom .sprint-days-wrap {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex: 0 0 auto;
+      }
+      .sprint-card-row-bottom .sprint-days-input {
+        width: 50px !important;
+        text-align: center;
+        padding: 8px 4px !important;
+      }
+      .sprints-desktop-table {
+        display: none;
+      }
+      .sprints-mobile-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    @media (min-width: 501px) {
+      .sprints-mobile-cards {
+        display: none;
+      }
+    }
+    @media (max-width: 500px) {
       .summary-tiles-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-    @media (max-width: 380px) {
+    @media (max-width: 460px) {
       .summary-tiles-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .summary-tiles-3 .card:last-child { grid-column: 1 / -1; }
       .home-summary-grid .home-forecast-card { grid-column: 1 / -1; }
     }
     @media (max-width: 340px) {
@@ -1377,8 +1483,8 @@
           </div>
         </div>
         <div class="inline-actions topbar-actions">
-          <button class="ghost-btn icon-btn" data-action="toggle-help" title="Help" aria-label="Help">?</button>
           <span id="topbar-toast" class="topbar-toast" aria-live="polite"></span>
+          <button class="ghost-btn icon-btn" data-action="toggle-help" title="Help" aria-label="Help">?</button>
         </div>
       </div>
 
@@ -2335,7 +2441,8 @@
             'Forecast velocity is the model\'s predicted story-point output for the next sprint. It is calculated per team from their recent actual points-per-day multiplied by their available capacity days.',
             'If the Missing previous sprint actuals tile shows a warning, some teams have no Actual value entered for the last sprint. Tap it to jump directly to the Velocity screen to fill those in.',
             'The Data being used card shows counts for squads, sprints, teams, and developers. Each tile is clickable and jumps to the relevant management screen.',
-            'All data is saved automatically in this browser only. Use the Export button to save a JSON backup file you can restore later on any device.'
+            'All data is saved automatically in this browser only. Use the Export button to save a JSON backup file you can restore later on any device.',
+            'Version v1.2'
           ]
         },
         velocity: {
@@ -2651,6 +2758,7 @@
             </div>
           </div>
         </div>
+        <div style="font-size:11px; color:#a0aec0; margin-top:24px; padding-left:4px;">Version v1.2</div>
       `;
     }
 
@@ -2681,11 +2789,13 @@
       `;
 
       const summaryHtml = `
-        <div class="grid summary-grid summary-tiles-4 velocity-summary-grid summary-box-format" style="margin-top:16px;">
+        <div class="grid summary-grid summary-tiles-3 velocity-summary-grid summary-box-format" style="margin-top:16px;">
           ${summaryCard('Forecast', summary.estimated.toFixed(0), 'points', previousData.hasMissing ? 'velocity-forecast-alert' : '')}
           ${summaryCard('Committed', summary.committed.toFixed(0), 'points')}
           ${summaryCard('Actual', summary.actual.toFixed(0), 'points')}
-          ${summaryCard('Predictability', `${summary.predictabilityCommit.toFixed(0)}%`, `Forecast: ${summary.predictabillityEstimate.toFixed(0)}%`)}
+        </div>
+        <div style="text-align: center; margin-top: 8px; font-size: 0.9rem; color: var(--muted);">
+          <strong>Predictability:</strong> ${summary.predictabilityCommit.toFixed(0)}% (Forecast Predictability: ${summary.predictabillityEstimate.toFixed(0)}%)
         </div>
       `;
 
@@ -2695,13 +2805,17 @@
           const isFutureSprint = state.currentSprintIndex > state.masterSprintIndex;
           const previousMissing = previousSprintMissingForTeam(team.index, state.currentSprintIndex);
           const actualClass = previousMissing.missingActual ? 'missing-previous-data-input' : '';
+          const predictability = numberValue(row.commit) > 0 && numberValue(row.actual) > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + '%' : '—';
           return `
             <tr>
-              <td>${escapeHtml(team.name)}</td>
-              <td><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
-              <td><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
-              <td><input class="${actualClass}" type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
-              <td><input type="text" data-action="noop" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
+              <td style="border-bottom: none !important; padding-bottom: 2px !important;">${escapeHtml(team.name)}</td>
+              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
+              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
+              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input class="${actualClass}" type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
+            </tr>
+            <tr style="font-size: 0.85rem; color: var(--muted); font-style: italic;">
+              <td colspan="3" style="padding-top: 2px; padding-bottom: 10px; border-top: none !important; text-align: right; padding-right: 8px;">Predictability</td>
+              <td style="text-align: right; padding-right: 8px; padding-top: 2px; padding-bottom: 10px; border-top: none !important;">${predictability}</td>
             </tr>
           `;
         }).join('');
@@ -2752,12 +2866,11 @@
                       <th>Forecast</th>
                       <th>Commit</th>
                       <th>Actual</th>
-                      <th>Predict</th>
                     </tr>
                   </thead>
                   <tbody>
                     ${bySprint
-                      ? rows || `<tr><td colspan="5"><div class="muted-box">No teams in this squad yet</div></td></tr>`
+                      ? rows || `<tr><td colspan="4"><div class="muted-box">No teams in this squad yet</div></td></tr>`
                       : state.sprints.slice().reverse().map((sprint, reverseIndex) => {
                           const index = state.sprints.length - 1 - reverseIndex;
                           const row = state.teamVelocity[state.currentTeamIndex]?.[index] ?? {};
@@ -2767,7 +2880,6 @@
                               <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
                               <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
                               <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                              <td><input type="text" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
                             </tr>
                           `;
                         }).join('')}
@@ -2836,7 +2948,6 @@
                   <th>Forecast</th>
                   <th>Commit</th>
                   <th>Actual</th>
-                  <th>Predict</th>
                 </tr>
               </thead>
               <tbody>
@@ -2858,7 +2969,7 @@
                     .reverse();
 
                   if (!planSprints.length) {
-                    return '<tr><td colspan="5"><div class="muted-box">No sprints in this plan yet</div></td></tr>';
+                    return '<tr><td colspan="4"><div class="muted-box">No sprints in this plan yet</div></td></tr>';
                   }
 
                   return planSprints.map(({ sprint, index }) => {
@@ -2867,13 +2978,17 @@
                     index < state.masterSprintIndex
                     && index > latestPastActualIndex
                     && numberValue(row.actual) <= 0;
+                  const predictability = numberValue(row.commit) > 0 && numberValue(row.actual) > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + '%' : '—';
                   return `
                     <tr>
-                      <td>${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
-                      <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
-                      <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                      <td><input class="${shouldHighlightActual ? 'missing-previous-data-input' : ''}" type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                      <td><input type="text" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
+                      <td style="border-bottom: none !important; padding-bottom: 2px !important;">${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
+                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
+                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input class="${shouldHighlightActual ? 'missing-previous-data-input' : ''}" type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                    </tr>
+                    <tr style="font-size: 0.85rem; color: var(--muted); font-style: italic;">
+                      <td colspan="3" style="padding-top: 2px; padding-bottom: 10px; border-top: none !important; text-align: right; padding-right: 8px;">Predictability</td>
+                      <td style="text-align: right; padding-right: 8px; padding-top: 2px; padding-bottom: 10px; border-top: none !important;">${predictability}</td>
                     </tr>
                   `;
                 }).join('');
@@ -3216,7 +3331,43 @@
                 : '<button class="danger-btn blocked-delete-btn small" data-action="show-purge-sprints-blocked">DELETE old sprints</button>'}
             </div>
           </div>
-          <div class="table-wrap sprints-table-wrap" style="margin-top:12px;">
+          <div class="sprints-mobile-cards" style="margin-top:12px;">
+            ${visibleSprints.length === 0
+              ? `<div class="muted-box">No sprints in ${escapeHtml(selectedPlanName)}</div>`
+              : visibleSprints.map(({ sprint, index }) => {
+              const isDraggable = !showSelectedPlanSprintsOnly;
+              return `
+                <div class="sprint-item-card ${sprint.releaseIndex === state.currentPlanIndex ? 'selected-plan-sprint' : ''}" draggable="${isDraggable ? 'true' : 'false'}" data-sprint-row data-index="${index}">
+                  <div class="sprint-card-row-top">
+                    <div class="left-controls">
+                      <span class="drag-handle" aria-hidden="true" title="${isDraggable ? 'Drag to reorder' : 'Disable filter to reorder'}">☰</span>
+                      <button class="ghost-btn small current-sprint-btn ${index === state.masterSprintIndex ? 'is-current' : ''}" data-action="set-current-sprint" data-index="${index}">
+                        ${index === state.masterSprintIndex ? 'Current' : 'Select'}
+                      </button>
+                      <input type="text" style="flex:1; min-width:0;" data-action="edit-sprint-name" data-index="${index}" value="${escapeHtml(sprint.name)}">
+                    </div>
+                    <button class="danger-btn small" data-action="delete-sprint" data-index="${index}" ${state.sprints.length > 1 ? '' : 'disabled'}>
+                      ${state.sprints.length > 1 ? 'Delete' : 'Last sprint'}
+                    </button>
+                  </div>
+                  <div class="sprint-card-row-bottom">
+                    <div class="sprint-plan-select">
+                      <select data-action="edit-sprint-release" data-index="${index}">
+                        <option value="">No plan</option>
+                        ${state.releases.map((release, releaseIndex) => `<option value="${releaseIndex}" ${releaseIndex === sprint.releaseIndex ? 'selected' : ''}>${escapeHtml(release.name)}</option>`).join('')}
+                      </select>
+                    </div>
+                    <div class="sprint-days-wrap">
+                      <span class="label" style="margin:0; font-size:0.78rem;">Days:</span>
+                      <input class="sprint-days-input" type="number" step="any" data-action="edit-sprint-days" data-index="${index}" value="${escapeHtml(sprint.days)}">
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="table-wrap sprints-table-wrap sprints-desktop-table" style="margin-top:12px;">
             <table class="table sprints-table">
               <thead>
                 <tr>
