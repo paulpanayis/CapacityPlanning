@@ -1,0 +1,4091 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Capacity Planning</title>
+  <style>
+    :root {
+      --accent: rgb(74, 136, 180);
+      --accent-strong: rgb(53, 107, 146);
+      --bg: #eef4f9;
+      --panel: #ffffff;
+      --panel-soft: #f7fafc;
+      --text: #17212b;
+      --muted: #667381;
+      --border: #d8e2ea;
+      --control-border: 1px solid var(--border);
+      --elevation-card: 0 1px 2px rgba(16, 24, 40, 0.08);
+      --shadow: var(--elevation-card);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scrollbar-gutter: stable;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    input, select {
+      width: 100%;
+      border: var(--control-border);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 12px;
+      color: var(--text);
+    }
+    input:disabled {
+      background: #f5f7fa;
+      color: #6f7a86;
+      opacity: 1;
+    }
+    input:focus, select:focus, button:focus {
+      outline: 2px solid rgba(74, 136, 180, 0.25);
+      outline-offset: 2px;
+    }
+
+    .app {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: var(--space-5);
+    }
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1440px, calc(100vw - (2 * var(--space-5))));
+      z-index: 50;
+    }
+    .sticky-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      margin-bottom: 2px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .topbar-actions {
+      margin-left: auto;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+    .topbar-toast {
+      font-size: 0.82rem;
+      color: var(--accent-strong);
+      background: rgba(74, 136, 180, 0.12);
+      border: 1px solid rgba(74, 136, 180, 0.24);
+      border-radius: 999px;
+      padding: 7px 10px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+    }
+    .topbar-toast.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .icon-btn {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+    .help-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(23, 33, 43, 0.38);
+      z-index: 110;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .help-modal {
+      width: min(680px, calc(100vw - 24px));
+      max-height: min(80vh, 760px);
+      overflow-y: auto;
+      background: var(--panel);
+      border: var(--control-border);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(16, 24, 40, 0.2);
+      padding: 18px;
+    }
+    .help-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .help-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text);
+      line-height: 1.35;
+      display: grid;
+      gap: 8px;
+    }
+    .storage-action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+    }
+    .storage-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-1);
+      background: var(--panel-soft);
+      border: var(--control-border);
+      border-radius: 12px;
+      padding: var(--space-3);
+      text-align: center;
+      min-height: 156px;
+      box-shadow: var(--elevation-card);
+    }
+    .storage-action.clickable {
+      cursor: pointer;
+    }
+    .storage-action.clickable:hover {
+      border-color: rgba(74, 136, 180, 0.35);
+      background: #f3f8fc;
+    }
+    .storage-icon-btn {
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .storage-action-title {
+      font-size: 0.82rem;
+      font-weight: 650;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .storage-action-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+    .storage-action-meta {
+      white-space: nowrap;
+      margin-top: auto;
+    }
+    .storage-action-reset {
+      min-height: 0;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      flex: 0 0 52px;
+      display: block;
+    }
+    .logo svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 1.4rem; }
+    .subtle { color: var(--muted); font-size: 0.92rem; margin-top: 4px; }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: 18px 0 calc(var(--space-5) / 2);
+      padding: var(--space-3) 0;
+    }
+
+    .tab-btn, .ghost-btn, .primary-btn, .danger-btn, .seg-btn {
+      border: var(--control-border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
+    }
+    .tab-btn:hover, .ghost-btn:hover, .primary-btn:hover, .danger-btn:hover, .seg-btn:hover {
+      transform: translateY(-1px);
+    }
+    .tab-btn.active, .seg-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .primary-btn {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .danger-btn {
+      background: #d9534f;
+      color: #fff;
+      border-color: #d9534f;
+    }
+    .danger-btn:disabled {
+      background: #8a8f98;
+      border-color: #8a8f98;
+      color: #fff;
+      cursor: not-allowed;
+    }
+    .danger-btn.blocked-delete-btn {
+      background: #8a8f98;
+      border-color: #8a8f98;
+      color: #fff;
+    }
+    .ghost-btn {
+      background: #fff;
+    }
+    .current-sprint-btn {
+      min-width: 58px;
+      text-align: center;
+      padding: 8px 4px;
+    }
+    .current-sprint-btn.is-current {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .squad-delete-btn {
+      min-width: 92px;
+      text-align: center;
+    }
+    .squad-select-btn {
+      min-width: 92px;
+      text-align: center;
+    }
+    .squad-selected-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: rgba(74, 136, 180, 0.12);
+      color: var(--accent-strong);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: default;
+    }
+    .team-delete-btn {
+      min-width: 92px;
+      text-align: center;
+    }
+
+    .stack { display: grid; gap: var(--space-4); }
+    .grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+    .summary-grid {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+    .summary-tiles-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .summary-tiles-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .summary-box-format .card,
+    .summary-box-format .card h3,
+    .summary-box-format .card .metric,
+    .summary-box-format .card .footnote {
+      text-align: center;
+    }
+    .summary-box-format .card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(1.15rem, auto) 1fr minmax(1rem, auto);
+      justify-items: stretch;
+      align-items: center;
+      gap: var(--space-1);
+      min-height: 118px;
+      padding-top: var(--space-3);
+      padding-bottom: var(--space-3);
+    }
+    .summary-box-format .card h3,
+    .summary-box-format .card .footnote {
+      margin: 0;
+      line-height: 1.1;
+      width: max-content;
+      max-width: 100%;
+      justify-self: center;
+    }
+    .summary-box-format .card .metric {
+      margin: 0;
+      align-self: center;
+      width: max-content;
+      max-width: 100%;
+      justify-self: center;
+    }
+    .summary-box-format .card .section-title {
+      justify-content: center;
+    }
+    .summary-box-format .card .footnote {
+      white-space: nowrap;
+    }
+    .summary-box-format .card.velocity-forecast-alert {
+      background: rgba(217, 83, 79, 0.08);
+      border-color: rgba(217, 83, 79, 0.35);
+    }
+    .summary-box-format .card.velocity-forecast-alert h3,
+    .summary-box-format .card.velocity-forecast-alert .metric,
+    .summary-box-format .card.velocity-forecast-alert .footnote {
+      color: #b13c39;
+    }
+    .two-col {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
+    }
+    .three-col {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .velocity-sprint-stack {
+      grid-template-columns: 1fr;
+    }
+    .velocity-team-stack {
+      grid-template-columns: 1fr;
+    }
+    .selector-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: var(--control-border);
+      border-radius: var(--radius);
+      box-shadow: var(--elevation-card);
+      padding: var(--space-4);
+    }
+
+    .card h2, .card h3 {
+      font-size: 1rem;
+      margin-bottom: var(--space-3);
+    }
+
+    .metric {
+      font-size: 2rem;
+      font-weight: 750;
+      line-height: 1;
+      margin: 8px 0;
+    }
+
+    .footnote, .meta {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+    .selection-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .selection-info-card {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .selection-info-value {
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .snapshot-layout {
+      display: grid;
+      gap: 12px;
+    }
+    .snapshot-hero {
+      background: linear-gradient(135deg, rgba(74, 136, 180, 0.13), rgba(74, 136, 180, 0.04));
+      border: 1px solid rgba(74, 136, 180, 0.25);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+    .snapshot-hero-label {
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+    .snapshot-hero-value {
+      font-size: 1.7rem;
+      line-height: 1;
+      font-weight: 750;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+    .snapshot-progress {
+      margin-top: 8px;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(74, 136, 180, 0.18);
+      overflow: hidden;
+    }
+    .snapshot-progress > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #5aa3d4, #2f7fb8);
+    }
+    .snapshot-stat-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .snapshot-stat {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 11px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .snapshot-stat.clickable {
+      cursor: pointer;
+      transition: background 0.14s ease, border-color 0.14s ease;
+    }
+    .snapshot-stat.clickable::before {
+      content: "↗";
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 0.75rem;
+      color: var(--accent-strong);
+      opacity: 0.8;
+    }
+    .snapshot-stat.clickable:hover {
+      background: #eef6ff;
+      border-color: rgba(74, 136, 180, 0.35);
+    }
+    .snapshot-stat.clickable:focus-visible {
+      outline: 2px solid rgba(74, 136, 180, 0.35);
+      outline-offset: 2px;
+    }
+    .snapshot-stat.warn {
+      background: rgba(217, 83, 79, 0.08);
+      border-color: rgba(217, 83, 79, 0.35);
+    }
+    .snapshot-stat.warn .snapshot-stat-label,
+    .snapshot-stat.warn .snapshot-stat-value {
+      color: #b13c39;
+    }
+    .snapshot-stat.warn.clickable::before {
+      color: #b13c39;
+    }
+    .snapshot-stat.full-width {
+      grid-column: 1 / -1;
+    }
+    .snapshot-stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .snapshot-stat-value {
+      font-size: 1.08rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .current-sprint-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) fit-content(156px);
+      align-items: stretch;
+      gap: 12px;
+    }
+    .current-sprint-hero {
+      background: linear-gradient(135deg, rgba(74, 136, 180, 0.14), rgba(74, 136, 180, 0.05));
+      border: 1px solid rgba(74, 136, 180, 0.25);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .current-sprint-name {
+      font-size: 1.75rem;
+      font-weight: 760;
+      line-height: 1.05;
+      margin: 0;
+    }
+    .current-sprint-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .current-sprint-meta {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 11px;
+    }
+    .current-sprint-meta .label {
+      margin-bottom: 4px;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .current-sprint-meta-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .velocity-sprint-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+      align-items: end;
+      gap: 16px;
+    }
+    .velocity-sprint-toolbar .segmented {
+      justify-self: start;
+    }
+    .velocity-squad-picker {
+      justify-self: end;
+      width: 100%;
+      max-width: 280px;
+    }
+    .velocity-squad-picker label {
+      margin: 0;
+    }
+
+    .segmented {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+    }
+    .seg-btn {
+      border: 0;
+      background: transparent;
+    }
+
+    .fields {
+      display: grid;
+      gap: 12px;
+    }
+    .fields.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .fields.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      flex-wrap: wrap;
+    }
+    .squads-toggle-btn {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .squads-toggle-btn:hover {
+      transform: none;
+    }
+    .squads-toggle-icon {
+      color: var(--muted);
+      font-size: 2.3rem;
+      line-height: 1;
+      font-weight: 400;
+      display: inline-block;
+      width: 1em;
+      text-align: center;
+      transform: translateY(-0.125em);
+      align-self: center;
+    }
+    .squads-collapsed-select {
+      max-width: 320px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+    .table th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 12px;
+    }
+    .table td {
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+    .table td:first-child {
+      border-left: 1px solid var(--border);
+      border-top-left-radius: 14px;
+      border-bottom-left-radius: 14px;
+    }
+    .table td:last-child {
+      border-right: 1px solid var(--border);
+      border-top-right-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+    .table tbody tr:hover td {
+      background: #f4f9ff;
+      border-top-color: #c9ddec;
+      border-bottom-color: #c9ddec;
+    }
+    .table tbody tr:hover td:first-child {
+      border-left-color: #c9ddec;
+    }
+    .table tbody tr:hover td:last-child {
+      border-right-color: #c9ddec;
+    }
+    .table td:focus-within {
+      background: #eef6ff;
+      border-top-color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .table td:first-child:focus-within {
+      border-left-color: var(--accent);
+    }
+    .table td:last-child:focus-within {
+      border-right-color: var(--accent);
+    }
+    .table td input:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(74, 136, 180, 0.14);
+    }
+    .table td input.missing-previous-data-input {
+      color: #b13c39;
+      border-color: rgba(217, 83, 79, 0.45);
+      background: rgba(217, 83, 79, 0.08);
+    }
+    .sprint-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    .sprint-table th:nth-child(1),
+    .sprint-table td:nth-child(1) {
+      width: 34%;
+    }
+    .sprint-table th:nth-child(2),
+    .sprint-table td:nth-child(2),
+    .sprint-table th:nth-child(3),
+    .sprint-table td:nth-child(3),
+    .sprint-table th:nth-child(4),
+    .sprint-table td:nth-child(4),
+    .sprint-table th:nth-child(5),
+    .sprint-table td:nth-child(5) {
+      width: 16.5%;
+    }
+    .sprint-table td {
+      overflow: hidden;
+    }
+    .sprint-table th,
+    .sprint-table td {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .sprint-table th {
+      white-space: normal;
+      line-height: 1.15;
+      font-size: 0.72rem;
+    }
+    .sprint-table input {
+      min-width: 0;
+    }
+    .sprints-table-wrap {
+      overflow-x: auto;
+      position: relative;
+    }
+    .sprints-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+    }
+    .sprints-table th:nth-child(1),
+    .sprints-table td:nth-child(1) {
+      width: 44px;
+      text-align: center;
+    }
+    .sprints-table th:nth-child(2),
+    .sprints-table td:nth-child(2) {
+      width: 78px;
+      text-align: center;
+    }
+    .sprints-table th:nth-child(3),
+    .sprints-table td:nth-child(3),
+    .sprints-table th:nth-child(4),
+    .sprints-table td:nth-child(4) {
+      width: calc((100% - 272px) / 2);
+      text-align: left;
+    }
+    .sprints-table th:nth-child(5),
+    .sprints-table td:nth-child(5) {
+      width: 52px;
+      text-align: right;
+    }
+    .sprints-table th:nth-child(6),
+    .sprints-table td:nth-child(6) {
+      width: 84px;
+      text-align: right;
+    }
+    .sprints-table th:nth-child(5) {
+      text-align: center;
+    }
+    .sprints-table th:nth-child(6) {
+      text-align: right;
+    }
+    .sprints-table th,
+    .sprints-table td {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .sprints-table th:nth-child(5),
+    .sprints-table td:nth-child(5) {
+      padding-right: 0;
+    }
+    .sprints-table th:nth-child(6),
+    .sprints-table td:nth-child(6) {
+      padding-left: 0;
+    }
+    .sprints-table td:nth-child(5) input,
+    .sprints-table td:nth-child(6) button {
+      margin-left: auto;
+    }
+    .sprints-table td:nth-child(5) input {
+      width: 46px;
+      min-width: 0;
+      padding: 8px 2px;
+      text-align: center;
+      -moz-appearance: textfield;
+    }
+    .sprints-table td:nth-child(5) input::-webkit-outer-spin-button,
+    .sprints-table td:nth-child(5) input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .sprints-table td:nth-child(3) input,
+    .sprints-table td:nth-child(4) select {
+      min-width: 0;
+      width: 100%;
+    }
+    .sprint-drop-line {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74, 136, 180, 0.22);
+      pointer-events: none;
+      display: none;
+      z-index: 20;
+    }
+    .team-capacity-wrap {
+      overflow-x: hidden;
+    }
+    .velocity-team-sprints-wrap {
+      overflow-x: hidden;
+    }
+    .velocity-team-sprints-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    .velocity-team-sprints-table th:nth-child(1),
+    .velocity-team-sprints-table td:nth-child(1) {
+      width: 34%;
+    }
+    .velocity-team-sprints-table th:nth-child(2),
+    .velocity-team-sprints-table td:nth-child(2),
+    .velocity-team-sprints-table th:nth-child(3),
+    .velocity-team-sprints-table td:nth-child(3),
+    .velocity-team-sprints-table th:nth-child(4),
+    .velocity-team-sprints-table td:nth-child(4),
+    .velocity-team-sprints-table th:nth-child(5),
+    .velocity-team-sprints-table td:nth-child(5) {
+      width: 16.5%;
+    }
+    .velocity-team-sprints-table td {
+      overflow: hidden;
+    }
+    .velocity-team-sprints-table th,
+    .velocity-team-sprints-table td {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .velocity-team-sprints-table th {
+      white-space: normal;
+      line-height: 1.15;
+      font-size: 0.72rem;
+    }
+    .sprint-table th:nth-child(n + 2),
+    .velocity-team-sprints-table th:nth-child(n + 2) {
+      text-align: center;
+    }
+    .sprint-table td:nth-child(5) input,
+    .velocity-team-sprints-table td:nth-child(5) input {
+      text-align: right;
+    }
+    .velocity-team-sprints-table input {
+      min-width: 0;
+    }
+    .velocity-inline-current {
+      margin-left: 6px !important;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      vertical-align: middle;
+    }
+    .team-capacity-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+    }
+    .team-capacity-table th:nth-child(2),
+    .team-capacity-table td:nth-child(2) {
+      width: 120px;
+    }
+    .team-capacity-table th:nth-child(2) {
+      padding-left: 0;
+    }
+    .capacity-reset-btn {
+      width: 120px;
+      min-width: 120px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+      text-align: center;
+    }
+    .capacity-input-wrap {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .capacity-toast {
+      position: absolute;
+      right: calc(120px + 8px);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.82rem;
+      color: var(--accent-strong);
+      background: rgba(74, 136, 180, 0.12);
+      border: 1px solid rgba(74, 136, 180, 0.24);
+      border-radius: 999px;
+      padding: 7px 10px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .capacity-input-wrap input[data-action="edit-capacity"] {
+      width: 120px;
+      flex: 0 0 120px;
+    }
+
+    .row-stack {
+      display: grid;
+      gap: 12px;
+    }
+    .row-card {
+      background: var(--panel);
+      border: var(--control-border);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--elevation-card);
+    }
+    .row-card.selected-squad-card {
+      background: #f0f7ff;
+      border-color: rgba(74, 136, 180, 0.55);
+      box-shadow: 0 0 0 2px rgba(74, 136, 180, 0.18), var(--elevation-card);
+    }
+    .team-section {
+      padding: 14px;
+    }
+    .team-summary {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+    .team-summary::-webkit-details-marker {
+      display: none;
+    }
+    .team-summary::before {
+      content: '▸';
+      color: var(--muted);
+      font-size: 2.3rem;
+      line-height: 1;
+      flex: 0 0 auto;
+      transform: translateY(-0.125em);
+      align-self: center;
+    }
+    .team-section[open] > .team-summary::before {
+      content: '▾';
+    }
+    .team-summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      vertical-align: middle;
+    }
+    .team-summary .row-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .team-content {
+      margin-top: 12px;
+    }
+    .row-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .row-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .row-title .subtle {
+      margin-top: 0;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(74, 136, 180, 0.12);
+      color: var(--accent-strong);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .pill.good { background: rgba(27, 161, 96, 0.12); color: #1b7f52; }
+    .pill.warn { background: rgba(217, 83, 79, 0.12); color: #b13c39; }
+    .muted-box {
+      background: var(--panel-soft);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .inline-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+    .inline-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 38px;
+      height: 22px;
+      flex: 0 0 auto;
+    }
+    .inline-switch input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .inline-switch-track {
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      background: #c8d5e3;
+      border: 1px solid #b7c7d8;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      pointer-events: none;
+    }
+    .inline-switch-track::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.24);
+      transition: transform 0.15s ease;
+    }
+    .inline-switch input:checked + .inline-switch-track {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .inline-switch input:checked + .inline-switch-track::after {
+      transform: translateX(16px);
+    }
+    .row-head .inline-actions,
+    .team-summary-row .inline-actions {
+      margin-left: auto;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+    .small {
+      font-size: 0.84rem;
+      padding: 8px 10px;
+    }
+    .sprint-row.is-dragging td {
+      opacity: 0.45;
+    }
+    .sprint-row.selected-plan-sprint td {
+      background: #f0f7ff;
+      border-top-color: rgba(74, 136, 180, 0.55);
+      border-bottom-color: rgba(74, 136, 180, 0.55);
+    }
+    .sprint-row.selected-plan-sprint td:first-child {
+      border-left-color: rgba(74, 136, 180, 0.55);
+    }
+    .sprint-row.selected-plan-sprint td:last-child {
+      border-right-color: rgba(74, 136, 180, 0.55);
+    }
+    .drag-handle {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.2rem;
+      line-height: 1;
+      padding: 0;
+      cursor: grab;
+      user-select: none;
+    }
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+    .drag-cell {
+      width: 1%;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .plan-drop-line {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74, 136, 180, 0.22);
+      pointer-events: none;
+      display: none;
+      z-index: 20;
+    }
+    .row-card.is-dragging {
+      opacity: 0.45;
+    }
+    .row-card-drag-handle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+    }
+
+    .team-members {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .member-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 6px;
+      transition: background 0.14s ease, border-color 0.14s ease;
+    }
+    .member-row:hover {
+      background: #f4f9ff;
+      border-color: #d6e4f1;
+    }
+    .member-row:focus-within {
+      background: #eef6ff;
+      border-color: var(--accent);
+    }
+    .member-row input:focus,
+    .member-row select:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(74, 136, 180, 0.14);
+    }
+    .member-name-input {
+      flex: 1 1 auto;
+      color: #000;
+    }
+    .squad-name-input,
+    .team-name-input {
+      color: #000;
+    }
+    .squad-name-input.default-squad-name {
+      color: #8a8f98;
+    }
+    .team-name-input.default-team-name {
+      color: #8a8f98;
+    }
+    .member-name-input.default-dev-name {
+      color: #8a8f98;
+    }
+    .available-input {
+      color: #000;
+    }
+    .available-input.default-available {
+      color: #8a8f98;
+    }
+    .velocity-team-summary-header {
+      align-items: flex-start;
+      margin-top: -4px;
+    }
+
+    @media (max-width: 760px) {
+      .two-col { grid-template-columns: 1fr; }
+      .fields.two, .fields.three { grid-template-columns: 1fr; }
+      .table { min-width: 680px; }
+      .sprint-table { min-width: 0; }
+      .sprints-table { min-width: 0; }
+      .velocity-team-sprints-table { min-width: 0; }
+      .team-capacity-table { min-width: 0; }
+      .table-wrap { overflow-x: auto; }
+      .sprints-table-wrap { overflow-x: hidden; }
+      .velocity-team-sprints-wrap { overflow-x: hidden; }
+      .velocity-sprint-toolbar { grid-template-columns: 1fr; }
+      .velocity-squad-picker {
+        justify-self: stretch;
+        max-width: none;
+      }
+    }
+    @media (max-width: 620px) {
+      .sprints-table {
+        table-layout: fixed;
+      }
+      .sprints-table th,
+      .sprints-table td {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+      .sprints-table th:nth-child(1),
+      .sprints-table td:nth-child(1) {
+        width: 24px;
+      }
+      .sprints-table th:nth-child(2),
+      .sprints-table td:nth-child(2) {
+        width: 56px;
+      }
+      .sprints-table th:nth-child(3),
+      .sprints-table td:nth-child(3),
+      .sprints-table th:nth-child(4),
+      .sprints-table td:nth-child(4) {
+        width: calc((100% - 194px) / 2);
+      }
+      .sprints-table th:nth-child(5),
+      .sprints-table td:nth-child(5) {
+        width: 48px;
+      }
+      .sprints-table th:nth-child(6),
+      .sprints-table td:nth-child(6) {
+        width: 60px;
+      }
+      .sprints-table td:nth-child(4) select {
+        min-width: 0;
+        width: 100%;
+      }
+      .sprints-table td:nth-child(5) input {
+        width: 42px;
+        padding: 8px 2px;
+        min-width: 0;
+      }
+      .sprints-table td:nth-child(6) button {
+        width: 100%;
+        min-width: 0;
+        padding: 8px 4px;
+      }
+    }
+    @media (max-width: 440px) {
+      .sprints-table th:nth-child(2),
+      .sprints-table td:nth-child(2) {
+        width: 52px;
+      }
+      .sprints-table th:nth-child(3),
+      .sprints-table td:nth-child(3),
+      .sprints-table th:nth-child(4),
+      .sprints-table td:nth-child(4) {
+        width: calc((100% - 182px) / 2);
+      }
+      .sprints-table th:nth-child(5),
+      .sprints-table td:nth-child(5) {
+        width: 44px;
+      }
+      .sprints-table th:nth-child(6),
+      .sprints-table td:nth-child(6) {
+        width: 56px;
+      }
+    }
+    @media (max-width: 500px) {
+      .summary-tiles-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 380px) {
+      .summary-tiles-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .home-summary-grid .home-forecast-card { grid-column: 1 / -1; }
+    }
+    @media (max-width: 340px) {
+      .summary-tiles-4 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 320px) {
+      .summary-tiles-3 { grid-template-columns: 1fr; }
+      .home-summary-grid .home-forecast-card { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="sticky-header">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="img" aria-label="Capacity Planning icon" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="cpBg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#6eb3df"/>
+                  <stop offset="1" stop-color="#2f7fb8"/>
+                </linearGradient>
+                <linearGradient id="cpLine" x1="18" y1="42" x2="50" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#f6fbff"/>
+                  <stop offset="1" stop-color="#ffffff"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#cpBg)"/>
+              <rect x="10" y="12" width="44" height="40" rx="8" fill="rgba(255,255,255,0.17)" stroke="rgba(255,255,255,0.24)" />
+              <rect x="16" y="34" width="6" height="12" rx="2" fill="#e9f4fb"/>
+              <rect x="27" y="29" width="6" height="17" rx="2" fill="#e9f4fb"/>
+              <rect x="38" y="24" width="6" height="22" rx="2" fill="#e9f4fb"/>
+              <path d="M16 30 L29 24 L39 27 L49 18" fill="none" stroke="url(#cpLine)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="49" cy="18" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Capacity Planning</h1>
+            <p class="subtle">Sprint, velocity, and capacity planning for teams</p>
+          </div>
+        </div>
+        <div class="inline-actions topbar-actions">
+          <button class="ghost-btn icon-btn" data-action="toggle-help" title="Help" aria-label="Help">?</button>
+          <span id="topbar-toast" class="topbar-toast" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <main id="app"></main>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'capacity-planning-standalone-v1';
+    const STORAGE_META_KEY = 'capacity-planning-standalone-meta-v1';
+    const DEFAULT_NEW_SQUAD_NAME = 'new squad';
+    const DEFAULT_NEW_TEAM_NAME = 'new team';
+    const DEFAULT_NEW_DEVELOPER_NAME = 'new dev';
+    const TABS = [
+      { id: 'home', label: 'Home' },
+      { id: 'velocity', label: 'Velocity' },
+      { id: 'capacity', label: 'Capacity' },
+      { id: 'teams', label: 'Teams' },
+      { id: 'sprints', label: 'Sprints' }
+    ];
+
+    function defaultState() {
+      return {
+        view: 'home',
+        velocityMode: 'sprint',
+        currentSquadIndex: 0,
+        currentTeamIndex: 0,
+        currentSprintIndex: 6,
+        currentDeveloperIndex: 14,
+        currentPlanIndex: 1,
+        showSelectedPlanSprintsOnly: true,
+        masterSprintIndex: 6,
+        squads: [
+          { name: 'Product X' },
+          { name: 'Product Y' },
+          { name: 'Product Z' }
+        ],
+        teams: [
+          { squadIndex: 0, name: 'X Team 1' },
+          { squadIndex: 0, name: 'X Team 2' },
+          { squadIndex: 1, name: 'Y Team 1' },
+          { squadIndex: 2, name: 'Z Team 1' }
+        ],
+        developers: [
+          { teamIndex: 0, name: 'Susan' },
+          { teamIndex: 0, name: 'Michael' },
+          { teamIndex: 0, name: 'Rachel' },
+          { teamIndex: 0, name: 'Thomas' },
+          { teamIndex: 1, name: 'Nick' },
+          { teamIndex: 1, name: 'Dave' },
+          { teamIndex: 2, name: 'Paula' },
+          { teamIndex: 2, name: 'Zoe' },
+          { teamIndex: 2, name: 'Steve' },
+          { teamIndex: 3, name: 'Alex' },
+          { teamIndex: 3, name: 'Emma' },
+          { teamIndex: 3, name: 'James' },
+          { teamIndex: 3, name: 'Lisa' },
+          { teamIndex: 3, name: 'Mark' },
+          { teamIndex: 3, name: 'Sarah' }
+        ],
+        releases: [
+          { name: '2026-Q4' },
+          { name: '2027-Q1' },
+          { name: '2027-Q2' },
+          { name: '2027-Q3' },
+          { name: '2027-Q4' }
+        ],
+        sprints: [
+          { name: '2026-S19', days: 10, releaseIndex: 0 },
+          { name: '2026-S20', days: 10, releaseIndex: 0 },
+          { name: '2026-S21', days: 10, releaseIndex: 0 },
+          { name: '2026-S22', days: 10, releaseIndex: 0 },
+          { name: '2026-S23', days: 10, releaseIndex: 0 },
+          { name: '2026-S24', days: 10, releaseIndex: 0 },
+          { name: '2027-S1', days: 10, releaseIndex: 1 },
+          { name: '2027-S2', days: 10, releaseIndex: 1 },
+          { name: '2027-S3', days: 10, releaseIndex: 1 },
+          { name: '2027-S4', days: 10, releaseIndex: 1 },
+          { name: '2027-S5', days: 10, releaseIndex: 1 },
+          { name: '2027-S6', days: 10, releaseIndex: 1 },
+          { name: '2027-S7', days: 10, releaseIndex: 2 },
+          { name: '2027-S8', days: 10, releaseIndex: 2 },
+          { name: '2027-S9', days: 10, releaseIndex: 2 },
+          { name: '2027-S10', days: 10, releaseIndex: 2 },
+          { name: '2027-S11', days: 10, releaseIndex: 2 },
+          { name: '2027-S12', days: 10, releaseIndex: 2 }
+        ],
+        developerCapacity: [
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }]
+        ],
+        teamVelocity: [
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }, { commit: 0, actual: 0, capacityDays: 10, estimate: 8, actualPerDay: 0 }],
+          [{ capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }, { capacity: 10, isDefault: true }]
+        ]
+      };
+    }
+
+    let state = loadState();
+    let draggedSprintIndex = null;
+    let sprintDropPlacement = null;
+    let draggedPlanIndex = null;
+    let planDropPlacement = null;
+    let pendingSquadFocusIndex = null;
+    let pendingTeamFocusIndex = null;
+    let pendingDeveloperFocusIndex = null;
+    let collapsedTeamIndexes = new Set();
+    let isSquadsSectionCollapsed = false;
+    let hasInitializedSquadsCollapsedView = false;
+    let isDeleteDeveloperConfirmOpen = false;
+    let deleteDeveloperIndex = null;
+    let deleteDeveloperName = null;
+    let isTeamDeleteBlockedOpen = false;
+    let isResetConfirmOpen = false;
+    let hasInitializedTeamsCollapsedView = false;
+    let isPlansSectionCollapsed = false;
+    let hasInitializedPlansCollapsedView = false;
+    let pendingCapacityToast = null;
+    let capacityToastTimeoutId = null;
+    let saveToastTimeoutId = null;
+    let isHelpOpen = false;
+    let isPurgeConfirmOpen = false;
+    let purgeSprintRange = null;
+    let storageMeta = loadStorageMeta();
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return normalizeState(defaultState());
+      try {
+        return normalizeState({ ...defaultState(), ...JSON.parse(raw) });
+      } catch {
+        return normalizeState(defaultState());
+      }
+    }
+
+    function loadStorageMeta() {
+      const raw = localStorage.getItem(STORAGE_META_KEY);
+      if (!raw) return { savedAt: null, importedAt: null, exportedAt: null };
+      try {
+        const parsed = JSON.parse(raw);
+        return {
+          savedAt: typeof parsed?.savedAt === 'string' ? parsed.savedAt : null,
+          importedAt: typeof parsed?.importedAt === 'string' ? parsed.importedAt : null,
+          exportedAt: typeof parsed?.exportedAt === 'string' ? parsed.exportedAt : null
+        };
+      } catch {
+        return { savedAt: null, importedAt: null, exportedAt: null };
+      }
+    }
+
+    function saveStorageMeta() {
+      localStorage.setItem(STORAGE_META_KEY, JSON.stringify(storageMeta));
+    }
+
+    function markStorageEvent(key) {
+      storageMeta[key] = new Date().toISOString();
+      saveStorageMeta();
+    }
+
+    function formatStorageTimestamp(value) {
+      if (!value) return 'Not yet';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'Not yet';
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
+      const year = String(date.getFullYear());
+      return `${day}-${month}-${year}`;
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      markStorageEvent('savedAt');
+    }
+
+    function showTopbarToast(message) {
+      const toast = document.getElementById('topbar-toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      if (saveToastTimeoutId !== null) clearTimeout(saveToastTimeoutId);
+      saveToastTimeoutId = setTimeout(() => {
+        toast.classList.remove('is-visible');
+        saveToastTimeoutId = null;
+      }, 1800);
+    }
+
+    function exportStateToFile() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(now);
+      const year = String(now.getFullYear());
+      const safeShortDate = `${day}-${month}-${year}`;
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `capacity_plan_${safeShortDate}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      markStorageEvent('exportedAt');
+      showTopbarToast('Data exported');
+      render();
+    }
+
+    async function importStateFromFile(file) {
+      if (!file) return;
+      const previousExportedAt = storageMeta.exportedAt;
+      let parsed;
+      try {
+        parsed = JSON.parse(await file.text());
+      } catch {
+        alert('Import failed: selected file is not valid JSON');
+        return;
+      }
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        alert('Import failed: JSON root must be an object');
+        return;
+      }
+
+      state = normalizeState({ ...defaultState(), ...parsed });
+      recomputeDerived();
+      saveState();
+      storageMeta.exportedAt = previousExportedAt;
+      markStorageEvent('importedAt');
+      render();
+      showTopbarToast('Data imported');
+    }
+
+    function clampIndex(value, max) {
+      if (max < 0) return 0;
+      return Math.max(0, Math.min(Number.isFinite(value) ? value : 0, max));
+    }
+
+    function numberValue(value) {
+      const parsed = parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function clampCapacityToSprintDays(value, sprintIndex, sprints = state.sprints) {
+      const sprintDays = Math.max(0, numberValue(sprints[sprintIndex]?.days));
+      return Math.min(Math.max(numberValue(value), 0), sprintDays);
+    }
+
+    function getCapacityValidationMessage(value, sprintIndex, sprints = state.sprints) {
+      const sprintDays = Math.max(0, numberValue(sprints[sprintIndex]?.days));
+      const parsed = numberValue(value);
+      if (parsed < 0) return 'Capacity may not be below zero';
+      if (parsed > sprintDays) return 'Capacity cannot exceed the days in the sprint';
+      return null;
+    }
+
+    function showCapacityToast(developerIndex, sprintIndex, message) {
+      pendingCapacityToast = { developerIndex, sprintIndex, message };
+      if (capacityToastTimeoutId !== null) {
+        clearTimeout(capacityToastTimeoutId);
+      }
+      capacityToastTimeoutId = setTimeout(() => {
+        pendingCapacityToast = null;
+        capacityToastTimeoutId = null;
+        render();
+      }, 2200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function makeCapacityRow(sprints, fill) {
+      return sprints.map((_, index) => ({
+        capacity: fill(index),
+        isDefault: true
+      }));
+    }
+
+    function makeVelocityRow(sprints) {
+      return sprints.map(() => ({
+        commit: 0,
+        actual: 0,
+        capacityDays: 0,
+        estimate: 0,
+        actualPerDay: 0
+      }));
+    }
+
+    function normalizeState(nextState) {
+      if (!nextState.squads || !nextState.squads.length) nextState.squads = defaultState().squads;
+      if (!nextState.teams || !nextState.teams.length) nextState.teams = defaultState().teams;
+      if (!nextState.developers || !nextState.developers.length) nextState.developers = defaultState().developers;
+      if (!nextState.releases || !nextState.releases.length) nextState.releases = defaultState().releases;
+      if (!nextState.sprints || !nextState.sprints.length) nextState.sprints = defaultState().sprints;
+      if (!nextState.developerCapacity || !nextState.developerCapacity.length) nextState.developerCapacity = defaultState().developerCapacity;
+      if (!nextState.teamVelocity || !nextState.teamVelocity.length) nextState.teamVelocity = defaultState().teamVelocity;
+
+      nextState.squads = nextState.squads.map((row) => ({ name: row.name ?? row.squadName ?? 'New Squad' }));
+      nextState.teams = nextState.teams.map((row) => ({
+        squadIndex: Number.isFinite(row.squadIndex) ? row.squadIndex : 0,
+        name: row.name ?? row.teamName ?? 'New Team'
+      }));
+      nextState.developers = nextState.developers.map((row) => ({
+        teamIndex: Number.isFinite(row.teamIndex) ? row.teamIndex : 0,
+        name: row.name ?? row.developerName ?? 'New Dev'
+      }));
+      nextState.releases = nextState.releases.map((row) => {
+        const rawName = row.name ?? row.releaseName ?? 'New Plan';
+        const trimmedName = String(rawName).trim();
+        const migratedName = /^Release(?:\s+\d+)?$/i.test(trimmedName)
+          ? trimmedName.replace(/^Release\b/i, 'Plan')
+          : rawName;
+        return { name: migratedName };
+      });
+      nextState.sprints = nextState.sprints.map((row) => ({
+        name: row.name ?? row.sprintName ?? 'Sprint 0',
+        days: Number.isFinite(row.days) ? row.days : numberValue(row.sprintDays) || 10,
+        releaseIndex: Number.isFinite(Number(row.releaseIndex)) && Number(row.releaseIndex) >= 0 && Number(row.releaseIndex) < nextState.releases.length
+          ? Number(row.releaseIndex)
+          : null
+      }));
+
+      nextState.currentSquadIndex = clampIndex(nextState.currentSquadIndex ?? 0, nextState.squads.length - 1);
+      nextState.currentSprintIndex = clampIndex(nextState.currentSprintIndex ?? 0, nextState.sprints.length - 1);
+      nextState.currentPlanIndex = clampIndex(nextState.currentPlanIndex ?? 0, nextState.releases.length - 1);
+      nextState.masterSprintIndex = clampIndex(nextState.masterSprintIndex ?? 0, nextState.sprints.length - 1);
+      nextState.currentTeamIndex = clampIndex(nextState.currentTeamIndex ?? 0, nextState.teams.length - 1);
+      nextState.currentDeveloperIndex = clampIndex(nextState.currentDeveloperIndex ?? 0, nextState.developers.length - 1);
+      nextState.velocityMode = nextState.velocityMode === 'team' ? 'team' : 'sprint';
+      nextState.showSelectedPlanSprintsOnly = nextState.showSelectedPlanSprintsOnly === true;
+
+      while (nextState.developerCapacity.length < nextState.developers.length) {
+        nextState.developerCapacity.push(makeCapacityRow(nextState.sprints, (index) => nextState.sprints[index]?.days ?? 10));
+      }
+      nextState.developerCapacity = nextState.developerCapacity.slice(0, nextState.developers.length);
+
+      while (nextState.teamVelocity.length < nextState.teams.length) {
+        nextState.teamVelocity.push(makeVelocityRow(nextState.sprints));
+      }
+      nextState.teamVelocity = nextState.teamVelocity.slice(0, nextState.teams.length);
+
+      nextState.developerCapacity = nextState.developerCapacity.map((row) => {
+        const nextRow = row.slice(0, nextState.sprints.length);
+        while (nextRow.length < nextState.sprints.length) {
+          const sprintIndex = nextRow.length;
+          nextRow.push({ capacity: nextState.sprints[sprintIndex]?.days ?? 10, isDefault: true });
+        }
+        return nextRow.map((entry, sprintIndex) => {
+          const capacity = clampCapacityToSprintDays(entry.capacity, sprintIndex, nextState.sprints);
+          const sprintDays = Math.max(0, numberValue(nextState.sprints[sprintIndex]?.days));
+          const inferredDefault = Math.abs(capacity - sprintDays) < 1e-9;
+          return {
+            ...entry,
+            capacity,
+            isDefault: typeof entry?.isDefault === 'boolean' ? entry.isDefault : inferredDefault
+          };
+        });
+      });
+
+      nextState.teamVelocity = nextState.teamVelocity.map((row) => {
+        const nextRow = row.slice(0, nextState.sprints.length);
+        while (nextRow.length < nextState.sprints.length) {
+          nextRow.push({ commit: 0, actual: 0, capacityDays: 0, estimate: 0, actualPerDay: 0 });
+        }
+        return nextRow;
+      });
+
+      ensureSelectionConsistency(nextState);
+      return nextState;
+    }
+
+    function ensureSelectionConsistency(nextState) {
+      const clampedTeamIndex = clampIndex(nextState.currentTeamIndex, nextState.teams.length - 1);
+      const selectedTeam = nextState.teams[clampedTeamIndex];
+      if (selectedTeam?.squadIndex === nextState.currentSquadIndex) {
+        nextState.currentTeamIndex = clampedTeamIndex;
+      } else {
+        const firstTeamInSquad = nextState.teams.findIndex((team) => team.squadIndex === nextState.currentSquadIndex);
+        nextState.currentTeamIndex = firstTeamInSquad >= 0 ? firstTeamInSquad : clampedTeamIndex;
+      }
+
+      if (!nextState.developers[nextState.currentDeveloperIndex]) {
+        nextState.currentDeveloperIndex = clampIndex(nextState.currentDeveloperIndex, nextState.developers.length - 1);
+      }
+    }
+
+    function update(mutator) {
+      mutator(state);
+      normalizeState(state);
+      recomputeDerived();
+      saveState();
+      render();
+    }
+
+    function canDeleteSquad(index) {
+      return !state.teams.some((team) => team.squadIndex === index);
+    }
+
+    function canDeleteTeam(index) {
+      return !state.developers.some((developer) => developer.teamIndex === index);
+    }
+
+    function canDeleteDeveloper(index) {
+      const developer = state.developers[index];
+      if (!developer) return false;
+      return state.developers.length > 1;
+    }
+
+    function getSelectedTeamIndexForSquad(squadIndex) {
+      return state.teams.findIndex((team) => team.squadIndex === squadIndex);
+    }
+
+    function getCurrentTeam() {
+      return state.teams[state.currentTeamIndex] ?? null;
+    }
+
+    function capacitySummary(teamIndex, sprintIndex) {
+      const sprint = state.sprints[sprintIndex];
+      if (!sprint) return { potential: 0, capacity: 0, lost: 0 };
+      const sprintDays = Math.max(0, numberValue(sprint.days));
+      let potential = 0;
+      let capacity = 0;
+      state.developers.forEach((developer, index) => {
+        if (developer.teamIndex === teamIndex) {
+          potential += sprintDays;
+          const developerCapacityEntry = state.developerCapacity[index]?.[sprintIndex];
+          const hasCapacityValue = developerCapacityEntry && Number.isFinite(Number(developerCapacityEntry.capacity));
+          capacity += hasCapacityValue
+            ? clampCapacityToSprintDays(developerCapacityEntry.capacity, sprintIndex)
+            : sprintDays;
+        }
+      });
+      return { potential, capacity, lost: potential - capacity };
+    }
+
+    function velocitySummary(bySquad, squadIndex, sprintIndex) {
+      let estimated = 0;
+      let committed = 0;
+      let actual = 0;
+      let commitCount = state.teams.length;
+      let estimateCount = state.teams.length;
+      let actualCount = state.teams.length;
+
+      state.teams.forEach((team, index) => {
+        if (team.squadIndex === squadIndex || !bySquad) {
+          const row = state.teamVelocity[index]?.[sprintIndex];
+          if (numberValue(row?.estimate) >= 0) {
+            estimated += numberValue(row?.estimate);
+            estimateCount -= 1;
+          }
+          if (numberValue(row?.commit) >= 0) {
+            committed += numberValue(row?.commit);
+            commitCount -= 1;
+          }
+          if (numberValue(row?.actual) >= 0) {
+            actual += numberValue(row?.actual);
+            actualCount -= 1;
+          }
+        }
+      });
+
+      return {
+        estimated,
+        committed,
+        actual,
+        predictabilityCommit: committed === 0 ? 0 : (actual / committed) * 100,
+        predictabillityEstimate: estimated === 0 ? 0 : (actual / estimated) * 100,
+        estimateNA: estimateCount,
+        commitNA: commitCount,
+        actualNA: actualCount
+      };
+    }
+
+    function sprintIndexesForPlan(planIndex) {
+      return state.sprints
+        .map((sprint, index) => ({ sprint, index }))
+        .filter(({ sprint }) => sprint.releaseIndex === planIndex)
+        .map(({ index }) => index);
+    }
+
+    function velocitySummaryForTeam(teamIndex, sprintIndexes = null) {
+      const rows = state.teamVelocity[teamIndex] ?? [];
+      let estimated = 0;
+      let committed = 0;
+      let actual = 0;
+
+      const indexes = Array.isArray(sprintIndexes)
+        ? sprintIndexes
+        : rows.map((_, index) => index);
+
+      indexes.forEach((index) => {
+        const row = rows[index];
+        estimated += numberValue(row?.estimate);
+        committed += numberValue(row?.commit);
+        actual += numberValue(row?.actual);
+      });
+
+      return {
+        estimated,
+        committed,
+        actual,
+        predictabilityCommit: committed === 0 ? 0 : (actual / committed) * 100,
+        predictabillityEstimate: estimated === 0 ? 0 : (actual / estimated) * 100
+      };
+    }
+
+    function previousSprintDataStatus(teamIndexes, referenceSprintIndex) {
+      const previousSprintIndex = referenceSprintIndex - 1;
+      if (previousSprintIndex < 0) {
+        return { hasMissing: false, label: '' };
+      }
+
+      let missingActualCount = 0;
+      teamIndexes.forEach((teamIndex) => {
+        const missing = previousSprintMissingForTeam(teamIndex, referenceSprintIndex);
+        if (missing.missingActual) missingActualCount += 1;
+      });
+
+      if (missingActualCount === 0) {
+        return { hasMissing: false, label: '' };
+      }
+
+      const labels = [];
+      if (missingActualCount > 0) labels.push(`${missingActualCount} missing actual`);
+      const sprintName = state.sprints[previousSprintIndex]?.name ?? 'previous sprint';
+      return {
+        hasMissing: true,
+        label: `${sprintName}: ${labels.join(', ')}`
+      };
+    }
+
+    function hasConfirmedCapacityForTeamSprint(teamIndex, sprintIndex) {
+      if (sprintIndex < 0) return false;
+      for (let developerIndex = 0; developerIndex < state.developers.length; developerIndex += 1) {
+        const developer = state.developers[developerIndex];
+        if (developer.teamIndex !== teamIndex) continue;
+        const entry = state.developerCapacity[developerIndex]?.[sprintIndex];
+        if (entry?.isDefault === false) return true;
+      }
+      return false;
+    }
+
+    function previousSprintMissingForTeam(teamIndex, referenceSprintIndex) {
+      const previousSprintIndex = referenceSprintIndex - 1;
+      if (previousSprintIndex < 0) {
+        return { previousSprintIndex, missingCapacity: false, missingActual: false };
+      }
+      const previousRow = state.teamVelocity[teamIndex]?.[previousSprintIndex] ?? {};
+      const missingActual = numberValue(previousRow.actual) <= 0;
+      const missingCapacity = !hasConfirmedCapacityForTeamSprint(teamIndex, previousSprintIndex);
+      return { previousSprintIndex, missingCapacity, missingActual };
+    }
+
+    function pointsSummary(sprintIndex) {
+      const previousSprintIndex = sprintIndex - 1;
+      const nextSprintIndex = sprintIndex + 1;
+      let done = 0;
+      let committed = 0;
+      let estimated = 0;
+      let doneNA = state.teamVelocity.length;
+      let commitNA = state.teamVelocity.length;
+      let estimateNA = state.teamVelocity.length;
+
+      state.teamVelocity.forEach((row) => {
+        const previous = row[previousSprintIndex];
+        const current = row[sprintIndex];
+        const next = row[nextSprintIndex];
+        if (previous) {
+          done += numberValue(previous.actual);
+          if (numberValue(previous.actual) >= 0) doneNA -= 1;
+        }
+        if (current) {
+          committed += numberValue(current.commit);
+          if (numberValue(current.commit) >= 0) commitNA -= 1;
+        }
+        if (next) {
+          estimated += numberValue(next.estimate);
+          if (numberValue(next.estimate) >= 0) estimateNA -= 1;
+        }
+      });
+
+      return { done, committed, estimated, doneNA, commitNA, estimateNA };
+    }
+
+    function recomputeDerived() {
+      state.teamVelocity.forEach((teamRow, teamIndex) => {
+        teamRow.forEach((entry, sprintIndex) => {
+          const capacity = capacitySummary(teamIndex, sprintIndex);
+          entry.capacityDays = capacity.capacity;
+
+          if (entry.capacityDays === 0) {
+            entry.actualPerDay = 0;
+          } else {
+            entry.actualPerDay = numberValue(entry.actual) / entry.capacityDays;
+          }
+
+          let mostRecentCompletedSprint = sprintIndex;
+          if (state.masterSprintIndex < mostRecentCompletedSprint) {
+            mostRecentCompletedSprint = state.masterSprintIndex;
+          }
+
+          const recentVelocityPerDay = [];
+          for (let lookback = 1; lookback <= 3; lookback += 1) {
+            const historySprintIndex = mostRecentCompletedSprint - lookback;
+            if (historySprintIndex < 0) break;
+            const historyEntry = teamRow[historySprintIndex];
+            if (!historyEntry) continue;
+            const historyActual = numberValue(historyEntry.actual);
+            const historyPerDay = numberValue(historyEntry.actualPerDay);
+            if (historyActual > 0 && historyPerDay > 0) {
+              recentVelocityPerDay.push(historyPerDay);
+            }
+          }
+
+          let averageVelocityPerDay = 0;
+          if (recentVelocityPerDay.length > 0) {
+            averageVelocityPerDay = recentVelocityPerDay.reduce((sum, value) => sum + value, 0) / recentVelocityPerDay.length;
+          }
+
+          entry.estimate = Math.round(entry.capacityDays * averageVelocityPerDay);
+        });
+      });
+    }
+
+    function setCurrentSprint(index) {
+      state.currentSprintIndex = index;
+      state.masterSprintIndex = index;
+      normalizeState(state);
+      recomputeDerived();
+      saveState();
+      render();
+    }
+
+    function syncPlanToCurrentSprint() {
+      const currentSprint = state.sprints[state.masterSprintIndex];
+      const sprintPlanIndex = Number(currentSprint?.releaseIndex);
+      if (!Number.isInteger(sprintPlanIndex)) return;
+      if (sprintPlanIndex < 0 || sprintPlanIndex >= state.releases.length) return;
+      state.currentPlanIndex = sprintPlanIndex;
+    }
+
+    function freshStart() {
+      state = normalizeState(defaultState());
+      storageMeta.importedAt = null;
+      storageMeta.exportedAt = null;
+      recomputeDerived();
+      saveState();
+      render();
+      showTopbarToast('Data reset to default');
+    }
+
+    function addSquad() {
+      update((draft) => {
+        draft.squads.push({ name: DEFAULT_NEW_SQUAD_NAME });
+        draft.currentSquadIndex = draft.squads.length - 1;
+        pendingSquadFocusIndex = draft.currentSquadIndex;
+      });
+    }
+
+    function deleteSquad(index) {
+      update((draft) => {
+        if (!canDeleteSquad(index)) return;
+        draft.squads.splice(index, 1);
+        draft.teams = draft.teams.map((team) => ({
+          ...team,
+          squadIndex: team.squadIndex > index ? team.squadIndex - 1 : team.squadIndex
+        }));
+        if (draft.currentSquadIndex > index) draft.currentSquadIndex -= 1;
+        if (draft.currentSquadIndex >= draft.squads.length) draft.currentSquadIndex = draft.squads.length - 1;
+      });
+    }
+
+    function addTeam(squadIndex) {
+      update((draft) => {
+        draft.teams.push({ squadIndex, name: DEFAULT_NEW_TEAM_NAME });
+        draft.teamVelocity.push(state.sprints.map(() => ({ commit: 0, actual: 0, capacityDays: 0, estimate: 0, actualPerDay: 0 })));
+        draft.currentTeamIndex = draft.teams.length - 1;
+        pendingTeamFocusIndex = draft.currentTeamIndex;
+        collapsedTeamIndexes = new Set(
+          draft.teams
+            .map((_, index) => index)
+            .filter((index) => index !== draft.currentTeamIndex)
+        );
+      });
+    }
+
+    function deleteTeam(index) {
+      update((draft) => {
+        if (!canDeleteTeam(index)) return;
+        draft.teams.splice(index, 1);
+        draft.teamVelocity.splice(index, 1);
+        draft.developers = draft.developers.map((developer) => ({
+          ...developer,
+          teamIndex: developer.teamIndex > index ? developer.teamIndex - 1 : developer.teamIndex
+        }));
+        if (draft.currentTeamIndex > index) draft.currentTeamIndex -= 1;
+        if (draft.currentTeamIndex >= draft.teams.length) draft.currentTeamIndex = draft.teams.length - 1;
+      });
+
+      collapsedTeamIndexes = new Set(
+        Array.from(collapsedTeamIndexes)
+          .filter((collapsedIndex) => collapsedIndex !== index)
+          .map((collapsedIndex) => collapsedIndex > index ? collapsedIndex - 1 : collapsedIndex)
+      );
+    }
+
+    function addDeveloper(teamIndex) {
+      // Keep the team card open by removing it from collapsed set before render
+      collapsedTeamIndexes.delete(teamIndex);
+      update((draft) => {
+        draft.developers.push({ teamIndex, name: DEFAULT_NEW_DEVELOPER_NAME });
+        draft.developerCapacity.push(state.sprints.map((_, sprintIndex) => ({
+          capacity: state.sprints[sprintIndex]?.days ?? 10,
+          isDefault: true
+        })));
+        draft.currentDeveloperIndex = draft.developers.length - 1;
+        pendingDeveloperFocusIndex = draft.currentDeveloperIndex;
+      });
+    }
+
+    function resetSelectedTeamCapacityForSprint() {
+      update((draft) => {
+        const sprintIndex = draft.currentSprintIndex;
+        const sprintDays = Math.max(0, numberValue(draft.sprints[sprintIndex]?.days));
+        draft.developers.forEach((developer, developerIndex) => {
+          if (developer.teamIndex !== draft.currentTeamIndex) return;
+          if (!draft.developerCapacity[developerIndex]?.[sprintIndex]) return;
+          draft.developerCapacity[developerIndex][sprintIndex].capacity = sprintDays;
+          draft.developerCapacity[developerIndex][sprintIndex].isDefault = false;
+        });
+        pendingCapacityToast = null;
+      });
+    }
+
+    function deleteDeveloper(index) {
+      // Keep the team card open by removing it from collapsed set before render
+      const developer = state.developers[index];
+      if (developer) {
+        collapsedTeamIndexes.delete(developer.teamIndex);
+      }
+      update((draft) => {
+        if (!canDeleteDeveloper(index)) return;
+        draft.developers.splice(index, 1);
+        draft.developerCapacity.splice(index, 1);
+        if (draft.currentDeveloperIndex > index) draft.currentDeveloperIndex -= 1;
+        if (draft.currentDeveloperIndex >= draft.developers.length) draft.currentDeveloperIndex = draft.developers.length - 1;
+      });
+    }
+
+    function nextSprintName(previousName, fallbackIndex) {
+      if (!previousName) return `Sprint ${fallbackIndex}`;
+      const match = previousName.match(/(\d+)(?!.*\d)/);
+      if (!match || match.index === undefined) return `${previousName} ${fallbackIndex}`;
+
+      const nextNumber = String(Number(match[1]) + 1).padStart(match[1].length, '0');
+      return `${previousName.slice(0, match.index)}${nextNumber}${previousName.slice(match.index + match[1].length)}`;
+    }
+
+    function moveIndex(oldIndex, fromIndex, toIndex) {
+      if (oldIndex === fromIndex) return toIndex;
+      if (fromIndex < toIndex && oldIndex > fromIndex && oldIndex <= toIndex) return oldIndex - 1;
+      if (fromIndex > toIndex && oldIndex >= toIndex && oldIndex < fromIndex) return oldIndex + 1;
+      return oldIndex;
+    }
+
+    function moveArrayItem(items, fromIndex, toIndex) {
+      const [item] = items.splice(fromIndex, 1);
+      items.splice(toIndex, 0, item);
+    }
+
+    function addSprint() {
+      update((draft) => {
+        const last = draft.sprints[draft.sprints.length - 1];
+        const nextDays = last ? last.days : 10;
+        const selectedPlanIndex = Number.isInteger(draft.currentPlanIndex)
+          && draft.currentPlanIndex >= 0
+          && draft.currentPlanIndex < draft.releases.length
+          ? draft.currentPlanIndex
+          : null;
+        draft.sprints.push({
+          name: nextSprintName(last?.name, draft.sprints.length),
+          days: nextDays,
+          releaseIndex: selectedPlanIndex
+        });
+        draft.developerCapacity.forEach((row) => row.push({ capacity: nextDays, isDefault: true }));
+        draft.teamVelocity.forEach((row) => row.push({ commit: 0, actual: 0, capacityDays: 0, estimate: 0, actualPerDay: 0 }));
+        draft.currentSprintIndex = draft.sprints.length - 1;
+      });
+    }
+
+    function addRelease() {
+      update((draft) => {
+        const last = draft.releases[draft.releases.length - 1];
+        draft.releases.push({ name: nextSprintName(last?.name, draft.releases.length) });
+        draft.currentPlanIndex = draft.releases.length - 1;
+      });
+    }
+
+    function deleteRelease(index) {
+      update((draft) => {
+        if (draft.releases.length < 2) return;
+        draft.releases.splice(index, 1);
+        draft.sprints.forEach((sprint) => {
+          if (!Number.isFinite(sprint.releaseIndex)) {
+            sprint.releaseIndex = null;
+            return;
+          }
+          if (sprint.releaseIndex === index) {
+            sprint.releaseIndex = null;
+          } else if (sprint.releaseIndex > index) {
+            sprint.releaseIndex -= 1;
+          }
+        });
+        draft.currentPlanIndex = clampIndex(draft.currentPlanIndex, draft.releases.length - 1);
+      });
+    }
+
+    function deleteSprint(index) {
+      update((draft) => {
+        if (draft.sprints.length < 2) return;
+        draft.sprints.splice(index, 1);
+        draft.developerCapacity.forEach((row) => row.splice(index, 1));
+        draft.teamVelocity.forEach((row) => row.splice(index, 1));
+
+        if (draft.currentSprintIndex > index || draft.currentSprintIndex >= draft.sprints.length) {
+          draft.currentSprintIndex = Math.max(0, draft.currentSprintIndex - 1);
+        }
+        if (draft.masterSprintIndex > index || draft.masterSprintIndex >= draft.sprints.length) {
+          draft.masterSprintIndex = Math.max(0, draft.masterSprintIndex - 1);
+        }
+      });
+    }
+
+    function moveSprint(fromIndex, toIndex) {
+      update((draft) => {
+        if (fromIndex === toIndex) return;
+        if (fromIndex < 0 || toIndex < 0 || fromIndex >= draft.sprints.length || toIndex >= draft.sprints.length) return;
+
+        moveArrayItem(draft.sprints, fromIndex, toIndex);
+        draft.developerCapacity.forEach((row) => moveArrayItem(row, fromIndex, toIndex));
+        draft.teamVelocity.forEach((row) => moveArrayItem(row, fromIndex, toIndex));
+
+        draft.currentSprintIndex = moveIndex(draft.currentSprintIndex, fromIndex, toIndex);
+        draft.masterSprintIndex = moveIndex(draft.masterSprintIndex, fromIndex, toIndex);
+      });
+    }
+
+    function moveRelease(fromIndex, toIndex) {
+      update((draft) => {
+        if (fromIndex === toIndex) return;
+        if (fromIndex < 0 || toIndex < 0 || fromIndex >= draft.releases.length || toIndex >= draft.releases.length) return;
+
+        moveArrayItem(draft.releases, fromIndex, toIndex);
+        
+        // Update all sprint releaseIndex values
+        draft.sprints.forEach((sprint) => {
+          sprint.releaseIndex = moveIndex(sprint.releaseIndex, fromIndex, toIndex);
+        });
+        
+        // Update current plan selection
+        draft.currentPlanIndex = moveIndex(draft.currentPlanIndex, fromIndex, toIndex);
+      });
+    }
+
+    function clearSprintDragState() {
+      draggedSprintIndex = null;
+      sprintDropPlacement = null;
+      document.querySelectorAll('.sprint-drop-line').forEach((line) => {
+        line.style.display = 'none';
+      });
+      document.querySelectorAll('[data-sprint-row]').forEach((row) => {
+        row.classList.remove('is-dragging', 'drop-before', 'drop-after');
+      });
+    }
+
+    function clearPlanDragState() {
+      draggedPlanIndex = null;
+      planDropPlacement = null;
+      document.querySelectorAll('.plan-drop-line').forEach((line) => {
+        line.style.display = 'none';
+      });
+      document.querySelectorAll('[data-plan-row]').forEach((row) => {
+        row.classList.remove('is-dragging', 'drop-before', 'drop-after');
+      });
+    }
+
+    function purgeOldSprints() {
+      if (state.masterSprintIndex <= 10) return;
+      const cutoff = state.masterSprintIndex - 10;
+      const firstSprintName = state.sprints[0]?.name ?? 'Unknown';
+      const lastSprintName = state.sprints[cutoff - 1]?.name ?? 'Unknown';
+      
+      isPurgeConfirmOpen = true;
+      purgeSprintRange = { firstSprintName, lastSprintName, cutoff };
+      render();
+    }
+
+    function confirmPurgeOldSprints() {
+      if (state.masterSprintIndex <= 10) return;
+      const cutoff = state.masterSprintIndex - 10;
+      update((draft) => {
+        draft.sprints.splice(0, cutoff);
+        draft.developerCapacity.forEach((row) => row.splice(0, cutoff));
+        draft.teamVelocity.forEach((row) => row.splice(0, cutoff));
+        draft.currentSprintIndex = Math.max(0, draft.currentSprintIndex - cutoff);
+        draft.masterSprintIndex = Math.max(0, draft.masterSprintIndex - cutoff);
+      });
+      isPurgeConfirmOpen = false;
+      purgeSprintRange = null;
+    }
+
+    function cancelPurgeOldSprints() {
+      isPurgeConfirmOpen = false;
+      purgeSprintRange = null;
+      render();
+    }
+
+    function renderTabs() {
+      return TABS.map((tab) => `
+        <button class="tab-btn ${state.view === tab.id ? 'active' : ''}" data-action="set-view" data-view="${tab.id}">
+          ${tab.label}
+        </button>
+      `).join('');
+    }
+
+    function summaryCard(title, value, footnote, className = '') {
+      return `
+        <div class="card ${className}">
+          <h3>${escapeHtml(title)}</h3>
+          <div class="metric">${escapeHtml(value)}</div>
+          <div class="footnote">${escapeHtml(footnote)}</div>
+        </div>
+      `;
+    }
+
+    function renderHelpModal() {
+      if (!isHelpOpen) return '';
+      const helpByView = {
+        home: {
+          title: 'Home',
+          items: [
+            'Done shows points delivered in the sprint before current. Committed shows what teams signed up for in the current sprint. Forecast shows the model\'s predicted output for the next sprint based on recent velocity.',
+            'The current sprint name and its available days are shown in the Current sprint card. Change the current sprint on the Sprints tab using the Select button.',
+            'Next sprint readiness tracks how many delivery contributors ("developers" in this tool) have had their capacity confirmed for the upcoming sprint. 100% means every contributor has a value set on the Capacity tab.',
+            'Total Sprint Man Days is the sum of all confirmed contributor capacity days for the next sprint — the actual working time available, not just headcount × sprint days.',
+            'Forecast velocity is the model\'s predicted story-point output for the next sprint. It is calculated per team from their recent actual points-per-day multiplied by their available capacity days.',
+            'If the Missing previous sprint actuals tile shows a warning, some teams have no Actual value entered for the last sprint. Tap it to jump directly to the Velocity screen to fill those in.',
+            'The Data being used card shows counts for squads, sprints, teams, and developers. Each tile is clickable and jumps to the relevant management screen.',
+            'All data is saved automatically in this browser only. Use the Export button to save a JSON backup file you can restore later on any device.',
+            'Version v1.1'
+          ]
+        },
+        velocity: {
+          title: 'Velocity',
+          items: [
+            'By Sprint shows all teams for a chosen squad side-by-side for a single sprint — useful for sprint review and retrospective, or to enter actuals after a sprint ends.',
+            'By Team shows a single team\'s full history across all sprints in a chosen plan — useful for trend analysis and checking whether a team\'s velocity is improving.',
+            'Forecast (greyed out) is read-only and calculated automatically from the team\'s recent points-per-day average multiplied by their confirmed capacity days for that sprint.',
+            'Commit is what the team agreed to deliver at sprint planning. Enter this at the start of each sprint.',
+            'Actual is what the team actually delivered. Enter this after the sprint ends. It drives the forecast model for future sprints.',
+            'Predictability is Actual ÷ Commit × 100. A value consistently above 80% indicates reliable estimation. The summary also shows Forecast predictability (Actual ÷ Forecast).',
+            'The Missing previous sprint data warning appears when Actual has not been entered for the sprint before the current one. Keeping Actual values up to date is essential for accurate forecasting.'
+          ]
+        },
+        capacity: {
+          title: 'Capacity',
+          items: [
+            'In this tool, "developer" means any direct delivery contributor (for example developers, QA, and other team members delivering sprint work).',
+            'Capacity represents the number of days a contributor is actually available in a given sprint — after accounting for leave, public holidays, and part-time arrangements.',
+            'Select a team and sprint using the dropdowns, then edit each contributor\'s days in the table. The field is pre-filled with the full sprint length as a default.',
+            'A value equal to the sprint length means the contributor is fully available. Reduce it for leave or part-time. The value cannot exceed the sprint\'s Days setting.',
+            'Once you edit a value it is marked as confirmed and contributes to the Next sprint readiness percentage on the Home screen.',
+            'Set to Max sets every contributor in the selected team back to the full sprint length and marks them all as confirmed. Use this when no adjustments are needed.',
+            'Confirmed capacity feeds the Forecast calculation — lower capacity days directly reduces a team\'s forecast output, so accurate values here lead to more realistic planning.'
+          ]
+        },
+        teams: {
+          title: 'Teams',
+          items: [
+            'The structure is: Squads contain Teams, Teams contain Developers. Build from the top down — create a squad first, then add teams to it, then add developers to each team.',
+            'Squads represent organisational groupings (e.g. a tribe, department, planning groups, or product groups). Select a squad to view and manage its teams in the panel on the right.',
+            'Teams represent delivery units that commit to and complete sprint work. Each team belongs to one squad and appears in the Velocity tab grouped by squad.',
+            'Developers are the direct delivery contributors whose capacity is tracked (including developers, QA, and other team members delivering sprint work). Each contributor belongs to one team. Their capacity is set per-sprint on the Capacity tab.',
+            'You cannot delete a squad that still has teams, or a team that still has developers. Remove the members first, then the container.',
+            'Rename any squad, team, or developer by typing directly in their name field. Changes are saved automatically.'
+          ]
+        },
+        sprints: {
+          title: 'Sprints',
+          items: [
+            'Plans group sprints into releases or planning cycles (e.g. "2026-R4"). Create plans in the Plans section, then assign each sprint to a plan using the Plan dropdown in each row.',
+            'When you add a new sprint it is automatically assigned to the currently selected plan and given the next name in the existing naming sequence.',
+            'Use the Selected plan only toggle to filter the sprint table to only the sprints in the selected plan. This makes it easier to review or edit a specific release.',
+            'The Select button marks a sprint as the current sprint (it then shows as Current). The current sprint is the baseline used by the Home screen summaries and the default sprint in the Velocity by Sprint view.',
+            'Days sets the length of the sprint in working days. This caps developer capacity values on the Capacity tab — if you reduce sprint Days, any capacity values above the new length are automatically clamped down.',
+            'Drag the ☰ handle to reorder sprints. Reordering is disabled when the Selected plan only filter is active — turn it off first.',
+            'Delete old sprints removes historical data permanently. When clicked, a confirmation dialog will show you exactly which sprints will be deleted (from the first sprint up to 10 sprints before the current one). The DELETE old sprints button appears once there are more than 10 sprints before the current sprint.'
+          ]
+        }
+      };
+      const help = helpByView[state.view] ?? helpByView.home;
+      return `
+        <div class="help-backdrop" data-action="close-help" role="dialog" aria-modal="true" aria-label="${escapeHtml(help.title)}">
+          <div class="help-modal" data-help-modal>
+            <div class="help-head">
+              <div>
+                <h2>${escapeHtml(help.title)}</h2>
+                <p class="subtle">How this screen works</p>
+              </div>
+              <button class="ghost-btn small" data-action="close-help" aria-label="Close help">Close</button>
+            </div>
+            <ul class="help-list">
+              ${help.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPurgeConfirmModal() {
+      if (!isPurgeConfirmOpen || !purgeSprintRange) return '';
+      const { firstSprintName, lastSprintName } = purgeSprintRange;
+      return `
+        <div class="help-backdrop" data-action="cancel-purge" role="dialog" aria-modal="true" aria-label="Confirm delete old sprints">
+          <div class="help-modal" data-purge-modal>
+            <div class="help-head">
+              <div>
+                <h2>Delete old sprints?</h2>
+                <p class="subtle">This action cannot be undone</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>You are about to permanently delete sprints <strong>${escapeHtml(firstSprintName)}</strong> through <strong>${escapeHtml(lastSprintName)}</strong>.</p>
+              <p>All associated data (velocity, capacity, and other metrics) for these sprints will be removed permanently. This cannot be undone.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-purge">Cancel</button>
+              <button class="danger-btn" data-action="confirm-purge">Delete sprints</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDeleteDeveloperConfirmModal() {
+      if (!isDeleteDeveloperConfirmOpen || deleteDeveloperIndex === null) return '';
+      return `
+        <div class="help-backdrop" data-action="cancel-delete-developer" role="dialog" aria-modal="true" aria-label="Confirm delete developer">
+          <div class="help-modal" data-delete-developer-modal>
+            <div class="help-head">
+              <div>
+                <h2>Delete developer?</h2>
+                <p class="subtle">This action cannot be undone</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>Are you sure you want to delete <strong>${escapeHtml(deleteDeveloperName || 'this team member')}</strong>?</p>
+              <p>All associated capacity data for this developer will be removed permanently.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-delete-developer">Cancel</button>
+              <button class="danger-btn" data-action="confirm-delete-developer">Delete developer</button>
+            </div>
+          </div>
+        </div>
+      `;
+     }
+
+    function renderTeamDeleteBlockedModal() {
+      if (!isTeamDeleteBlockedOpen) return '';
+      return `
+        <div class="help-backdrop" data-action="close-team-delete-blocked" role="dialog" aria-modal="true" aria-label="Cannot delete team">
+          <div class="help-modal" data-team-delete-blocked-modal>
+            <div class="help-head">
+              <div>
+                <h2>Cannot delete team</h2>
+                <p class="subtle">This team still has developers</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>Unable to delete this team because it still has developers assigned to it.</p>
+              <p>Please delete all developers from this team first, then you'll be able to delete the team.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="primary-btn" data-action="close-team-delete-blocked">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResetConfirmModal() {
+      if (!isResetConfirmOpen) return '';
+      return `
+        <div class="help-backdrop" data-action="cancel-reset" role="dialog" aria-modal="true" aria-label="Reset data">
+          <div class="help-modal" data-reset-confirm-modal>
+            <div class="help-head">
+              <div>
+                <h2>Reset data</h2>
+                <p class="subtle">Restore default demo state</p>
+              </div>
+            </div>
+            <div style="padding: 0 20px; margin-bottom: 20px;">
+              <p>This will clear all your data and restore the default demo state with sample teams, sprints, and data.</p>
+              <p><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 0 20px; justify-content: flex-end;">
+              <button class="ghost-btn" data-action="cancel-reset">Cancel</button>
+              <button class="danger-btn" data-action="confirm-reset">Reset data</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHome() {
+      const summary = pointsSummary(state.masterSprintIndex);
+      const previousSprintName = state.sprints[state.masterSprintIndex - 1]?.name ?? 'Previous sprint';
+      const currentSprintName = state.sprints[state.masterSprintIndex]?.name ?? 'Current sprint';
+      const nextSprintName = state.sprints[state.masterSprintIndex + 1]?.name ?? 'Next sprint';
+      const nextSprintIndex = state.masterSprintIndex + 1;
+      const hasNextSprint = nextSprintIndex < state.sprints.length;
+      const currentSprintDays = Math.max(0, numberValue(state.sprints[state.masterSprintIndex]?.days));
+      const nextSprintDays = hasNextSprint ? Math.max(0, numberValue(state.sprints[nextSprintIndex]?.days)) : 0;
+      const totalDevelopers = state.developers.length;
+      const totalTeams = state.teams.length;
+      const previousSprintIndex = state.masterSprintIndex - 1;
+      const confirmedNextSprintDevelopers = hasNextSprint
+        ? state.developerCapacity.reduce((count, row) => (row[nextSprintIndex]?.isDefault === false ? count + 1 : count), 0)
+        : 0;
+      const readinessPercent = totalDevelopers > 0
+        ? Math.max(0, Math.min(100, Math.round((confirmedNextSprintDevelopers / totalDevelopers) * 100)))
+        : 0;
+      const missingPreviousActualTeams = previousSprintIndex >= 0
+        ? state.teamVelocity.reduce((count, row) => {
+            const value = numberValue(row[previousSprintIndex]?.actual);
+            return value > 0 ? count : count + 1;
+          }, 0)
+        : 0;
+      const hasMissingPreviousActuals = missingPreviousActualTeams > 0;
+      const nextSprintAvailableDays = hasNextSprint
+        ? state.developerCapacity.reduce((sum, row) => {
+            const entry = row[nextSprintIndex];
+            const hasCapacityValue = entry && Number.isFinite(Number(entry.capacity));
+            const available = hasCapacityValue
+              ? clampCapacityToSprintDays(entry.capacity, nextSprintIndex)
+              : nextSprintDays;
+            return sum + available;
+          }, 0)
+        : 0;
+      const totalForecast = hasNextSprint ? summary.estimated : 0;
+      return `
+        <div class="grid summary-grid summary-tiles-3 home-summary-grid summary-box-format">
+          ${summaryCard('Done', summary.done.toFixed(0), previousSprintName)}
+          ${summaryCard('Committed', summary.committed.toFixed(0), currentSprintName)}
+          ${summaryCard('Forecast', summary.estimated.toFixed(0), nextSprintName, 'home-forecast-card')}
+        </div>
+
+        <div class="stack" style="margin-top:16px;">
+          <div class="card">
+            <div class="section-title">
+              <h2>Current sprint</h2>
+            </div>
+            <div class="current-sprint-card">
+              <div class="current-sprint-hero">
+                <p class="current-sprint-name">${escapeHtml(currentSprintName)}</p>
+              </div>
+              <div class="current-sprint-meta-grid">
+                <div class="current-sprint-meta">
+                  <span class="label">SPRINT DAYS</span>
+                  <div class="current-sprint-meta-value">${currentSprintDays.toFixed(currentSprintDays % 1 === 0 ? 0 : 1)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>Next sprint readiness</h2>
+            </div>
+            <div class="snapshot-layout">
+              <div class="snapshot-hero">
+                <div class="snapshot-hero-label">TEAM CAPACITY CONFIRMED</div>
+                <div class="snapshot-hero-value">${readinessPercent}%</div>
+                <div class="footnote">${hasNextSprint ? `${confirmedNextSprintDevelopers} of ${totalDevelopers} developers confirmed for ${escapeHtml(nextSprintName)}` : 'No next sprint available'}</div>
+                <div class="snapshot-progress"><span style="width:${readinessPercent}%;"></span></div>
+              </div>
+              <div class="snapshot-stat-grid">
+                <div class="snapshot-stat">
+                  <div class="snapshot-stat-label">Total Sprint Man Days</div>
+                  <div class="snapshot-stat-value">${nextSprintAvailableDays.toFixed(nextSprintAvailableDays % 1 === 0 ? 0 : 1)}</div>
+                </div>
+                <div class="snapshot-stat">
+                  <div class="snapshot-stat-label">Forecast velocity</div>
+                  <div class="snapshot-stat-value">${totalForecast.toFixed(0)}</div>
+                </div>
+                <div
+                  class="snapshot-stat ${hasMissingPreviousActuals ? 'warn clickable ' : ''}full-width"
+                  ${hasMissingPreviousActuals
+                    ? 'data-action="open-missing-actuals" role="button" tabindex="0" aria-label="Open Velocity tab by Sprint and focus the squad with most missing previous sprint actuals" title="Open Velocity tab by Sprint and focus the squad with most missing previous sprint actuals"'
+                    : ''}
+                >
+                  <div class="snapshot-stat-label">Missing previous sprint actuals</div>
+                  <div class="snapshot-stat-value">${missingPreviousActualTeams}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>Data being used</h2>
+            </div>
+            <div class="snapshot-stat-grid">
+              <div class="snapshot-stat clickable" data-action="open-teams-squads" role="button" tabindex="0" aria-label="Open Teams tab with squads section expanded" title="Open Teams tab with squads section expanded">
+                <div class="snapshot-stat-label">Squads</div>
+                <div class="snapshot-stat-value">${state.squads.length}</div>
+              </div>
+              <div class="snapshot-stat clickable" data-action="open-sprints" role="button" tabindex="0" aria-label="Open Sprints tab" title="Open Sprints tab">
+                <div class="snapshot-stat-label">Sprints</div>
+                <div class="snapshot-stat-value">${state.sprints.length}</div>
+              </div>
+              <div class="snapshot-stat clickable" data-action="open-teams" role="button" tabindex="0" aria-label="Open Teams tab with squads section collapsed" title="Open Teams tab with squads section collapsed">
+                <div class="snapshot-stat-label">Teams</div>
+                <div class="snapshot-stat-value">${totalTeams}</div>
+              </div>
+              <div class="snapshot-stat clickable" data-action="open-developers" role="button" tabindex="0" aria-label="Open Teams tab with squads section collapsed" title="Open Teams tab with squads section collapsed">
+                <div class="snapshot-stat-label">Developers</div>
+                <div class="snapshot-stat-value">${totalDevelopers}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title">
+            <h2>Data storage</h2>
+          </div>
+          <p class="subtle">For privacy reasons, all changes are saved locally in this browser only. No information is uploaded to any cloud service</p>
+          <p class="subtle">You can manually save and restore data locally using the actions below</p>
+          <div class="storage-action-grid">
+            <div class="storage-action clickable" data-action="export-data">
+              <button class="ghost-btn storage-icon-btn" data-action="export-data" title="Export data" aria-label="Export data">⤓</button>
+              <div class="storage-action-title">Export Data</div>
+              <div class="storage-action-text">Export data downloads a JSON backup file</div>
+              <div class="storage-action-text storage-action-meta"><strong>Last exported:</strong> ${escapeHtml(formatStorageTimestamp(storageMeta.exportedAt))}</div>
+            </div>
+            <div class="storage-action clickable" data-action="import-data">
+              <button class="ghost-btn storage-icon-btn" data-action="import-data" title="Import data" aria-label="Import data">⤒</button>
+              <div class="storage-action-title">Import Data</div>
+              <div class="storage-action-text">Import data loads a previously exported JSON file</div>
+              <div class="storage-action-text storage-action-meta"><strong>Last imported:</strong> ${escapeHtml(formatStorageTimestamp(storageMeta.importedAt))}</div>
+            </div>
+            <input type="file" accept="application/json,.json" data-action="import-data-file" style="display:none;">
+          </div>
+          <p class="subtle" style="margin-top:14px;">Use ↺ below to restore the default sample data</p>
+          <div class="storage-action-grid" style="margin-top:8px;">
+            <div class="storage-action storage-action-reset">
+              <button class="danger-btn storage-icon-btn" data-action="reset-data" title="Reset data" aria-label="Reset data">↺</button>
+              <div class="storage-action-title">Reset Data</div>
+              <div class="storage-action-text">Reset data clears all configuration and restores the default sample data</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#a0aec0; margin-top:24px; padding-left:4px;">Version v1.1</div>
+      `;
+    }
+
+    function renderVelocity() {
+      const bySprint = state.velocityMode === 'sprint';
+      const currentPlanName = state.releases[state.currentPlanIndex]?.name ?? 'Selected plan';
+      const teamPlanSprintIndexes = sprintIndexesForPlan(state.currentPlanIndex);
+      const summary = bySprint
+        ? velocitySummary(true, state.currentSquadIndex, state.currentSprintIndex)
+        : velocitySummaryForTeam(state.currentTeamIndex, teamPlanSprintIndexes);
+      const currentSquadName = state.squads[state.currentSquadIndex]?.name ?? 'Selected squad';
+      const teamOptions = state.teams
+        .map((team, index) => ({ index, ...team }))
+        .filter((team) => team.squadIndex === state.currentSquadIndex);
+      const previousData = bySprint
+        ? previousSprintDataStatus(teamOptions.map((team) => team.index), state.currentSprintIndex)
+        : previousSprintDataStatus([state.currentTeamIndex], state.masterSprintIndex);
+      const previousDataTag = previousData.hasMissing
+        ? `<span class="pill warn" title="${escapeHtml(previousData.label)}">Missing previous sprint data</span>`
+        : '';
+      const squadSelect = `
+        <label>
+          <span class="label">Squad</span>
+          <select data-action="select-squad">
+            ${state.squads.map((squad, index) => `<option value="${index}" ${index === state.currentSquadIndex ? 'selected' : ''}>${escapeHtml(squad.name)}</option>`).join('')}
+          </select>
+        </label>
+      `;
+
+      const summaryHtml = `
+        <div class="grid summary-grid summary-tiles-4 velocity-summary-grid summary-box-format" style="margin-top:16px;">
+          ${summaryCard('Forecast', summary.estimated.toFixed(0), 'points', previousData.hasMissing ? 'velocity-forecast-alert' : '')}
+          ${summaryCard('Committed', summary.committed.toFixed(0), 'points')}
+          ${summaryCard('Actual', summary.actual.toFixed(0), 'points')}
+          ${summaryCard('Predictability', `${summary.predictabilityCommit.toFixed(0)}%`, `Forecast: ${summary.predictabillityEstimate.toFixed(0)}%`)}
+        </div>
+      `;
+
+      if (bySprint) {
+        const rows = teamOptions.map((team) => {
+          const row = state.teamVelocity[team.index]?.[state.currentSprintIndex] ?? {};
+          const isFutureSprint = state.currentSprintIndex > state.masterSprintIndex;
+          const previousMissing = previousSprintMissingForTeam(team.index, state.currentSprintIndex);
+          const actualClass = previousMissing.missingActual ? 'missing-previous-data-input' : '';
+          return `
+            <tr>
+              <td>${escapeHtml(team.name)}</td>
+              <td><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
+              <td><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
+              <td><input class="${actualClass}" type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
+              <td><input type="text" data-action="noop" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
+            </tr>
+          `;
+        }).join('');
+
+        return `
+          <div class="card">
+            <div class="toolbar">
+              <div class="segmented">
+                <button class="seg-btn active" data-action="set-velocity-mode" data-mode="sprint">by Sprint</button>
+                <button class="seg-btn" data-action="set-velocity-mode" data-mode="team">by Team</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid velocity-sprint-stack" style="margin-top:16px;">
+            <div class="card">
+              <div class="section-title">
+                <h2>Sprint</h2>
+              </div>
+              <div class="selector-stack">
+                <label>
+                  <span class="label">Select sprint</span>
+                  <select data-action="select-sprint">
+                    ${state.sprints.slice().reverse().map((sprint, reverseIndex) => {
+                      const index = state.sprints.length - 1 - reverseIndex;
+                      const label = index === state.masterSprintIndex ? `${sprint.name} (current)` : sprint.name;
+                      return `<option value="${index}" ${index === state.currentSprintIndex ? 'selected' : ''}>${escapeHtml(label)}</option>`;
+                    }).join('')}
+                  </select>
+                </label>
+                ${squadSelect}
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title velocity-team-summary-header">
+                <h2>Velocity and Forecast team capacity</h2>
+                <div class="inline-actions">
+                  <span class="pill">${escapeHtml(`${currentSquadName} teams`)}</span>
+                  ${previousDataTag}
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="table sprint-table">
+                  <thead>
+                    <tr>
+                      <th>${bySprint ? 'Team' : 'Sprint'}</th>
+                      <th>Forecast</th>
+                      <th>Commit</th>
+                      <th>Actual</th>
+                      <th>Predict</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${bySprint
+                      ? rows || `<tr><td colspan="5"><div class="muted-box">No teams in this squad yet</div></td></tr>`
+                      : state.sprints.slice().reverse().map((sprint, reverseIndex) => {
+                          const index = state.sprints.length - 1 - reverseIndex;
+                          const row = state.teamVelocity[state.currentTeamIndex]?.[index] ?? {};
+                          return `
+                            <tr>
+                              <td>${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
+                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
+                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                              <td><input type="text" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
+                            </tr>
+                          `;
+                        }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          ${summaryHtml}
+        `;
+      }
+
+      const selectedTeam = state.teams[state.currentTeamIndex];
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="segmented">
+              <button class="seg-btn" data-action="set-velocity-mode" data-mode="sprint">by Sprint</button>
+              <button class="seg-btn active" data-action="set-velocity-mode" data-mode="team">by Team</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid velocity-team-stack" style="margin-top:16px;">
+          <div class="card">
+            <div class="section-title">
+              <h2>Team</h2>
+            </div>
+            <div class="selector-stack">
+              ${squadSelect}
+              <label>
+                <span class="label">Select team</span>
+                <select data-action="select-team">
+                  ${state.teams
+                    .map((team, index) => ({ team, index }))
+                    .filter(({ team }) => team.squadIndex === state.currentSquadIndex)
+                    .map(({ team, index }) => `<option value="${index}" ${index === state.currentTeamIndex ? 'selected' : ''}>${escapeHtml(team.name)}</option>`)
+                    .join('')}
+                </select>
+              </label>
+              <label>
+                <span class="label">Select plan</span>
+                <select data-action="select-velocity-plan">
+                  ${state.releases.map((release, index) => `<option value="${index}" ${index === state.currentPlanIndex ? 'selected' : ''}>${escapeHtml(release.name)}</option>`).join('')}
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title velocity-team-summary-header">
+            <h2>Velocity and Forecast team capacity</h2>
+            <div class="inline-actions">
+              <span class="pill">${escapeHtml(`${selectedTeam?.name ?? 'Selected'} team`)}</span>
+              <span class="pill">${escapeHtml(currentPlanName)}</span>
+              ${previousDataTag}
+            </div>
+          </div>
+          <div class="table-wrap velocity-team-sprints-wrap" style="overflow-x:hidden;">
+            <table class="table velocity-team-sprints-table" style="width:100%;max-width:100%;">
+              <thead>
+                <tr>
+                  <th>Sprint</th>
+                  <th>Forecast</th>
+                  <th>Commit</th>
+                  <th>Actual</th>
+                  <th>Predict</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(() => {
+                  const teamVelocityRows = state.teamVelocity[state.currentTeamIndex] ?? [];
+                  const planSprintSet = new Set(teamPlanSprintIndexes);
+                  let latestPastActualIndex = -1;
+                  for (let i = state.masterSprintIndex - 1; i >= 0; i -= 1) {
+                    if (!planSprintSet.has(i)) continue;
+                    if (numberValue(teamVelocityRows[i]?.actual) > 0) {
+                      latestPastActualIndex = i;
+                      break;
+                    }
+                  }
+
+                  const planSprints = state.sprints
+                    .map((sprint, index) => ({ sprint, index }))
+                    .filter(({ sprint }) => sprint.releaseIndex === state.currentPlanIndex)
+                    .reverse();
+
+                  if (!planSprints.length) {
+                    return '<tr><td colspan="5"><div class="muted-box">No sprints in this plan yet</div></td></tr>';
+                  }
+
+                  return planSprints.map(({ sprint, index }) => {
+                  const row = state.teamVelocity[state.currentTeamIndex]?.[index] ?? {};
+                  const shouldHighlightActual =
+                    index < state.masterSprintIndex
+                    && index > latestPastActualIndex
+                    && numberValue(row.actual) <= 0;
+                  return `
+                    <tr>
+                      <td>${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
+                      <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
+                      <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                      <td><input class="${shouldHighlightActual ? 'missing-previous-data-input' : ''}" type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
+                      <td><input type="text" value="${escapeHtml(row.commit > 0 && row.actual > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + ' %' : '0 %')}" disabled></td>
+                    </tr>
+                  `;
+                }).join('');
+                })()}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        ${summaryHtml}
+      `;
+    }
+
+    function renderCapacity() {
+      const currentTeam = getCurrentTeam();
+      const teamValid = currentTeam && currentTeam.squadIndex === state.currentSquadIndex;
+      const selectedSprintName = state.sprints[state.currentSprintIndex]?.name ?? 'No sprint selected';
+      const summary = teamValid ? capacitySummary(state.currentTeamIndex, state.currentSprintIndex) : { potential: 0, capacity: 0, lost: 0 };
+      const teamOptions = state.teams
+        .map((team, index) => ({ index, ...team }))
+        .filter((team) => team.squadIndex === state.currentSquadIndex);
+
+      const selectedSprintDays = state.sprints[state.currentSprintIndex]?.days ?? 0;
+      const rows = teamValid
+        ? state.developers
+            .map((developer, index) => ({ developer, index }))
+            .filter(({ developer }) => developer.teamIndex === state.currentTeamIndex)
+            .map(({ developer, index }) => {
+              const row = state.developerCapacity[index]?.[state.currentSprintIndex] ?? {};
+              const capacityValue = numberValue(row.capacity ?? 0);
+              const isDefaultAvailable = typeof row.isDefault === 'boolean'
+                ? row.isDefault
+                : Math.abs(capacityValue - selectedSprintDays) < 1e-9;
+              const capacityToast = pendingCapacityToast
+                && pendingCapacityToast.developerIndex === index
+                && pendingCapacityToast.sprintIndex === state.currentSprintIndex
+                ? `<span class="capacity-toast">${escapeHtml(pendingCapacityToast.message)}</span>`
+                : '';
+              return `
+                <tr>
+                  <td>${escapeHtml(developer.name)}</td>
+                  <td>
+                    <div class="capacity-input-wrap">
+                      ${capacityToast}
+                      <input class="available-input ${isDefaultAvailable ? 'default-available' : ''}" type="number" step="any" min="0" max="${escapeHtml(selectedSprintDays)}" data-action="edit-capacity" data-developer="${index}" data-sprint="${state.currentSprintIndex}" value="${escapeHtml(row.capacity ?? 0)}">
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join('')
+        : '';
+
+      return `
+        <div class="card">
+          <div class="section-title">
+            <h2>Capacity</h2>
+          </div>
+          <div class="fields two">
+            <div class="selector-stack">
+              <label>
+                <span class="label">Squad</span>
+                <select data-action="select-squad">
+                  ${state.squads.map((squad, index) => `<option value="${index}" ${index === state.currentSquadIndex ? 'selected' : ''}>${escapeHtml(squad.name)}</option>`).join('')}
+                </select>
+              </label>
+              <label>
+                <span class="label">Team</span>
+                <select data-action="select-team">
+                  ${teamOptions.map(({ index, name }) => `<option value="${index}" ${index === state.currentTeamIndex ? 'selected' : ''}>${escapeHtml(name)}</option>`).join('')}
+                </select>
+              </label>
+            </div>
+            <label>
+              <span class="label">Sprint</span>
+              <select data-action="select-sprint">
+                ${state.sprints.map((sprint, index) => `<option value="${index}" ${index === state.currentSprintIndex ? 'selected' : ''}>${escapeHtml(index === state.masterSprintIndex ? `${sprint.name} (current)` : sprint.name)}</option>`).join('')}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title">
+            <h2>Selected team / sprint</h2>
+          </div>
+          ${teamValid
+            ? `
+              <div class="selection-info-grid">
+                <div class="selection-info-card">
+                  <span class="label">Team</span>
+                  <div class="selection-info-value">${escapeHtml(currentTeam.name)}</div>
+                </div>
+                <div class="selection-info-card">
+                  <span class="label">Sprint</span>
+                  <div class="selection-info-value">${escapeHtml(selectedSprintName)}</div>
+                </div>
+              </div>
+            `
+            : '<div class="muted-box">No team from this squad is currently selected</div>'}
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title">
+            <h2>Team capacity</h2>
+            ${teamValid ? '<button class="primary-btn capacity-reset-btn" data-action="reset-team-capacity-sprint">Set to Max</button>' : ''}
+          </div>
+          ${teamValid
+            ? `
+              <div class="table-wrap team-capacity-wrap">
+                <table class="table team-capacity-table">
+                  <thead>
+                    <tr>
+                      <th>Developer</th>
+                      <th>Days</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rows}
+                  </tbody>
+                </table>
+              </div>
+            `
+            : '<div class="muted-box">Team currently has no developers assigned</div>'}
+        </div>
+
+        <div class="grid summary-grid summary-tiles-3 summary-box-format" style="margin-top:16px;">
+          ${summaryCard('Maximum', summary.potential.toFixed(summary.potential % 1 === 0 ? 0 : 1), 'days')}
+          ${summaryCard('Capacity', summary.capacity.toFixed(summary.capacity % 1 === 0 ? 0 : 1), 'days')}
+          ${summaryCard('Not available', summary.lost.toFixed(summary.lost % 1 === 0 ? 0 : 1), 'days')}
+        </div>
+      `;
+    }
+
+    function renderTeams() {
+      const currentSquadTeams = state.teams
+        .map((team, index) => ({ team, index }))
+        .filter(({ team }) => team.squadIndex === state.currentSquadIndex);
+
+      const squadRows = state.squads.map((squad, index) => `
+        <div class="row-card ${index === state.currentSquadIndex ? 'selected-squad-card' : ''}">
+          <div class="row-head">
+            <div class="row-title">
+              <span class="pill">Squad ${index + 1}</span>
+              <strong>${escapeHtml(squad.name)}</strong>
+            </div>
+            <div class="inline-actions">
+              <button class="${index === state.currentSquadIndex ? 'squad-selected-btn' : 'ghost-btn small squad-select-btn'}" data-action="set-current-squad" data-index="${index}">${index === state.currentSquadIndex ? 'Selected' : 'Select'}</button>
+              <button
+                class="danger-btn small squad-delete-btn ${canDeleteSquad(index) ? '' : 'blocked-delete-btn'}"
+                data-action="${canDeleteSquad(index) ? 'delete-squad' : 'show-squad-delete-blocked'}"
+                data-index="${index}"
+              >
+                Delete squad
+              </button>
+            </div>
+          </div>
+          <label>
+            <span class="label">Squad name</span>
+            <input class="squad-name-input ${squad.name === DEFAULT_NEW_SQUAD_NAME ? 'default-squad-name' : ''}" type="text" data-action="edit-squad-name" data-index="${index}" value="${escapeHtml(squad.name)}">
+          </label>
+        </div>
+      `).join('');
+
+      const teamRows = currentSquadTeams.map(({ team, index }) => {
+        const members = state.developers
+          .map((developer, devIndex) => ({ developer, devIndex }))
+          .filter(({ developer }) => developer.teamIndex === index);
+
+        return `
+          <details class="row-card team-section" data-action="toggle-team-section" data-index="${index}" ${collapsedTeamIndexes.has(index) ? '' : 'open'}>
+            <summary class="team-summary">
+              <div class="team-summary-row">
+                <div class="row-title">
+                  <span class="pill">Team ${index + 1}</span>
+                  <strong>${escapeHtml(team.name)}</strong>
+                </div>
+                <div class="inline-actions">
+                  <button
+                    class="danger-btn small team-delete-btn ${canDeleteTeam(index) ? '' : 'blocked-delete-btn'}"
+                    data-action="${canDeleteTeam(index) ? 'delete-team' : 'show-team-delete-blocked'}"
+                    data-index="${index}"
+                  >
+                    Delete team
+                  </button>
+                </div>
+              </div>
+            </summary>
+
+            <div class="team-content">
+              <div class="fields two">
+                <label>
+                  <span class="label">Team name</span>
+                  <input class="team-name-input ${team.name === DEFAULT_NEW_TEAM_NAME ? 'default-team-name' : ''}" type="text" data-action="edit-team-name" data-index="${index}" value="${escapeHtml(team.name)}">
+                </label>
+                <label>
+                  <span class="label">Squad</span>
+                  <select data-action="edit-team-squad" data-index="${index}">
+                    ${state.squads.map((squad, squadIndex) => `<option value="${squadIndex}" ${squadIndex === team.squadIndex ? 'selected' : ''}>${escapeHtml(squad.name)}</option>`).join('')}
+                  </select>
+                </label>
+              </div>
+
+              <div class="team-members">
+                <div class="label">Development Team</div>
+                ${members.map(({ developer, devIndex }) => `
+                  <div class="member-row">
+                    <input class="member-name-input ${developer.name === DEFAULT_NEW_DEVELOPER_NAME ? 'default-dev-name' : ''}" type="text" data-action="edit-developer-name" data-index="${devIndex}" value="${escapeHtml(developer.name)}" placeholder="Member name">
+                    <button class="danger-btn small" data-action="delete-developer" data-index="${devIndex}" ${canDeleteDeveloper(devIndex) ? '' : 'disabled'}>Delete</button>
+                  </div>
+                `).join('')}
+                <div class="inline-actions">
+                  <button class="primary-btn small" data-action="add-developer" data-index="${index}">Add Developer</button>
+                </div>
+              </div>
+            </div>
+          </details>
+        `;
+      }).join('');
+
+      return `
+        <div class="stack">
+          <div class="card">
+            <div class="section-title">
+              <button class="squads-toggle-btn" data-action="toggle-squads-section">
+                <span class="squads-toggle-icon">${isSquadsSectionCollapsed ? '▸' : '▾'}</span>
+                <span>Squads</span>
+              </button>
+              <button class="primary-btn small" data-action="add-squad">Add squad</button>
+            </div>
+            ${isSquadsSectionCollapsed
+              ? `
+                <div class="squads-collapsed-select">
+                  <label>
+                    <span class="label">Selected squad</span>
+                    <select data-action="select-squad">
+                      ${state.squads.map((squad, index) => `<option value="${index}" ${index === state.currentSquadIndex ? 'selected' : ''}>${escapeHtml(squad.name)}</option>`).join('')}
+                    </select>
+                  </label>
+                </div>
+              `
+              : `<div class="row-stack">${squadRows}</div>`}
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>Teams in ${escapeHtml(state.squads[state.currentSquadIndex]?.name ?? '')}</h2>
+              <button class="primary-btn small" data-action="add-team" data-index="${state.currentSquadIndex}">Add team</button>
+            </div>
+            <div class="subtle" style="margin-bottom:14px;">Select a squad on the left to edit its teams and members</div>
+            <div class="row-stack">
+              ${teamRows || '<div class="muted-box">No teams in this squad yet</div>'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSprints() {
+      const canPurge = state.masterSprintIndex > 10;
+      const showSelectedPlanSprintsOnly = state.showSelectedPlanSprintsOnly === true;
+      const visibleSprints = state.sprints
+        .map((sprint, index) => ({ sprint, index }))
+        .filter(({ sprint }) => !showSelectedPlanSprintsOnly || sprint.releaseIndex === state.currentPlanIndex)
+        .reverse();
+      const selectedPlanName = state.releases[state.currentPlanIndex]?.name ?? `Plan ${state.currentPlanIndex + 1}`;
+      const releaseRows = state.releases.map((release, index) => {
+        const sprintCount = state.sprints.reduce((count, sprint) => (
+          sprint.releaseIndex === index ? count + 1 : count
+        ), 0);
+        return `
+         <div class="row-card ${index === state.currentPlanIndex ? 'selected-squad-card' : ''}" draggable="true" data-plan-row data-index="${index}">
+            <div class="row-head">
+             <div style="display: flex; align-items: center;">
+               <div class="row-card-drag-handle">
+                 <span class="drag-handle" aria-hidden="true" title="Drag to reorder">☰</span>
+               </div>
+               <div class="row-title">
+                 <span class="pill">Plan ${index + 1}</span>
+                 <strong>${escapeHtml(release.name)}</strong>
+               </div>
+             </div>
+             <div class="inline-actions">
+               <button class="${index === state.currentPlanIndex ? 'squad-selected-btn' : 'ghost-btn small squad-select-btn'}" data-action="set-current-plan" data-index="${index}">${index === state.currentPlanIndex ? 'Selected' : 'Select'}</button>
+               <button class="danger-btn small" data-action="delete-release" data-index="${index}" ${state.releases.length > 1 ? '' : 'disabled'}>
+                 ${state.releases.length > 1 ? 'Delete' : 'Last plan'}
+               </button>
+             </div>
+           </div>
+           <div class="subtle" style="margin-bottom:10px;">${sprintCount} sprint${sprintCount === 1 ? '' : 's'}</div>
+           <label>
+             <span class="label">Plan name</span>
+             <input type="text" data-action="edit-release-name" data-index="${index}" value="${escapeHtml(release.name)}" placeholder="Plan name">
+           </label>
+         </div>
+       `;
+      }).join('');
+
+      return `
+        <div class="card">
+          <div class="section-title">
+            <button class="squads-toggle-btn" data-action="toggle-plans-section">
+              <span class="squads-toggle-icon">${isPlansSectionCollapsed ? '▸' : '▾'}</span>
+              <span>Plans</span>
+            </button>
+            <button class="primary-btn small" data-action="add-release">Add plan</button>
+          </div>
+          ${isPlansSectionCollapsed
+            ? `
+              <div class="squads-collapsed-select">
+                <label>
+                  <span class="label">Selected plan</span>
+                  <select data-action="select-plan">
+                    ${state.releases.map((release, index) => `<option value="${index}" ${index === state.currentPlanIndex ? 'selected' : ''}>${escapeHtml(release.name)}</option>`).join('')}
+                  </select>
+                </label>
+              </div>
+            `
+            : `
+              <div class="row-stack" style="margin-top:12px; position: relative;">
+                ${releaseRows || '<div class="muted-box">No plans defined</div>'}
+                <div class="plan-drop-line" aria-hidden="true"></div>
+              </div>
+            `}
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="section-title">
+            <h2>Sprints</h2>
+            <div class="inline-actions">
+              <label class="inline-check" title="Show only sprints assigned to the selected plan">
+                <span class="inline-switch">
+                  <input type="checkbox" data-action="toggle-selected-plan-sprints" aria-label="Show only selected plan sprints" ${showSelectedPlanSprintsOnly ? 'checked' : ''}>
+                  <span class="inline-switch-track" aria-hidden="true"></span>
+                </span>
+                <span>Selected plan only</span>
+              </label>
+              <button class="primary-btn small" data-action="add-sprint">Add sprint</button>
+              ${canPurge
+                ? '<button class="danger-btn small" data-action="purge-sprints">DELETE old sprints</button>'
+                : '<button class="danger-btn blocked-delete-btn small" data-action="show-purge-sprints-blocked">DELETE old sprints</button>'}
+            </div>
+          </div>
+          <div class="table-wrap sprints-table-wrap" style="margin-top:12px;">
+            <table class="table sprints-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>Sprint name</th>
+                  <th>Plan</th>
+                  <th>Days</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${visibleSprints.length === 0
+                  ? `
+                    <tr>
+                      <td colspan="6" class="muted-box">No sprints in ${escapeHtml(selectedPlanName)}</td>
+                    </tr>
+                  `
+                  : visibleSprints.map(({ sprint, index }) => {
+                  const isDraggable = !showSelectedPlanSprintsOnly;
+                  return `
+                    <tr class="sprint-row ${sprint.releaseIndex === state.currentPlanIndex ? 'selected-plan-sprint' : ''}" draggable="${isDraggable ? 'true' : 'false'}" data-sprint-row data-index="${index}">
+                      <td class="drag-cell">
+                        <span class="drag-handle" aria-hidden="true" title="${isDraggable ? 'Drag to reorder' : 'Disable filter to reorder'}">☰</span>
+                      </td>
+                      <td>
+                        <button class="ghost-btn small current-sprint-btn ${index === state.masterSprintIndex ? 'is-current' : ''}" data-action="set-current-sprint" data-index="${index}">
+                          ${index === state.masterSprintIndex ? 'Current' : 'Select'}
+                        </button>
+                      </td>
+                      <td>
+                        <input type="text" data-action="edit-sprint-name" data-index="${index}" value="${escapeHtml(sprint.name)}">
+                      </td>
+                      <td>
+                        <select data-action="edit-sprint-release" data-index="${index}">
+                          <option value="">No plan</option>
+                          ${state.releases.map((release, releaseIndex) => `<option value="${releaseIndex}" ${releaseIndex === sprint.releaseIndex ? 'selected' : ''}>${escapeHtml(release.name)}</option>`).join('')}
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" step="any" data-action="edit-sprint-days" data-index="${index}" value="${escapeHtml(sprint.days)}">
+                      </td>
+                      <td>
+                        <button class="danger-btn small" data-action="delete-sprint" data-index="${index}" ${state.sprints.length > 1 ? '' : 'disabled'}>
+                          ${state.sprints.length > 1 ? 'Delete' : 'Last sprint'}
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+            <div class="sprint-drop-line" aria-hidden="true"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      if (state.view === 'teams' && !hasInitializedTeamsCollapsedView) {
+        collapsedTeamIndexes = new Set(state.teams.map((_, index) => index));
+        hasInitializedTeamsCollapsedView = true;
+      }
+      if (state.view === 'teams' && !hasInitializedSquadsCollapsedView) {
+        isSquadsSectionCollapsed = state.squads.length > 1;
+        hasInitializedSquadsCollapsedView = true;
+      }
+      if (state.view === 'sprints' && !hasInitializedPlansCollapsedView) {
+        isPlansSectionCollapsed = state.releases.length > 1;
+        hasInitializedPlansCollapsedView = true;
+      }
+      document.getElementById('tabs').innerHTML = renderTabs();
+      const viewHtml = {
+        home: renderHome,
+        velocity: renderVelocity,
+        capacity: renderCapacity,
+        teams: renderTeams,
+        sprints: renderSprints
+      }[state.view]();
+      document.getElementById('app').innerHTML = `${viewHtml}${renderHelpModal()}${renderPurgeConfirmModal()}${renderDeleteDeveloperConfirmModal()}${renderTeamDeleteBlockedModal()}${renderResetConfirmModal()}`;
+
+      if (pendingSquadFocusIndex !== null) {
+        const input = document.querySelector(`[data-action="edit-squad-name"][data-index="${pendingSquadFocusIndex}"]`);
+        if (input) {
+          input.closest('.row-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          input.focus();
+          input.setSelectionRange(0, 0);
+        }
+        pendingSquadFocusIndex = null;
+      }
+
+      if (pendingTeamFocusIndex !== null) {
+        const input = document.querySelector(`[data-action="edit-team-name"][data-index="${pendingTeamFocusIndex}"]`);
+        if (input) {
+          input.closest('.row-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          input.focus();
+          input.setSelectionRange(0, 0);
+        }
+        pendingTeamFocusIndex = null;
+      }
+
+      if (pendingDeveloperFocusIndex !== null) {
+        const input = document.querySelector(`[data-action="edit-developer-name"][data-index="${pendingDeveloperFocusIndex}"]`);
+        if (input) {
+          input.closest('.member-row')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          input.focus();
+          input.setSelectionRange(0, 0);
+        }
+        pendingDeveloperFocusIndex = null;
+      }
+
+      updateHeaderOffset();
+    }
+
+    function updateHeaderOffset() {
+      const header = document.querySelector('.sticky-header');
+      const appContainer = document.querySelector('.app');
+      const appMain = document.getElementById('app');
+      if (!header || !appContainer || !appMain) return;
+      const containerTopPadding = Number.parseFloat(getComputedStyle(appContainer).paddingTop) || 0;
+      appMain.style.paddingTop = `${Math.max(0, header.offsetHeight - containerTopPadding)}px`;
+    }
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-help-modal]') && !event.target.closest('[data-action]')) {
+        return;
+      }
+      const target = event.target.closest('[data-action]');
+      if (!target) return;
+      const action = target.dataset.action;
+      if ((action === 'delete-team' || action === 'show-team-delete-blocked') && target.closest('summary')) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      if (action === 'set-view') {
+        const nextView = target.dataset.view;
+        const isEnteringSprints = state.view !== 'sprints' && nextView === 'sprints';
+        state.view = nextView;
+        if (isEnteringSprints) {
+          syncPlanToCurrentSprint();
+        }
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'toggle-help') {
+        isHelpOpen = !isHelpOpen;
+        render();
+        return;
+      }
+      if (action === 'close-help') {
+        isHelpOpen = false;
+        render();
+        return;
+      }
+      if (action === 'confirm-purge') {
+        confirmPurgeOldSprints();
+        render();
+        return;
+      }
+      if (action === 'cancel-purge') {
+        cancelPurgeOldSprints();
+        return;
+      }
+      if (action === 'confirm-delete-developer') {
+        isDeleteDeveloperConfirmOpen = false;
+        if (deleteDeveloperIndex !== null) {
+          deleteDeveloper(deleteDeveloperIndex);
+        }
+        deleteDeveloperIndex = null;
+        deleteDeveloperName = null;
+        return;
+      }
+      if (action === 'cancel-delete-developer') {
+        isDeleteDeveloperConfirmOpen = false;
+        deleteDeveloperIndex = null;
+        deleteDeveloperName = null;
+        render();
+        return;
+      }
+      if (action === 'close-team-delete-blocked') {
+        isTeamDeleteBlockedOpen = false;
+        render();
+        return;
+      }
+      if (action === 'confirm-reset') {
+        isResetConfirmOpen = false;
+        freshStart();
+        return;
+      }
+      if (action === 'cancel-reset') {
+        isResetConfirmOpen = false;
+        render();
+        return;
+      }
+      if (action === 'set-velocity-mode') {
+        const nextMode = target.dataset.mode;
+        state.velocityMode = nextMode;
+        if (nextMode === 'sprint') {
+          state.currentSprintIndex = state.masterSprintIndex;
+        }
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'toggle-squads-section') {
+        isSquadsSectionCollapsed = !isSquadsSectionCollapsed;
+        render();
+        return;
+      }
+      if (action === 'toggle-plans-section') {
+        isPlansSectionCollapsed = !isPlansSectionCollapsed;
+        render();
+        return;
+      }
+      if (action === 'open-teams-squads') {
+        state.view = 'teams';
+        isSquadsSectionCollapsed = false;
+        hasInitializedSquadsCollapsedView = true;
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'open-sprints') {
+        const isEnteringSprints = state.view !== 'sprints';
+        state.view = 'sprints';
+        if (isEnteringSprints) {
+          syncPlanToCurrentSprint();
+        }
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'open-teams') {
+        state.view = 'teams';
+        isSquadsSectionCollapsed = true;
+        hasInitializedSquadsCollapsedView = true;
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'open-developers') {
+        state.view = 'teams';
+        isSquadsSectionCollapsed = true;
+        hasInitializedSquadsCollapsedView = true;
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'open-missing-actuals') {
+        const previousSprintIndex = state.masterSprintIndex - 1;
+        let targetSquadIndex = state.currentSquadIndex;
+        if (previousSprintIndex >= 0) {
+          const missingBySquad = state.squads.map((_, squadIndex) => {
+            const teamIndexes = state.teams
+              .map((team, teamIndex) => ({ team, teamIndex }))
+              .filter(({ team }) => team.squadIndex === squadIndex)
+              .map(({ teamIndex }) => teamIndex);
+            const missingCount = teamIndexes.reduce((count, teamIndex) => {
+              const actual = numberValue(state.teamVelocity[teamIndex]?.[previousSprintIndex]?.actual);
+              return actual > 0 ? count : count + 1;
+            }, 0);
+            return { squadIndex, missingCount };
+          });
+          targetSquadIndex = missingBySquad.reduce((best, current) => (
+            current.missingCount > best.missingCount ? current : best
+          ), { squadIndex: state.currentSquadIndex, missingCount: -1 }).squadIndex;
+          state.currentSprintIndex = previousSprintIndex;
+        }
+
+        state.view = 'velocity';
+        state.velocityMode = 'sprint';
+        state.currentSquadIndex = targetSquadIndex;
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'reset-data') {
+        isResetConfirmOpen = true;
+        render();
+        return;
+      }
+      if (action === 'save-now') {
+        saveState();
+        showTopbarToast('Data saved');
+        return;
+      }
+      if (action === 'export-data') {
+        exportStateToFile();
+        return;
+      }
+      if (action === 'import-data') {
+        if (!confirm('Importing will overwrite any existing data. Do you want to continue?')) {
+          return;
+        }
+        const input = document.querySelector('input[data-action="import-data-file"]');
+        input?.click();
+        return;
+      }
+      if (action === 'add-squad') return addSquad();
+      if (action === 'delete-squad') return deleteSquad(Number(target.dataset.index));
+      if (action === 'show-squad-delete-blocked') {
+        alert('Unable to delete a Squad that has teams.  Please delete its teams first.');
+        return;
+      }
+      if (action === 'add-team') return addTeam(Number(target.dataset.index));
+      if (action === 'show-team-delete-blocked') {
+        const teamIndex = Number(target.dataset.index);
+        collapsedTeamIndexes.delete(teamIndex);
+        isTeamDeleteBlockedOpen = true;
+        render();
+        return;
+      }
+      if (action === 'show-purge-sprints-blocked') {
+        alert('More than 10 sprints needed to bulk delete old sprints');
+        return;
+      }
+      if (action === 'delete-team') return deleteTeam(Number(target.dataset.index));
+      if (action === 'add-developer') return addDeveloper(Number(target.dataset.index));
+      if (action === 'reset-team-capacity-sprint') return resetSelectedTeamCapacityForSprint();
+      if (action === 'delete-developer') {
+        if (state.developers.length < 2) return;
+        const index = Number(target.dataset.index);
+        const developerName = state.developers[index]?.name ?? 'this team member';
+        isDeleteDeveloperConfirmOpen = true;
+        deleteDeveloperIndex = index;
+        deleteDeveloperName = developerName;
+        render();
+        return;
+      }
+      if (action === 'add-sprint') return addSprint();
+      if (action === 'add-release') return addRelease();
+      if (action === 'delete-release') {
+        if (state.releases.length < 2) return;
+        const index = Number(target.dataset.index);
+        const releaseName = state.releases[index]?.name ?? 'this plan';
+        const assignedSprintCount = state.sprints.reduce((count, sprint) => (
+          sprint.releaseIndex === index ? count + 1 : count
+        ), 0);
+        if (assignedSprintCount > 0 && !confirm(`Delete ${releaseName}? ${assignedSprintCount} sprint${assignedSprintCount === 1 ? '' : 's'} will be unassigned.`)) return;
+        return deleteRelease(index);
+      }
+      if (action === 'delete-sprint') {
+        if (state.sprints.length < 2) return;
+        const index = Number(target.dataset.index);
+        const sprintName = state.sprints[index]?.name ?? 'this sprint';
+        if (!confirm(`Delete ${sprintName}?`)) return;
+        return deleteSprint(index);
+      }
+      if (action === 'purge-sprints') return purgeOldSprints();
+      if (action === 'set-current-sprint') return setCurrentSprint(Number(target.dataset.index));
+      if (action === 'set-current-squad') {
+        state.currentSquadIndex = Number(target.dataset.index);
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'set-current-plan') {
+        state.currentPlanIndex = Number(target.dataset.index);
+        normalizeState(state);
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'set-current-team') {
+        state.currentTeamIndex = Number(target.dataset.index);
+        state.currentSquadIndex = state.teams[state.currentTeamIndex]?.squadIndex ?? state.currentSquadIndex;
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isHelpOpen) {
+        isHelpOpen = false;
+        render();
+        return;
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const eventTarget = event.target instanceof Element ? event.target : null;
+      const target = eventTarget?.closest('.snapshot-stat.clickable[data-action]');
+      if (!target) return;
+      event.preventDefault();
+      target.click();
+    });
+
+    document.addEventListener('dragstart', (event) => {
+      const row = event.target.closest('[data-sprint-row]');
+      if (!row) return;
+
+      draggedSprintIndex = Number(row.dataset.index);
+      row.classList.add('is-dragging');
+
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(draggedSprintIndex));
+      }
+    });
+
+    document.addEventListener('dragover', (event) => {
+      const row = event.target.closest('[data-sprint-row]');
+      if (!row || draggedSprintIndex === null) return;
+
+      event.preventDefault();
+      const rect = row.getBoundingClientRect();
+      const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+      const wrap = row.closest('.sprints-table-wrap');
+      const dropLine = wrap?.querySelector('.sprint-drop-line');
+      const rows = Array.from(document.querySelectorAll('[data-sprint-row]'));
+      const rowPosition = rows.indexOf(row);
+      const gapIndexDom = rowPosition + (placeAfter ? 1 : 0);
+      const sourceDomPos = rows.findIndex((item) => Number(item.dataset.index) === draggedSprintIndex);
+      const isNoOpGap = gapIndexDom === sourceDomPos || gapIndexDom === sourceDomPos + 1;
+
+      document.querySelectorAll('[data-sprint-row]').forEach((item) => item.classList.remove('drop-before', 'drop-after'));
+      if (!isNoOpGap) {
+        sprintDropPlacement = { gapIndexDom };
+        if (dropLine && wrap) {
+          const wrapRect = wrap.getBoundingClientRect();
+          let lineY = rect.top;
+          if (gapIndexDom <= 0) {
+            lineY = rows[0]?.getBoundingClientRect().top ?? rect.top;
+          } else if (gapIndexDom >= rows.length) {
+            lineY = rows[rows.length - 1]?.getBoundingClientRect().bottom ?? rect.bottom;
+          } else {
+            const prevRect = rows[gapIndexDom - 1].getBoundingClientRect();
+            const nextRect = rows[gapIndexDom].getBoundingClientRect();
+            lineY = (prevRect.bottom + nextRect.top) / 2;
+          }
+          dropLine.style.top = `${lineY - wrapRect.top - 2}px`;
+          dropLine.style.display = 'block';
+        }
+      } else {
+        sprintDropPlacement = null;
+        if (dropLine) {
+          dropLine.style.display = 'none';
+        }
+      }
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'move';
+      }
+    });
+
+    document.addEventListener('drop', (event) => {
+      const row = event.target.closest('[data-sprint-row]');
+      if (draggedSprintIndex === null) return;
+
+      event.preventDefault();
+      const sourceIndex = draggedSprintIndex;
+      const rows = Array.from(document.querySelectorAll('[data-sprint-row]'));
+      if (!rows.length) {
+        clearSprintDragState();
+        return;
+      }
+
+      const domIndices = rows.map((item) => Number(item.dataset.index));
+      const sourceDomPos = domIndices.indexOf(sourceIndex);
+      if (sourceDomPos < 0) {
+        clearSprintDragState();
+        return;
+      }
+
+      let rawGapIndex = sprintDropPlacement?.gapIndexDom;
+      if (!Number.isInteger(rawGapIndex) && row) {
+        const rect = row.getBoundingClientRect();
+        const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+        const rowPosition = rows.indexOf(row);
+        rawGapIndex = rowPosition + (placeAfter ? 1 : 0);
+      }
+      if (!Number.isInteger(rawGapIndex)) {
+        clearSprintDragState();
+        return;
+      }
+
+      if (rawGapIndex === sourceDomPos || rawGapIndex === sourceDomPos + 1) {
+        clearSprintDragState();
+        return;
+      }
+
+      const remaining = domIndices.filter((index) => index !== sourceIndex);
+      const insertPos = sourceDomPos < rawGapIndex ? rawGapIndex - 1 : rawGapIndex;
+      const clampedInsertPos = Math.max(0, Math.min(insertPos, remaining.length));
+      remaining.splice(clampedInsertPos, 0, sourceIndex);
+
+      const destinationDomPos = remaining.indexOf(sourceIndex);
+      const destinationIndex = (remaining.length - 1) - destinationDomPos;
+
+      clearSprintDragState();
+      if (destinationIndex !== sourceIndex) {
+        moveSprint(sourceIndex, destinationIndex);
+      }
+    });
+
+    document.addEventListener('dragend', () => {
+      clearSprintDragState();
+      clearPlanDragState();
+    });
+
+    document.addEventListener('dragstart', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (!row) return;
+
+      draggedPlanIndex = Number(row.dataset.index);
+      row.classList.add('is-dragging');
+
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(draggedPlanIndex));
+      }
+    });
+
+    document.addEventListener('dragover', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (!row || draggedPlanIndex === null) return;
+
+      event.preventDefault();
+      const rect = row.getBoundingClientRect();
+      const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+      const wrap = row.closest('.row-stack');
+      const dropLine = wrap?.querySelector('.plan-drop-line');
+      const rows = Array.from(document.querySelectorAll('[data-plan-row]'));
+      const rowPosition = rows.indexOf(row);
+      const gapIndexDom = rowPosition + (placeAfter ? 1 : 0);
+      const sourceDomPos = rows.findIndex((item) => Number(item.dataset.index) === draggedPlanIndex);
+      const isNoOpGap = gapIndexDom === sourceDomPos || gapIndexDom === sourceDomPos + 1;
+
+      document.querySelectorAll('[data-plan-row]').forEach((item) => item.classList.remove('drop-before', 'drop-after'));
+      if (!isNoOpGap) {
+        planDropPlacement = { gapIndexDom };
+        if (dropLine && wrap) {
+          const wrapRect = wrap.getBoundingClientRect();
+          let lineY = rect.top;
+          if (gapIndexDom <= 0) {
+            lineY = rows[0]?.getBoundingClientRect().top ?? rect.top;
+          } else if (gapIndexDom >= rows.length) {
+            lineY = rows[rows.length - 1]?.getBoundingClientRect().bottom ?? rect.bottom;
+          } else {
+            const prevRect = rows[gapIndexDom - 1].getBoundingClientRect();
+            const nextRect = rows[gapIndexDom].getBoundingClientRect();
+            lineY = (prevRect.bottom + nextRect.top) / 2;
+          }
+          dropLine.style.top = `${lineY - wrapRect.top - 2}px`;
+          dropLine.style.display = 'block';
+        }
+      } else {
+        planDropPlacement = null;
+        if (dropLine) {
+          dropLine.style.display = 'none';
+        }
+      }
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'move';
+      }
+    });
+
+    document.addEventListener('drop', (event) => {
+      const row = event.target.closest('[data-plan-row]');
+      if (draggedPlanIndex === null) return;
+
+      event.preventDefault();
+      const sourceIndex = draggedPlanIndex;
+      const rows = Array.from(document.querySelectorAll('[data-plan-row]'));
+      if (!rows.length) {
+        clearPlanDragState();
+        return;
+      }
+
+      const domIndices = rows.map((item) => Number(item.dataset.index));
+      const sourceDomPos = domIndices.indexOf(sourceIndex);
+      if (sourceDomPos < 0) {
+        clearPlanDragState();
+        return;
+      }
+
+      let rawGapIndex = planDropPlacement?.gapIndexDom;
+      if (!Number.isInteger(rawGapIndex) && row) {
+        const rect = row.getBoundingClientRect();
+        const placeAfter = event.clientY >= rect.top + (rect.height / 2);
+        const rowPosition = rows.indexOf(row);
+        rawGapIndex = rowPosition + (placeAfter ? 1 : 0);
+      }
+      if (!Number.isInteger(rawGapIndex)) {
+        clearPlanDragState();
+        return;
+      }
+
+      if (rawGapIndex === sourceDomPos || rawGapIndex === sourceDomPos + 1) {
+        clearPlanDragState();
+        return;
+      }
+
+      const remaining = domIndices.filter((index) => index !== sourceIndex);
+      const insertPos = sourceDomPos < rawGapIndex ? rawGapIndex - 1 : rawGapIndex;
+      const clampedInsertPos = Math.max(0, Math.min(insertPos, remaining.length));
+      remaining.splice(clampedInsertPos, 0, sourceIndex);
+
+      const destinationDomPos = remaining.indexOf(sourceIndex);
+      const destinationIndex = destinationDomPos;
+
+      clearPlanDragState();
+      if (destinationIndex !== sourceIndex) {
+        moveRelease(sourceIndex, destinationIndex);
+      }
+    });
+
+    document.addEventListener('toggle', (event) => {
+      const details = event.target.closest('[data-action="toggle-team-section"]');
+      if (!details) return;
+      const index = Number(details.dataset.index);
+      if (!Number.isInteger(index)) return;
+      if (details.open) {
+        collapsedTeamIndexes.delete(index);
+      } else {
+        collapsedTeamIndexes.add(index);
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const eventTarget = event.target instanceof Element ? event.target : null;
+      const target = eventTarget?.closest('[data-action="edit-developer-name"]');
+      if (!target) return;
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (target.value === DEFAULT_NEW_DEVELOPER_NAME) {
+        target.value = '';
+        target.classList.remove('default-dev-name');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const eventTarget = event.target instanceof Element ? event.target : null;
+      const target = eventTarget?.closest('[data-action="edit-squad-name"]');
+      if (!target) return;
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (target.value === DEFAULT_NEW_SQUAD_NAME) {
+        target.value = '';
+        target.classList.remove('default-squad-name');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const eventTarget = event.target instanceof Element ? event.target : null;
+      const target = eventTarget?.closest('[data-action="edit-team-name"]');
+      if (!target) return;
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (target.value === DEFAULT_NEW_TEAM_NAME) {
+        target.value = '';
+        target.classList.remove('default-team-name');
+      }
+    });
+
+    document.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-action="edit-developer-name"]');
+      if (!target) return;
+      const developerIndex = Number(target.dataset.index);
+      if (Number.isInteger(developerIndex) && state.developers[developerIndex]) {
+        state.developers[developerIndex].name = target.value;
+        saveState();
+      }
+      if (target.value === DEFAULT_NEW_DEVELOPER_NAME) {
+        target.classList.add('default-dev-name');
+      } else {
+        target.classList.remove('default-dev-name');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      const target = event.target.closest('[data-action="edit-developer-name"]');
+      if (!target) return;
+      const developerIndex = Number(target.dataset.index);
+      if (!Number.isInteger(developerIndex) || !state.developers[developerIndex]) return;
+      
+      const developer = state.developers[developerIndex];
+      const teamIndex = developer.teamIndex;
+      
+      // Count developers in this team and find if this is the last one
+      const developersInTeam = state.developers.filter(dev => dev.teamIndex === teamIndex);
+      const isLastInTeam = developersInTeam[developersInTeam.length - 1] === developer;
+      
+      // If this is the last developer in the team, add a new one
+      if (isLastInTeam) {
+        event.preventDefault();
+        addDeveloper(teamIndex);
+      }
+    });
+
+    document.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-action="edit-squad-name"]');
+      if (!target) return;
+      const squadIndex = Number(target.dataset.index);
+      if (Number.isInteger(squadIndex) && state.squads[squadIndex]) {
+        state.squads[squadIndex].name = target.value;
+        saveState();
+      }
+      if (target.value === DEFAULT_NEW_SQUAD_NAME) {
+        target.classList.add('default-squad-name');
+      } else {
+        target.classList.remove('default-squad-name');
+      }
+    });
+
+    document.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-action="edit-capacity"]');
+      if (!target) return;
+      target.classList.remove('default-available');
+    });
+
+    document.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-action="edit-release-name"]');
+      if (!target) return;
+      const releaseIndex = Number(target.dataset.index);
+      if (Number.isInteger(releaseIndex) && state.releases[releaseIndex]) {
+        state.releases[releaseIndex].name = target.value;
+        saveState();
+      }
+    });
+
+    document.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-action="edit-team-name"]');
+      if (!target) return;
+      const teamIndex = Number(target.dataset.index);
+      if (Number.isInteger(teamIndex) && state.teams[teamIndex]) {
+        state.teams[teamIndex].name = target.value;
+        saveState();
+      }
+      if (target.value === DEFAULT_NEW_TEAM_NAME) {
+        target.classList.add('default-team-name');
+      } else {
+        target.classList.remove('default-team-name');
+      }
+    });
+
+    document.addEventListener('change', (event) => {
+      const target = event.target.closest('[data-action]');
+      if (!target) return;
+      const action = target.dataset.action;
+      const index = Number(target.dataset.index);
+
+      if (action === 'import-data-file') {
+        const file = target.files?.[0];
+        importStateFromFile(file);
+        target.value = '';
+        return;
+      }
+
+      if (action === 'select-squad') {
+        state.currentSquadIndex = Number(target.value);
+        const firstTeam = getSelectedTeamIndexForSquad(state.currentSquadIndex);
+        if (firstTeam >= 0) state.currentTeamIndex = firstTeam;
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'select-plan') {
+        state.currentPlanIndex = Number(target.value);
+        normalizeState(state);
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'toggle-selected-plan-sprints') {
+        state.showSelectedPlanSprintsOnly = target.checked;
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'select-velocity-plan') {
+        state.currentPlanIndex = Number(target.value);
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'select-team') {
+        state.currentTeamIndex = Number(target.value);
+        state.currentSquadIndex = state.teams[state.currentTeamIndex]?.squadIndex ?? state.currentSquadIndex;
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'select-sprint') {
+        state.currentSprintIndex = Number(target.value);
+        normalizeState(state);
+        recomputeDerived();
+        saveState();
+        render();
+        return;
+      }
+      if (action === 'edit-developer-name') {
+        return;
+      }
+      if (action === 'edit-team-name') {
+        return;
+      }
+      if (action === 'edit-release-name') {
+        return;
+      }
+      if (action === 'edit-squad-name') {
+        return;
+      }
+      if (action === 'edit-team-squad') {
+        state.teams[index].squadIndex = Number(target.value);
+      } else if (action === 'edit-sprint-release') {
+        if (!state.sprints[index]) return;
+        const nextReleaseIndex = target.value === '' ? null : Number(target.value);
+        state.sprints[index].releaseIndex = Number.isInteger(nextReleaseIndex)
+          && nextReleaseIndex >= 0
+          && nextReleaseIndex < state.releases.length
+          ? nextReleaseIndex
+          : null;
+      } else if (action === 'edit-sprint-name') {
+        state.sprints[index].name = target.value;
+      } else if (action === 'edit-sprint-days') {
+        state.sprints[index].days = numberValue(target.value) || 0;
+        state.developerCapacity.forEach((row) => {
+          if (!row[index]) return;
+          row[index].capacity = clampCapacityToSprintDays(row[index].capacity, index);
+        });
+      } else if (action === 'edit-capacity') {
+        const developerIndex = Number(target.dataset.developer);
+        const sprintIndex = Number(target.dataset.sprint);
+        const validationMessage = getCapacityValidationMessage(target.value, sprintIndex);
+        state.developerCapacity[developerIndex][sprintIndex].capacity = clampCapacityToSprintDays(target.value, sprintIndex);
+        state.developerCapacity[developerIndex][sprintIndex].isDefault = false;
+        if (validationMessage) {
+          showCapacityToast(developerIndex, sprintIndex, validationMessage);
+        }
+      } else if (action === 'edit-velocity') {
+        const teamIndex = Number(target.dataset.team);
+        const sprintIndex = Number(target.dataset.sprint);
+        const field = target.dataset.field;
+        if ((field === 'actual' || field === 'commit') && sprintIndex > state.masterSprintIndex) {
+          return;
+        }
+        state.teamVelocity[teamIndex][sprintIndex][field] = numberValue(target.value);
+      } else {
+        return;
+      }
+
+      normalizeState(state);
+      recomputeDerived();
+      saveState();
+      render();
+    });
+
+    window.addEventListener('resize', updateHeaderOffset);
+
+    recomputeDerived();
+    saveState();
+    render();
+  </script>
+</body>
+</html>
