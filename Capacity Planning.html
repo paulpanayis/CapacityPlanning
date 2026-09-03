@@ -311,10 +311,23 @@
       text-align: center;
       padding: 8px 4px;
     }
+    .current-sprint-btn:not(.is-current),
+    .squad-select-btn {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: rgba(74, 136, 180, 0.12);
+      color: var(--accent-strong);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
     .current-sprint-btn.is-current {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
+      min-width: 0;
+      padding: 4px 8px;
+      background: rgba(27, 161, 96, 0.12);
+      color: #1b7f52;
+      border-color: transparent;
+      font-size: 0.82rem;
+      font-weight: 600;
     }
     .squad-delete-btn {
       min-width: 92px;
@@ -966,6 +979,75 @@
       font-size: 0.72rem;
       vertical-align: middle;
     }
+    .velocity-card-stack {
+      display: grid;
+      gap: 12px;
+    }
+    .velocity-column-head,
+    .velocity-data-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: center;
+    }
+    .velocity-column-head {
+      padding: 0 14px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .velocity-column-head span:not(:first-child) {
+      text-align: center;
+    }
+    .velocity-data-card {
+      background: var(--panel);
+      border: var(--control-border);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--elevation-card);
+    }
+    .velocity-data-card-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+    .velocity-card-metric {
+      min-width: 0;
+    }
+    .velocity-card-predictability {
+      grid-column: 2 / -1;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .velocity-card-current {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: start;
+    }
+    .velocity-data-card input {
+      min-width: 0;
+      width: 100%;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 0.92rem;
+    }
+    @media (max-width: 620px) {
+      .velocity-column-head,
+      .velocity-data-card {
+        grid-template-columns: minmax(0, 1.15fr) repeat(3, minmax(52px, 1fr));
+        gap: 6px;
+      }
+      .velocity-column-head {
+        font-size: 0.68rem;
+        padding: 0 8px;
+      }
+      .velocity-data-card {
+        padding: 10px 8px;
+      }
+    }
     .team-capacity-table {
       table-layout: fixed;
       width: 100%;
@@ -1285,7 +1367,6 @@
       align-items: flex-start;
       margin-top: -4px;
     }
-
     @media (max-width: 760px) {
       .two-col { grid-template-columns: 1fr; }
       .fields.two, .fields.three { grid-template-columns: 1fr; }
@@ -1476,6 +1557,8 @@
               <path d="M16 30 L29 24 L39 27 L49 18" fill="none" stroke="url(#cpLine)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
               <circle cx="49" cy="18" r="3" fill="#ffffff"/>
             </svg>
+              </tbody>
+            </table>
           </div>
           <div>
             <h1>Capacity Planning</h1>
@@ -2442,7 +2525,7 @@
             'If the Missing previous sprint actuals tile shows a warning, some teams have no Actual value entered for the last sprint. Tap it to jump directly to the Velocity screen to fill those in.',
             'The Data being used card shows counts for squads, sprints, teams, and developers. Each tile is clickable and jumps to the relevant management screen.',
             'All data is saved automatically in this browser only. Use the Export button to save a JSON backup file you can restore later on any device.',
-            'Version v1.2'
+            'Version v1.3'
           ]
         },
         velocity: {
@@ -2758,7 +2841,7 @@
             </div>
           </div>
         </div>
-        <div style="font-size:11px; color:#a0aec0; margin-top:24px; padding-left:4px;">Version v1.2</div>
+        <div style="font-size:11px; color:#a0aec0; margin-top:24px; padding-left:4px;">Version v1.3</div>
       `;
     }
 
@@ -2807,16 +2890,13 @@
           const actualClass = previousMissing.missingActual ? 'missing-previous-data-input' : '';
           const predictability = numberValue(row.commit) > 0 && numberValue(row.actual) > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + '%' : '—';
           return `
-            <tr>
-              <td style="border-bottom: none !important; padding-bottom: 2px !important;">${escapeHtml(team.name)}</td>
-              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
-              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
-              <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input class="${actualClass}" type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></td>
-            </tr>
-            <tr style="font-size: 0.85rem; color: var(--muted); font-style: italic;">
-              <td colspan="3" style="padding-top: 2px; padding-bottom: 10px; border-top: none !important; text-align: right; padding-right: 8px;">Predictability</td>
-              <td style="text-align: right; padding-right: 8px; padding-top: 2px; padding-bottom: 10px; border-top: none !important;">${predictability}</td>
-            </tr>
+            <div class="velocity-data-card">
+              <div class="velocity-data-card-title">${escapeHtml(team.name)}</div>
+              <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></div>
+              <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></div>
+              <div class="velocity-card-metric"><input class="${actualClass}" type="number" step="any" data-action="edit-velocity" data-team="${team.index}" data-sprint="${state.currentSprintIndex}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${isFutureSprint ? 'disabled' : ''}></div>
+              <div class="velocity-card-predictability">Predictability: ${predictability}</div>
+            </div>
           `;
         }).join('');
 
@@ -2858,33 +2938,29 @@
                   ${previousDataTag}
                 </div>
               </div>
-              <div class="table-wrap">
-                <table class="table sprint-table">
-                  <thead>
-                    <tr>
-                      <th>${bySprint ? 'Team' : 'Sprint'}</th>
-                      <th>Forecast</th>
-                      <th>Commit</th>
-                      <th>Actual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div class="velocity-column-head">
+                <span>${bySprint ? 'Team' : 'Sprint'}</span>
+                <span>Forecast</span>
+                <span>Commit</span>
+                <span>Actual</span>
+              </div>
+              <div class="velocity-card-stack">
                     ${bySprint
-                      ? rows || `<tr><td colspan="4"><div class="muted-box">No teams in this squad yet</div></td></tr>`
+                      ? rows || '<div class="muted-box">No teams in this squad yet</div>'
                       : state.sprints.slice().reverse().map((sprint, reverseIndex) => {
                           const index = state.sprints.length - 1 - reverseIndex;
                           const row = state.teamVelocity[state.currentTeamIndex]?.[index] ?? {};
                           return `
-                            <tr>
-                              <td>${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
-                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
-                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                              <td><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                            </tr>
+                            <div class="velocity-data-card">
+                              <div class="velocity-data-card-title">${escapeHtml(sprint.name)}</div>
+                              <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></div>
+                              <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></div>
+                              <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></div>
+                              ${index === state.masterSprintIndex ? '<span class="pill good velocity-card-current">current</span>' : ''}
+                              <div class="velocity-card-predictability">Predictability: ${predictability}</div>
+                            </div>
                           `;
                         }).join('')}
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
@@ -2940,17 +3016,13 @@
               ${previousDataTag}
             </div>
           </div>
-          <div class="table-wrap velocity-team-sprints-wrap" style="overflow-x:hidden;">
-            <table class="table velocity-team-sprints-table" style="width:100%;max-width:100%;">
-              <thead>
-                <tr>
-                  <th>Sprint</th>
-                  <th>Forecast</th>
-                  <th>Commit</th>
-                  <th>Actual</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div class="velocity-column-head">
+            <span>Sprint</span>
+            <span>Forecast</span>
+            <span>Commit</span>
+            <span>Actual</span>
+          </div>
+          <div class="velocity-card-stack">
                 ${(() => {
                   const teamVelocityRows = state.teamVelocity[state.currentTeamIndex] ?? [];
                   const planSprintSet = new Set(teamPlanSprintIndexes);
@@ -2969,7 +3041,7 @@
                     .reverse();
 
                   if (!planSprints.length) {
-                    return '<tr><td colspan="4"><div class="muted-box">No sprints in this plan yet</div></td></tr>';
+                    return '<div class="muted-box">No sprints in this plan yet</div>';
                   }
 
                   return planSprints.map(({ sprint, index }) => {
@@ -2980,21 +3052,17 @@
                     && numberValue(row.actual) <= 0;
                   const predictability = numberValue(row.commit) > 0 && numberValue(row.actual) > 0 ? ((numberValue(row.actual) / numberValue(row.commit)) * 100).toFixed(0) + '%' : '—';
                   return `
-                    <tr>
-                      <td style="border-bottom: none !important; padding-bottom: 2px !important;">${escapeHtml(sprint.name)} ${index === state.masterSprintIndex ? '<span class="pill good velocity-inline-current">current</span>' : ''}</td>
-                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></td>
-                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                      <td style="border-bottom: none !important; padding-bottom: 2px !important;"><input class="${shouldHighlightActual ? 'missing-previous-data-input' : ''}" type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></td>
-                    </tr>
-                    <tr style="font-size: 0.85rem; color: var(--muted); font-style: italic;">
-                      <td colspan="3" style="padding-top: 2px; padding-bottom: 10px; border-top: none !important; text-align: right; padding-right: 8px;">Predictability</td>
-                      <td style="text-align: right; padding-right: 8px; padding-top: 2px; padding-bottom: 10px; border-top: none !important;">${predictability}</td>
-                    </tr>
+                    <div class="velocity-data-card">
+                      <div class="velocity-data-card-title">${escapeHtml(sprint.name)}</div>
+                      <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="estimate" value="${escapeHtml(row.estimate ?? 0)}" disabled></div>
+                      <div class="velocity-card-metric"><input type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="commit" value="${escapeHtml(row.commit ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></div>
+                      <div class="velocity-card-metric"><input class="${shouldHighlightActual ? 'missing-previous-data-input' : ''}" type="number" step="any" data-action="edit-velocity" data-team="${state.currentTeamIndex}" data-sprint="${index}" data-field="actual" value="${escapeHtml(row.actual ?? 0)}" ${index > state.masterSprintIndex ? 'disabled' : ''}></div>
+                      ${index === state.masterSprintIndex ? '<span class="pill good velocity-card-current">current</span>' : ''}
+                      <div class="velocity-card-predictability">Predictability: ${predictability}</div>
+                    </div>
                   `;
                 }).join('');
                 })()}
-              </tbody>
-            </table>
           </div>
         </div>
 
